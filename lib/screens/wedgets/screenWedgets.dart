@@ -1,0 +1,1 @@
+export 'socialMediaIcon.dart';
