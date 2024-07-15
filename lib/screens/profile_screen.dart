@@ -70,10 +70,11 @@ class ProfileScreen extends StatelessWidget {
                       //     mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ActionButton(
+                            buttonColor: gray,
                             title: 'Edit profile',
                             action: () {
                               print(
-                                'Frind Added to Group',
+                                'Edit profile',
                               );
                             }),
                         SizedBox(
@@ -81,8 +82,30 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         ActionButton(
                             title: 'Delete profile',
+                            buttonColor: lightRed,
                             action: () {
-                              print('Frind Added to Group');
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Delete Profile'),
+                                  content: const Text(
+                                      'Are you sure you want to delete your profile ?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, 'OK');
+                                        print('Delete Profile');
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              );
                             }),
                       ],
                     ),
