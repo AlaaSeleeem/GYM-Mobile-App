@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gymm/providers/Cart.dart';
 import 'dart:async';
 import 'FINALbuttonNAVbar.dart';
 import 'cartPage.dart';
+import 'package:provider/provider.dart';
 
 class ProductsPage extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _timer;
 
@@ -26,7 +28,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   void _startAutoSlider() {
-    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       setState(() {
         _currentPage = (_currentPage + 1) % offers.length;
         _pageController.jumpToPage(_currentPage);
@@ -41,24 +43,53 @@ class _ProductsPageState extends State<ProductsPage> {
     super.dispose();
   }
 
-  void _showAddToCartDialog(String productName) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AnimatedDialog(productName: productName);
-      },
-    );
-  }
+  // void _showAddToCartDialog(String productName) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AnimatedDialog(productName: productName);
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     final List<Product> products = [
-      Product(name: 'Short description for product 1Short description for product 1', price: 100, image: 'product1.jpg', description: 'Short description for product 1Short description for product 1', discount: 20),
-      Product(name: 'Product 2', price: 150, image: 'product1.jpg', description: 'Short description for product 2'),
-      Product(name: 'Product 3', price: 200, image: 'product1.jpg', description: 'Short description for product 3', discount: 30),
-      Product(name: 'Product 4', price: 120, image: 'product1.jpg', description: 'Short description for product 4'),
-      Product(name: 'Product 5', price: 180, image: 'product1.jpg', description: 'Short description for product 5', discount: 15),
-      Product(name: 'Product 6', price: 250, image: 'product1.jpg', description: 'Short description for product 6'),
+      Product(
+          name:
+              'Short description for product 1Short description for product 1',
+          price: 100,
+          image: 'product1.jpg',
+          description:
+              'Short description for product 1Short description for product 1',
+          discount: 20),
+      Product(
+          name: 'Product 2',
+          price: 150,
+          image: 'product1.jpg',
+          description: 'Short description for product 2'),
+      Product(
+          name: 'Product 3',
+          price: 200,
+          image: 'product1.jpg',
+          description: 'Short description for product 3',
+          discount: 30),
+      Product(
+          name: 'Product 4',
+          price: 120,
+          image: 'product1.jpg',
+          description: 'Short description for product 4'),
+      Product(
+          name: 'Product 5',
+          price: 180,
+          image: 'product1.jpg',
+          description: 'Short description for product 5',
+          discount: 15),
+      Product(
+          name: 'Product 6',
+          price: 250,
+          image: 'product1.jpg',
+          description: 'Short description for product 6'),
     ];
 
     return SafeArea(
@@ -95,7 +126,8 @@ class _ProductsPageState extends State<ProductsPage> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.search, color: Colors.white), // أيقونة البحث
+                      icon: Icon(Icons.search, color: Colors.white),
+                      // أيقونة البحث
                       onPressed: () {
                         // إضافة وظيفة للبحث هنا
                       },
@@ -108,7 +140,6 @@ class _ProductsPageState extends State<ProductsPage> {
             ],
           ),
         ),
-
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -160,7 +191,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   itemBuilder: (context, index) {
                     return ZoomableProductCard(
                       product: products[index],
-                      onAddToCart: _showAddToCartDialog,
+                      // onAddToCart: _showAddToCartDialog,
                     );
                   },
                 ),
@@ -172,7 +203,7 @@ class _ProductsPageState extends State<ProductsPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CartPage(cartProducts: [],)),
+              MaterialPageRoute(builder: (context) => CartPage()),
             );
           },
           backgroundColor: Colors.yellow,
@@ -193,7 +224,8 @@ class AnimatedDialog extends StatefulWidget {
   _AnimatedDialogState createState() => _AnimatedDialogState();
 }
 
-class _AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProviderStateMixin {
+class _AnimatedDialogState extends State<AnimatedDialog>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   late Animation<double> _scaleAnimation;
@@ -244,7 +276,7 @@ class _AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvid
         ),
         content: Text(
           '${widget.productName} has been added to your cart.',
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
         ),
       ),
@@ -254,15 +286,17 @@ class _AnimatedDialogState extends State<AnimatedDialog> with SingleTickerProvid
 
 class ZoomableProductCard extends StatefulWidget {
   final Product product;
-  final Function(String) onAddToCart;
 
-  ZoomableProductCard({required this.product, required this.onAddToCart});
+  // final Function(String) onAddToCart;
+
+  const ZoomableProductCard({super.key, required this.product});
 
   @override
   _ZoomableProductCardState createState() => _ZoomableProductCardState();
 }
 
-class _ZoomableProductCardState extends State<ZoomableProductCard> with SingleTickerProviderStateMixin {
+class _ZoomableProductCardState extends State<ZoomableProductCard>
+    with SingleTickerProviderStateMixin {
   bool _isHovered = false;
 
   @override
@@ -288,11 +322,10 @@ class _ZoomableProductCardState extends State<ZoomableProductCard> with SingleTi
           );
         },
         child: Transform.scale(
-          scale: _isHovered ? 1.1 : 1.0,
+          scale: 1, //_isHovered ? 1.1 : 1.0,
           child: Container(
             child: ProductCard(
               product: widget.product,
-              onAddToCart: widget.onAddToCart,
             ),
           ),
         ),
@@ -303,12 +336,22 @@ class _ZoomableProductCardState extends State<ZoomableProductCard> with SingleTi
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  final Function(String) onAddToCart;
 
-  ProductCard({required this.product, required this.onAddToCart});
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context, listen: false);
+
+    void _showAddToCartDialog(String productName) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AnimatedDialog(productName: productName);
+        },
+      );
+    }
+
     return Stack(
       children: [
         Column(
@@ -331,7 +374,8 @@ class ProductCard extends StatelessWidget {
                     product.name,
                     style: TextStyle(fontSize: 18, color: Colors.white),
                     maxLines: 1,
-                    overflow: TextOverflow.ellipsis, // تحديد حد أقصى لوصف المنتج
+                    overflow:
+                        TextOverflow.ellipsis, // تحديد حد أقصى لوصف المنتج
                   ),
                   SizedBox(height: 4),
                   Row(
@@ -370,16 +414,18 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                onAddToCart(product.name);
+                _showAddToCartDialog(product.name);
+                cart.addToCart(product);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.yellow,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -396,7 +442,7 @@ class ProductCard extends StatelessWidget {
             top: 10,
             left: 10,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(12),
@@ -405,7 +451,8 @@ class ProductCard extends StatelessWidget {
                 children: [
                   Text(
                     '${((product.discount! / product.price) * 100).round()}%',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(width: 4),
                   Text(
@@ -429,7 +476,12 @@ class Product {
   final String description;
   final double? discount;
 
-  Product({required this.name, required this.price, required this.image, required this.description, this.discount});
+  Product(
+      {required this.name,
+      required this.price,
+      required this.image,
+      required this.description,
+      this.discount});
 }
 
 // Product detail page
@@ -442,7 +494,8 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.name, style: TextStyle(color: Colors.yellow)), // تغيير لون العنوان
+        title: Text(product.name, style: TextStyle(color: Colors.yellow)),
+        // تغيير لون العنوان
         backgroundColor: Colors.black,
       ),
       body: Padding(
@@ -454,7 +507,10 @@ class ProductDetailPage extends StatelessWidget {
             SizedBox(height: 16),
             Text(
               product.name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             SizedBox(height: 8),
             Row(
@@ -493,7 +549,9 @@ class ProductDetailPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${product.name} has been added to the cart')),
+                  SnackBar(
+                      content:
+                          Text('${product.name} has been added to the cart')),
                 );
               },
               style: ElevatedButton.styleFrom(

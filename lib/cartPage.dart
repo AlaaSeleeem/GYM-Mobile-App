@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'Store.dart';
+import 'package:gymm/providers/Cart.dart';
 
 class CartPage extends StatelessWidget {
-  final List<Product> cartProducts;
+  // final List<Product> cartProducts;
 
-  CartPage({required this.cartProducts});
+  const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<Cart>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.shopping_cart, color: Colors.yellow),
@@ -25,7 +28,7 @@ class CartPage extends StatelessWidget {
           ],
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.yellow),
+          icon: const Icon(Icons.arrow_back, color: Colors.yellow),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -37,19 +40,21 @@ class CartPage extends StatelessWidget {
           ),
         ],
       ),
-      body: cartProducts.isEmpty
-          ? EmptyCartView()
+      body: cart.cartProducts.isEmpty
+          ? const EmptyCartView()
           : ListView.builder(
-        itemCount: cartProducts.length,
-        itemBuilder: (context, index) {
-          return CartItemCard(product: cartProducts[index]);
-        },
-      ),
+              itemCount: cart.cartProducts.length,
+              itemBuilder: (context, index) {
+                return CartItemCard(product: cart.cartProducts[index]);
+              },
+            ),
     );
   }
 }
 
 class EmptyCartView extends StatelessWidget {
+  const EmptyCartView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -57,17 +62,17 @@ class EmptyCartView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AnimatedCartIcon(), // الأيقونة الكبيرة مع الحركة
-          SizedBox(height: 20),
-          Text(
+          const SizedBox(height: 20),
+          const Text(
             'Your cart is empty',
             style: TextStyle(color: Colors.white, fontSize: 24),
           ),
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             'Add items to your cart to see them here!',
             style: TextStyle(color: Colors.white54, fontSize: 16),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -78,7 +83,8 @@ class EmptyCartView extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.yellow,
             ),
-            child: Text('Continue Shopping', style: TextStyle(color: Colors.black)),
+            child: const Text('Continue Shopping',
+                style: TextStyle(color: Colors.black)),
           ),
         ],
       ),
@@ -91,7 +97,8 @@ class AnimatedCartIcon extends StatefulWidget {
   _AnimatedCartIconState createState() => _AnimatedCartIconState();
 }
 
-class _AnimatedCartIconState extends State<AnimatedCartIcon> with SingleTickerProviderStateMixin {
+class _AnimatedCartIconState extends State<AnimatedCartIcon>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -133,21 +140,24 @@ class _AnimatedCartIconState extends State<AnimatedCartIcon> with SingleTickerPr
 class CartItemCard extends StatelessWidget {
   final Product product;
 
-  CartItemCard({required this.product});
+  const CartItemCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<Cart>(context);
     return Card(
       margin: EdgeInsets.all(8),
       color: Colors.grey[800],
       child: ListTile(
         leading: Image.asset(product.image, width: 50, height: 50),
         title: Text(product.name, style: TextStyle(color: Colors.white)),
-        subtitle: Text('${product.price} L.E', style: TextStyle(color: Colors.white54)),
+        subtitle: Text('${product.price} L.E',
+            style: TextStyle(color: Colors.white54)),
         trailing: IconButton(
           icon: Icon(Icons.remove_circle, color: Colors.red),
           onPressed: () {
             // وظيفة حذف المنتج
+            cart.removeFromCart(product);
           },
         ),
       ),
@@ -156,10 +166,10 @@ class CartItemCard extends StatelessWidget {
 }
 
 // نموذج المنتج
-class Product {
-  final String name;
-  final double price;
-  final String image;
-
-  Product({required this.name, required this.price, required this.image});
-}
+// class Product {
+//   final String name;
+//   final double price;
+//   final String image;
+//
+//   Product({required this.name, required this.price, required this.image});
+// }
