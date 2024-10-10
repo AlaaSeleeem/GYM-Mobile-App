@@ -78,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+          backgroundColor: Colors.black,
           body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -87,87 +88,46 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               width: double.infinity,
               child: Column(
+
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Welcome Back!',
+                    Image.asset(
+                      'logo1.jpeg', // استبدل بمسار الصورة
+                      width: 150,
+                      height: 150,
+                    ),
+                    Text('Welcome back',
                         style: TextStyle(
-                          color: Color.fromARGB(1000, 63, 65, 78),
+                          color: Colors.white,
                           fontSize: 28,
                           height: 1.4,
                           fontWeight: FontWeight.w700,
                         )),
-                    //========================================================================
-                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('login to get active',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              height: 1.4,
+                              fontWeight: FontWeight.w100,
+                            )),
+                        Text('  💪',
+                            style: TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 15,
+                              height: 1.4,
+                            )),
+                      ],
+                    ),
                     SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(
-                          FontAwesomeIcons.facebookF,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                        label: const Text(
-                          '      CONTINUE WITH FACEBOOK',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 246, 241, 251),
-                              fontSize: 14,
-                              height: 4,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        onPressed: () {
-                          print('Button Pressed');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(1000, 117, 131, 202),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(38),
-                          ),
-                        ),
-                      ),
+                      height: 50,
                     ),
-                    //========================================================================
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(
-                          FontAwesomeIcons.google,
-                          color: Color.fromARGB(1000, 117, 131, 202),
-                          size: 20.0,
-                        ),
-                        label: const Text(
-                          '      CONTINUE WITH GOOGLE',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              height: 4,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        onPressed: () {
-                          print('Button Pressed');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(38),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 26),
-                    //========================================================================
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('Create your account ',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 161, 164, 178),
-                              fontWeight: FontWeight.w200,
-                              fontSize: 14)),
-                    ),
-                    const SizedBox(height: 26),
+
                     //========================================================================
                     // Email text field
+
                     TextFormField(
                       onFieldSubmitted: (value) {
                         FocusScope.of(context).requestFocus(passwordNode);
@@ -182,45 +142,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 14,
                           height: 4,
                           fontWeight: FontWeight.normal),
 
                       decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromARGB(1000, 242, 243, 247),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          label: Text(
-                            ' Email address',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 144, 144, 144)),
-                          ),
-                          // hintText: 'enter the phone number',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.white))),
+                        filled: true,
+                        fillColor: Colors.black,
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                                width: 2,
+                                color: Colors.yellow)),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                                width: 2,
+                                color: Colors.yellow)),
+                        label: Text(
+                          ' Email address',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 144, 144, 144)),
+                        ),
+                        // hintText: 'enter the phone number',
+
+                      ),
                       //hintStyle: title1.merge(TextStyle(color: gray)),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-
                     //========================================================================
 
                     // password text field
@@ -239,53 +191,44 @@ class _LoginScreenState extends State<LoginScreen> {
                         cursorColor: Colors.grey,
 
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 14,
                             height: 4,
                             fontWeight: FontWeight.normal),
                         decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromARGB(1000, 242, 243, 247),
-                            suffixIcon: IconButton(
-                              icon: isHidden == true
-                                  ? Icon(
-                                      Icons.lock,
-                                      color: Color.fromARGB(255, 144, 144, 144),
-                                    )
-                                  : Icon(
-                                      Icons.lock_open,
-                                      color: Color.fromARGB(255, 144, 144, 144),
-                                    ),
-                              onPressed: () {
-                                isHidden = !isHidden;
-                                setState(() {});
-                              },
+                          filled: true,
+                          fillColor: Colors.black,
+                          suffixIcon: IconButton(
+                            icon: isHidden == true
+                                ? Icon(
+                              Icons.lock,
+                              color: Color.fromARGB(255, 144, 144, 144),
+                            )
+                                : Icon(
+                              Icons.lock_open,
+                              color: Color.fromARGB(255, 144, 144, 144),
                             ),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
-                                    width: 2,
-                                    color:
-                                        Color.fromARGB(1000, 242, 243, 247))),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
-                                    width: 2,
-                                    color:
-                                        Color.fromARGB(1000, 242, 243, 247))),
-                            label: Text(' password',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 144, 144, 144))),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
-                                    width: 2,
-                                    color:
-                                        Color.fromARGB(1000, 242, 243, 247))),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.white))),
+                            onPressed: () {
+                              isHidden = !isHidden;
+                              setState(() {});
+                            },
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                  width: 2,
+                                  color:
+                                  Color.fromARGB(1000, 242, 243, 247))),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                  width: 2,
+                                  color:
+                                  Color.fromARGB(1000, 242, 243, 247))),
+                          label: Text(' password',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 144, 144, 144))),
+                        ),
 
                         // hintText: 'enter the phone number',
                         //hintStyle: title1.merge(TextStyle(color: gray)),
@@ -294,6 +237,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     SizedBox(
                       height: 26,
+                    ),
+                    //=================================================================
+                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      Text('Forgot password?',
+                          style: TextStyle(
+                              color: Color.fromARGB(1000, 63, 65, 78))),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text('Click here  ',
+                            style: TextStyle(
+                              color: Colors.yellow,
+                            )),
+                      ),
+                    ]),
+                    const SizedBox(
+                      height: 20,
                     ),
 
                     //========================================================================
@@ -311,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: ElevatedButton(
                               child: Text('LOG IN',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w400,
                                     fontSize: 14,
                                     height: 4,
@@ -321,26 +280,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               style: ButtonStyle(
                                 backgroundColor: WidgetStateProperty.all(
-                                    Color.fromARGB(1000, 142, 151, 253)),
+                                    Colors.yellow),
                                 // padding: WidgetStateProperty.all(EdgeInsets.all(50)),
                                 shape: WidgetStateProperty.all(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(38),
+                                    borderRadius: BorderRadius.circular(14),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                    //=================================================================
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('Forgot Password?',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 63, 65, 78),
-                              fontWeight: FontWeight.w200,
-                              fontSize: 14)),
+                    const SizedBox(
+                      height: 50,
                     ),
-                    const SizedBox(height: 46),
+
                     //=========================================================================
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text('DONT HAVE AN ACCOUNT?',
@@ -357,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: Text('  SIGN UP',
                             style: TextStyle(
-                                color: Color.fromARGB(1000, 142, 151, 253),
+                                color: Colors.yellow,
                                 fontWeight: FontWeight.w300,
                                 fontSize: 16)),
                       ),

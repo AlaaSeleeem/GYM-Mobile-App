@@ -13,8 +13,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<SignUpScreen> {
-  var email = TextEditingController();
-
+  var UserNAme = TextEditingController();
+  var email= TextEditingController();
   var password = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
@@ -70,6 +70,7 @@ class _LoginScreenState extends State<SignUpScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+          backgroundColor: Colors.black,
           body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -77,89 +78,47 @@ class _LoginScreenState extends State<SignUpScreen> {
           child: Form(
             key: formKey,
             child: Container(
+
               width: double.infinity,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Create your account ',
-                        style: TextStyle(
-                          color: Color.fromARGB(1000, 63, 65, 78),
-                          fontSize: 28,
-                          height: 1.4,
-                          fontWeight: FontWeight.w700,
-                        )),
-                    //========================================================================
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(
-                          FontAwesomeIcons.facebookF,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                        label: const Text(
-                          '      CONTINUE WITH FACEBOOK',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 246, 241, 251),
-                              fontSize: 14,
-                              height: 4,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        onPressed: () {
-                          print('Button Pressed');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(1000, 117, 131, 202),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(38),
-                          ),
-                        ),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                         Text('Let’s get rolling',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28,
+                                  height: 1.4,
+                              fontWeight: FontWeight.w700,
+                            )),
+                        Text('  💪',
+                            style: TextStyle(
+                             color: Colors.yellow,
+                              fontSize: 28,
+                              height: 1.4,
+                            )),
+                      ],
                     ),
-                    //========================================================================
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(
-                          FontAwesomeIcons.google,
-                          color: Color.fromARGB(1000, 117, 131, 202),
-                          size: 20.0,
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+
+                          onPressed: () {},
+                          child: Text('Create an account to get started ',
+                              style: TextStyle(
+                                  color: Color.fromARGB(1000, 161, 164, 178),
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 14)),
                         ),
-                        label: const Text(
-                          '      CONTINUE WITH GOOGLE',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              height: 4,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        onPressed: () {
-                          print('Button Pressed');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(38),
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                     const SizedBox(height: 26),
                     //========================================================================
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('Create your account ',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 161, 164, 178),
-                              fontWeight: FontWeight.w200,
-                              fontSize: 14)),
-                    ),
-                    const SizedBox(height: 26),
-                    //========================================================================
-                    // Email text field
+                    // UserNAme  text field
                     TextFormField(
                       onFieldSubmitted: (value) {
                         FocusScope.of(context).requestFocus(passwordNode);
@@ -170,43 +129,35 @@ class _LoginScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      controller: email,
-                      keyboardType: TextInputType.emailAddress,
+                      controller: UserNAme ,
                       cursorColor: Colors.grey,
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 14,
                           height: 4,
                           fontWeight: FontWeight.normal),
 
                       decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color.fromARGB(1000, 242, 243, 247),
+                          fillColor: Colors.black,
                           focusedErrorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                               borderSide: BorderSide(
                                   width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
+                                  color: Colors.yellow)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
                                   width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
+                                  color: Colors.yellow)),
                           label: Text(
-                            ' Email address',
+                            ' User name ',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 144, 144, 144)),
                           ),
                           // hintText: 'enter the phone number',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.white))),
+
+                          ),
                       //hintStyle: title1.merge(TextStyle(color: gray)),
                     ),
                     SizedBox(
@@ -228,39 +179,32 @@ class _LoginScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Colors.grey,
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 14,
                           height: 4,
                           fontWeight: FontWeight.normal),
 
                       decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromARGB(1000, 242, 243, 247),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          label: Text(
-                            ' Email address',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 144, 144, 144)),
-                          ),
-                          // hintText: 'enter the phone number',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color: Color.fromARGB(1000, 242, 243, 247))),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.white))),
+                        filled: true,
+                        fillColor: Colors.black,
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                                width: 2,
+                                color: Colors.yellow)),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                                width: 2,
+                                color: Colors.yellow)),
+                        label: Text(
+                          ' Email address',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 144, 144, 144)),
+                        ),
+                        // hintText: 'enter the phone number',
+
+                      ),
                       //hintStyle: title1.merge(TextStyle(color: gray)),
                     ),
                     SizedBox(
@@ -284,13 +228,13 @@ class _LoginScreenState extends State<SignUpScreen> {
                         cursorColor: Colors.grey,
 
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 14,
                             height: 4,
                             fontWeight: FontWeight.normal),
                         decoration: InputDecoration(
                             filled: true,
-                            fillColor: Color.fromARGB(1000, 242, 243, 247),
+                            fillColor: Colors.black,
                             suffixIcon: IconButton(
                               icon: isHidden == true
                                   ? Icon(
@@ -321,16 +265,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                             label: Text(' password',
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 144, 144, 144))),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
-                                    width: 2,
-                                    color:
-                                        Color.fromARGB(1000, 242, 243, 247))),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.white))),
+                           ),
 
                         // hintText: 'enter the phone number',
                         //hintStyle: title1.merge(TextStyle(color: gray)),
@@ -338,59 +273,43 @@ class _LoginScreenState extends State<SignUpScreen> {
                     ),
 
                     SizedBox(
-                      height: 26,
+                      height:80,
                     ),
 
+
                     //========================================================================
-                    Text(
-                      errorMessage ?? "",
-                      style: TextStyle(color: Colors.red[600]),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    isLoading
-                        ? const CircularProgressIndicator()
-                        : SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              child: Text('LOG IN',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    height: 4,
-                                  )),
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: ((context) => Onboarding3Screen()),
-                                  ),
-                                );
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(
-                                    Color.fromARGB(1000, 142, 151, 253)),
-                                // padding: WidgetStateProperty.all(EdgeInsets.all(50)),
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(38),
-                                  ),
-                                ),
-                              ),
+
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text('Sign Up',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              height: 4,
+                            )),
+                        onPressed: () {
+
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                              Colors.yellow),
+                          // padding: WidgetStateProperty.all(EdgeInsets.all(50)),
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
                             ),
                           ),
-                    //=================================================================
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('Forgot Password?',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 63, 65, 78),
-                              fontWeight: FontWeight.w200,
-                              fontSize: 14)),
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 46),
+                    const SizedBox(
+                      height: 90,
+                    ),
+
+
                     //=========================================================================
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text('ALREADY HAVE AN ACCOUNT?',
@@ -398,9 +317,9 @@ class _LoginScreenState extends State<SignUpScreen> {
                               color: Color.fromARGB(1000, 63, 65, 78))),
                       TextButton(
                         onPressed: () {},
-                        child: Text('  SIGN UP',
+                        child: Text(' Login  ',
                             style: TextStyle(
-                                color: Color.fromARGB(1000, 142, 151, 253),
+                                color: Colors.yellow,
                                 fontWeight: FontWeight.w300,
                                 fontSize: 16)),
                       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymm/sign%20in.dart';
 
 import 'login.dart';
-import 'nav_bar.dart';
+
 
 class Onboarding3Screen extends StatelessWidget {
   const Onboarding3Screen({super.key});

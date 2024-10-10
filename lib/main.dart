@@ -1,10 +1,12 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gymm/profile_screen.dart';
 import 'package:gymm/sign%20in.dart';
-import 'Onboarding.dart';
-import 'QrScan.dart';
+
+import 'Home.dart';
+import 'QRscan.dart';
+import 'Store.dart';
 import 'login.dart';
-import 'nav_bar.dart';
 void main() {
 
   runApp(const MyApp());
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/": (context) => MainScreen(),
+        "/": (context) =>ProductsPage(),
         //  "/home": (context) => HomeScreen(),
       },
     );

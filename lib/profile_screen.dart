@@ -1,161 +1,343 @@
 import 'package:flutter/material.dart';
-import 'package:my_network_app/shared/Themes/Texts.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'FINALbuttonNAVbar.dart';
+import 'action button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../shared/Themes/colors.dart';
-import '../shared/Widgets/action_button.dart';
-import 'wedgets/screenWedgets.dart';
-
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
 
-  final Uri phoneNumber = Uri.parse('tel:+201147617485');
-  final Map myContacts = {
-    'whatsapp': Uri.parse('https://wa.me/+201147617485'),
-    'facebook': Uri.parse('https://www.facebook.com/Kaffo.co?mibextid=ZbWKwL'),
-    'insta': Uri.parse('https://www.instagram.com/Kaffo.co'),
-    'x': Uri.parse('https://x.com/kaffo_co'),
-    'tiktok': Uri.parse('http://tiktok.com/kaffo.co/'),
-    'youtube': Uri.parse('http://www.youtube.com/kaffo_co/'),
-    'kaffo.': Uri.parse('https://kaffo.co/'),
-  };
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller; // متحكم في الحركة
+  late Animation<double> _animation; // متغير الحركة
+  final int totalDays = 30; // إجمالي الأيام
+  final int daysUsed = 12; // الأيام المستهلكة
+  late double progress; // نسبة الاستهلاك
 
   @override
-  Widget build(BuildContext myContext) {
+  void initState() {
+    super.initState();
+    progress = 0.0; // بدء النسبة من الصفر
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2), // مدة الحركة
+      vsync: this,
+    )..addListener(() {
+      setState(() {
+        progress = _animation.value; // تحديث قيمة النسبة
+      });
+    });
+
+    _animation = Tween<double>(begin: 0.0, end: daysUsed / totalDays).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut, // منحنى الحركة
+    ));
+
+    _controller.forward(); // بدء الحركة
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // التخلص من المتحكم
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int daysLeft = totalDays - daysUsed; // الأيام المتبقية
+
     return SafeArea(
-        bottom: true,
-        left: true,
-        top: true,
-        right: true,
-        maintainBottomViewPadding: true,
-        minimum: EdgeInsets.zero,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'My profile',
-              style: title1,
-            ),
-            leading: Icon(
+      bottom: true,
+      left: true,
+      top: true,
+      right: true,
+      maintainBottomViewPadding: true,
+      minimum: EdgeInsets.zero,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: Icon(
               Icons.arrow_back,
-              color: orange,
+              color: Colors.yellow,
+            ),
+            onPressed: () {
+              Navigator.pop(context); // العودة إلى الشاشة السابقة
+            },
+          ),
+          title: Text(
+            'Profile', // عنوان الشاشة
+            style: TextStyle(
+              color: Colors.white,
             ),
           ),
-          body: SizedBox(
-            width: double.infinity,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Image.asset('logo1.jpeg', height: 120), // شعار التطبيق
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 40),
+              CircleAvatar(
+                backgroundImage: AssetImage('user.jpg'), // صورة الملف الشخصي
+                radius: 100,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Username Here', // اسم المستخدم
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 20),
+              // عرض مدة الاشتراك
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 34, 34, 34),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 80),
-                    CircleAvatar(
-                      backgroundImage: AssetImage('assets/kaffo.jpeg'),
-                      radius: 100,
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
                     Text(
-                      'هــلا .. خليــك كفوّ',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 4, 107, 129)),
+                      'Subscription Duration', // عنوان قسم مدة الاشتراك
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
-                    SizedBox(
-                      height: 30,
+                    SizedBox(height: 10),
+                    // مؤشر الاستهلاك مع الحركة
+                    LinearProgressIndicator(
+                      value: progress, // نسبة الاستهلاك
+                      backgroundColor: Colors.grey,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        daysLeft <= 0
+                            ? Colors.red // إذا انتهت الأيام، يظهر باللون الأحمر
+                            : (progress >= 0.9
+                            ? Colors.red // إذا كان الاستهلاك أكثر من 90%
+                            : Colors.yellow), // خلاف ذلك يظهر باللون الأصفر
+                      ),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ActionButton(
-                            buttonColor: gray,
-                            title: 'Edit profile',
-                            action: () {
-                              print(
-                                'Edit profile',
-                              );
-                            }),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        ActionButton(
-                            title: 'Delete profile',
-                            buttonColor: darkRed,
-                            action: () {
-                              showDialog<String>(
-                                context: myContext,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Delete Profile'),
-                                  content: const Text(
-                                      'Are you sure you want to delete your profile ?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context, 'OK');
-                                        print('Delete Profile');
-                                      },
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
-                      ],
+                    SizedBox(height: 10),
+                    Text(
+                      'Days left: $daysLeft', // عرض عدد الأيام المتبقية
+                      style: TextStyle(color: daysLeft < 2 ? Colors.red : Colors.white),
                     ),
-                    SizedBox(
-                      height: 30,
+                    if (daysLeft <= 0) ...[
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(Icons.warning, color: Colors.red), // أيقونة التحذير
+                          SizedBox(width: 8),
+                          Text(
+                            'Please Renew Subscription!', // رسالة تجديد الاشتراك
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              // بيانات المتدرب
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 34, 34, 34),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Personal Information', // عنوان قسم المعلومات الشخصية
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '00201147617485',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 14, 107, 129)),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.phone,
-                              size: 30,
-                              color: Color.fromARGB(255, 14, 107, 129)),
-                          onPressed: () {
-                            launchUrl(phoneNumber);
-                          },
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    GridView.builder(
-                      itemCount: myContacts.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 10),
-                      itemBuilder: (BuildContext context, index) {
-                        return contactChanelCard(
-                          url: myContacts.values.toList()[index],
-                          platForm: myContacts.keys.toList()[index],
-                        );
+                    SizedBox(height: 10),
+                    Table(
+                      columnWidths: {
+                        0: FractionColumnWidth(0.4),
+                        1: FractionColumnWidth(0.6),
                       },
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      primary: false,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      children: [
+                        TableRow(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.person, color: Colors.yellow), // أيقونة الاسم
+                                SizedBox(width: 8),
+                                Text('Name:', style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            Text('Username', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Container(height: 8),
+                            Container(height: 8),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.card_membership, color: Colors.yellow), // أيقونة الاشتراك
+                                SizedBox(width: 8),
+                                Text('Subscription:', style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            Text('Premium', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Container(height: 8),
+                            Container(height: 8),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.lock, color: Colors.yellow), // أيقونة القفل
+                                SizedBox(width: 8),
+                                Text('Locker:', style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            Text('A12', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Container(height: 8),
+                            Container(height: 8),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.trending_up, color: Colors.yellow), // أيقونة البيانات الجسمية
+                                SizedBox(width: 8),
+                                Text('Body Stats:', style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            Text('70kg', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            Container(height: 8),
+                            Container(height: 8),
+                          ],
+                        ),
+                        // إضافة كود العميل
+                        TableRow(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(FontAwesomeIcons.barcode, color: Colors.yellow), // أيقونة كود العميل
+                                SizedBox(width: 8),
+                                Text('Client Code:', style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                            Text('123456', style: TextStyle(color: Colors.white)), // كود العميل
+                          ],
+                        ),
+                      ],
                     ),
-                  ]),
-            ),
+                  ],
+                ),
+              ),
+              // الإعدادات
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 34, 34, 34),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Settings', // عنوان قسم الإعدادات
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.settings, color: Colors.black), // أيقونة الإعدادات
+                          SizedBox(width: 8),
+                          Text('Account Settings', style: TextStyle(color: Colors.black)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.notifications, color: Colors.black), // أيقونة الإشعارات
+                          SizedBox(width: 8),
+                          Text('Notification Settings', style: TextStyle(color: Colors.black)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.help, color: Colors.black), // أيقونة المساعدة
+                          SizedBox(width: 8),
+                          Text('Help & Support', style: TextStyle(color: Colors.black)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 80),
+            ],
           ),
-        ));
+        ),
+        bottomNavigationBar: BottonNavBar(),
+        extendBody: true,
+      ),
+    );
   }
 }
