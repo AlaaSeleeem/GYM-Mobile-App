@@ -15,4 +15,17 @@ class Cart with ChangeNotifier {
     _cartProducts.remove(product);
     notifyListeners();
   }
+
+  void incrementProduct(Product product) {
+    product.quantity += 1;
+    notifyListeners();
+  }
+
+  void decrementProduct(Product product) {
+    product.quantity -= 1;
+    if (product.quantity < 1) {
+      removeFromCart(product);
+    }
+    notifyListeners();
+  }
 }

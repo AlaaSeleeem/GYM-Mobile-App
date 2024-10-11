@@ -12,7 +12,9 @@ import 'login.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-      create: (context) => Cart(), child: const MyApp()));
+      create: (context) => Cart(),
+      child: const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {

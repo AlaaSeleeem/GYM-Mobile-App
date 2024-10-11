@@ -146,20 +146,51 @@ class CartItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var cart = Provider.of<Cart>(context);
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       color: Colors.grey[800],
       child: ListTile(
         leading: Image.asset(product.image, width: 50, height: 50),
-        title: Text(product.name, style: TextStyle(color: Colors.white)),
+        title: Text(product.name, style: const TextStyle(color: Colors.white)),
         subtitle: Text('${product.price} L.E',
-            style: TextStyle(color: Colors.white54)),
-        trailing: IconButton(
-          icon: Icon(Icons.remove_circle, color: Colors.red),
-          onPressed: () {
-            // وظيفة حذف المنتج
-            cart.removeFromCart(product);
-          },
+            style: const TextStyle(color: Colors.white54)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Decrement Button
+            IconButton(
+              icon: const Icon(Icons.remove_circle, color: Colors.yellow),
+              onPressed: () {
+                  cart.decrementProduct(product); // Decrement quantity in cart
+              },
+            ),
+            // Quantity Display
+            Text('${product.quantity}', style: const TextStyle(color: Colors.white, fontSize: 16)),
+            // Increment Button
+            IconButton(
+              icon: const Icon(Icons.add_circle, color: Colors.green),
+              onPressed: () {
+                cart.incrementProduct(product); // Increment quantity in cart
+              },
+            ),
+            // Delete Button
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+                cart.removeFromCart(product); // Remove product from cart
+              },
+            ),
+          ],
         ),
+
+
+
+        // IconButton(
+        //   icon: Icon(Icons.remove_circle, color: Colors.red),
+        //   onPressed: () {
+        //     // وظيفة حذف المنتج
+        //     cart.removeFromCart(product);
+        //   },
+        // ),
       ),
     );
   }

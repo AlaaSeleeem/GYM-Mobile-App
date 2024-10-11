@@ -475,6 +475,7 @@ class Product {
   final String image;
   final String description;
   final double? discount;
+  int quantity = 1;
 
   Product(
       {required this.name,
