@@ -4,8 +4,6 @@ import 'Store.dart';
 import 'package:gymm/providers/Cart.dart';
 
 class CartPage extends StatelessWidget {
-  // final List<Product> cartProducts;
-
   const CartPage({super.key});
 
   @override
@@ -42,12 +40,50 @@ class CartPage extends StatelessWidget {
       ),
       body: cart.cartProducts.isEmpty
           ? const EmptyCartView()
-          : ListView.builder(
+          : Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
               itemCount: cart.cartProducts.length,
               itemBuilder: (context, index) {
                 return CartItemCard(product: cart.cartProducts[index]);
               },
             ),
+          ),
+          // تصميم السعر في الأعلى مباشرة تحت قائمة المنتجات
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Text(
+                  "Price:",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12, horizontal: 16),
+                  child: Text(
+                    "${cart.calculateTotalPrice()} L.E",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -61,7 +97,7 @@ class EmptyCartView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AnimatedCartIcon(), // الأيقونة الكبيرة مع الحركة
+          AnimatedCartIcon(),
           const SizedBox(height: 20),
           const Text(
             'Your cart is empty',
@@ -116,12 +152,12 @@ class _AnimatedCartIconState extends State<AnimatedCartIcon>
       animation: _controller,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(0, _controller.value * 30), // الحركة لأعلى ولأسفل
+          offset: Offset(0, _controller.value * 30),
           child: Opacity(
-            opacity: 0.5, // التلاشي
+            opacity: 0.5,
             child: Icon(
               Icons.shopping_cart,
-              size: 80, // حجم الأيقونة
+              size: 80,
               color: Colors.yellow,
             ),
           ),
@@ -145,10 +181,10 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<Cart>(context);
-    return Card(
-      margin: const EdgeInsets.all(8),
-      color: Colors.grey[800],
+    return Container(
+      color: Colors.transparent, // جعل الخلفية شفافة
       child: ListTile(
+        contentPadding: const EdgeInsets.all(8), // padding داخلي قليل
         leading: Image.asset(product.image, width: 50, height: 50),
         title: Text(product.name, style: const TextStyle(color: Colors.white)),
         subtitle: Text('${product.price} L.E',
@@ -160,37 +196,28 @@ class CartItemCard extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.remove_circle, color: Colors.yellow),
               onPressed: () {
-                  cart.decrementProduct(product); // Decrement quantity in cart
+                cart.decrementProduct(product);
               },
             ),
             // Quantity Display
-            Text('${product.quantity}', style: const TextStyle(color: Colors.white, fontSize: 16)),
+            Text('${product.quantity}',
+                style: const TextStyle(color: Colors.white, fontSize: 16)),
             // Increment Button
             IconButton(
               icon: const Icon(Icons.add_circle, color: Colors.green),
               onPressed: () {
-                cart.incrementProduct(product); // Increment quantity in cart
+                cart.incrementProduct(product);
               },
             ),
             // Delete Button
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red),
               onPressed: () {
-                cart.removeFromCart(product); // Remove product from cart
+                cart.removeFromCart(product);
               },
             ),
           ],
         ),
-
-
-
-        // IconButton(
-        //   icon: Icon(Icons.remove_circle, color: Colors.red),
-        //   onPressed: () {
-        //     // وظيفة حذف المنتج
-        //     cart.removeFromCart(product);
-        //   },
-        // ),
       ),
     );
   }

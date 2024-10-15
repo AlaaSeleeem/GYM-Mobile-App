@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:gymm/productDetail.dart';
 import 'package:gymm/providers/Cart.dart';
 import 'dart:async';
 import 'FINALbuttonNAVbar.dart';
@@ -15,6 +16,7 @@ class _ProductsPageState extends State<ProductsPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _timer;
+  String _searchQuery = '';
 
   final List<String> offers = [
     'offer1.jfif',
@@ -43,75 +45,76 @@ class _ProductsPageState extends State<ProductsPage> {
     super.dispose();
   }
 
-  // void _showAddToCartDialog(String productName) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AnimatedDialog(productName: productName);
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final List<Product> products = [
       Product(
+          id: 1,
           name:
-              'Short description for product 1Short description for product 1',
+          ' product 1',
           price: 100,
           image: 'product1.jpg',
           description:
-              'Short description for product 1Short description for product 1',
+          'Short description for product 1Short description for product 1 Short description for product 1Short description for',
           discount: 20),
       Product(
+          id: 2,
           name: 'Product 2',
           price: 150,
           image: 'product1.jpg',
-          description: 'Short description for product 2'),
+          description: 'Short description for product 2 '),
       Product(
+          id: 3,
           name: 'Product 3',
           price: 200,
           image: 'product1.jpg',
           description: 'Short description for product 3',
           discount: 30),
       Product(
+          id: 4,
           name: 'Product 4',
           price: 120,
           image: 'product1.jpg',
           description: 'Short description for product 4'),
       Product(
+          id: 5,
           name: 'Product 5',
           price: 180,
           image: 'product1.jpg',
           description: 'Short description for product 5',
           discount: 15),
       Product(
+          id: 6,
           name: 'Product 6',
           price: 250,
           image: 'product1.jpg',
           description: 'Short description for product 6'),
     ];
 
+    // فلترة المنتجات بناءً على نص البحث
+    List<Product> filteredProducts = products.where((product) {
+      return product.name.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.yellow),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.yellow),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              SizedBox(width: 8), // مسافة بين السهم والعنوان
               Text(
-                'Products', // عنوان الصفحة
+                'Products',
                 style: TextStyle(color: Colors.yellow, fontSize: 20),
               ),
-              SizedBox(width: 80), // مسافة بين العنوان وخانة البحث
+              SizedBox(width: 80),
               Expanded(
                 child: Row(
                   children: [
@@ -123,11 +126,15 @@ class _ProductsPageState extends State<ProductsPage> {
                           hintStyle: TextStyle(color: Colors.white54),
                           border: InputBorder.none,
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        },
                       ),
                     ),
                     IconButton(
                       icon: Icon(Icons.search, color: Colors.white),
-                      // أيقونة البحث
                       onPressed: () {
                         // إضافة وظيفة للبحث هنا
                       },
@@ -135,8 +142,8 @@ class _ProductsPageState extends State<ProductsPage> {
                   ],
                 ),
               ),
-              SizedBox(width: 16), // مسافة بين خانة البحث واللوجو
-              Image.asset('logo1.jpeg', height: 40), // مسار اللوجو الخاص بك
+              SizedBox(width: 16),
+              Image.asset('logo1.jpeg', height: 40),
             ],
           ),
         ),
@@ -185,13 +192,12 @@ class _ProductsPageState extends State<ProductsPage> {
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
                   ),
-                  itemCount: products.length,
+                  itemCount: filteredProducts.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return ZoomableProductCard(
-                      product: products[index],
-                      // onAddToCart: _showAddToCartDialog,
+                      product: filteredProducts[index],
                     );
                   },
                 ),
@@ -214,6 +220,7 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 }
+
 
 class AnimatedDialog extends StatefulWidget {
   final String productName;
@@ -470,6 +477,7 @@ class ProductCard extends StatelessWidget {
 
 // Product model
 class Product {
+  final int id;
   final String name;
   final double price;
   final String image;
@@ -478,91 +486,12 @@ class Product {
   int quantity = 1;
 
   Product(
-      {required this.name,
+      {required this.id,
+      required this.name,
       required this.price,
       required this.image,
       required this.description,
       this.discount});
 }
 
-// Product detail page
-class ProductDetailPage extends StatelessWidget {
-  final Product product;
 
-  ProductDetailPage({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(product.name, style: TextStyle(color: Colors.yellow)),
-        // تغيير لون العنوان
-        backgroundColor: Colors.black,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(product.image, fit: BoxFit.cover, height: 250),
-            SizedBox(height: 16),
-            Text(
-              product.name,
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                if (product.discount != null) ...[
-                  Text(
-                    '${product.price} L.E',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor: Colors.yellow,
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    '${product.price - product.discount!} L.E',
-                    style: TextStyle(fontSize: 20, color: Colors.yellow),
-                  ),
-                ] else ...[
-                  Text(
-                    '${product.price} L.E',
-                    style: TextStyle(fontSize: 20, color: Colors.yellow),
-                  ),
-                ],
-              ],
-            ),
-            SizedBox(height: 8),
-            Text(
-              product.description,
-              style: TextStyle(color: Colors.white54),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis, // تطبيق ellipsis
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content:
-                          Text('${product.name} has been added to the cart')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow,
-              ),
-              child: Text('Add to Cart', style: TextStyle(color: Colors.black)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

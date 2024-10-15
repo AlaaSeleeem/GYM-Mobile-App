@@ -7,7 +7,41 @@ class Cart with ChangeNotifier {
   List<Product> get cartProducts => _cartProducts;
 
   void addToCart(Product product) {
-    _cartProducts.add(product);
+    // loop on current products to find the selected product if exist
+    // Product? existentProduct;
+    //
+    // for (Product item in _cartProducts) {
+    //   if (item.id == product.id) {
+    //     existentProduct = item;
+    //     break;
+    //   }
+    // }
+    //
+    // if (existentProduct != null) {
+    //   incrementProduct(existentProduct);
+    // } else {
+    //   _cartProducts.add(product);
+    // }
+
+    bool existent;
+
+    try {
+      _cartProducts.firstWhere((item) {
+        return (item.id == product.id);
+      });
+      existent = true;
+    } catch (e) {
+      existent = false;
+    }
+
+    if (existent) {
+      Product existentProduct = _cartProducts.firstWhere((item) {
+        return (item.id == product.id);
+      });
+      incrementProduct(existentProduct);
+    } else {
+      _cartProducts.add(product);
+    }
     notifyListeners(); // Notify all listeners that cart has changed
   }
 
@@ -27,5 +61,14 @@ class Cart with ChangeNotifier {
       removeFromCart(product);
     }
     notifyListeners();
+  }
+
+  double calculateTotalPrice() {
+    double totalPrice = 0.0;
+
+    for (Product item in _cartProducts) {
+      totalPrice += item.price * item.quantity;
+    }
+    return totalPrice;
   }
 }

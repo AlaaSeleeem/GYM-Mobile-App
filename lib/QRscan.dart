@@ -11,6 +11,105 @@ class QRCodeScreen extends StatefulWidget {
 
 class _QRCodeScreenState extends State<QRCodeScreen> {
   bool _isQRCode = true; // حالة لتحديد إذا كنا نعرض QR أو باركود
+  final TextEditingController _controller = TextEditingController();
+
+  void _showInvitationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: Text(
+            'Send Invitation',
+            style: TextStyle(color: Colors.yellow),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: 'Enter email or phone number',
+                  hintStyle: TextStyle(color: Colors.white54),
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey[800],
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      String input = _controller.text;
+                      if (input.isNotEmpty) {
+                        _sendInvitation(input); // استدعاء دالة إرسال الدعوة
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.yellow,
+                    ),
+                    child: Text('Send', style: TextStyle(color: Colors.black)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // غلق الحوار
+                    },
+                    child: Text('Cancel', style: TextStyle(color: Colors.yellow)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _sendInvitation(String input) {
+    // هنا يمكنك إضافة منطق إرسال الدعوة
+    _showConfirmationDialog(input);
+    _controller.clear(); // مسح النص بعد الإرسال
+  }
+
+  void _showConfirmationDialog(String input) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: Column(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Icon(Icons.check_circle, color: Colors.yellow, size: 40),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Invitation Sent',
+                style: TextStyle(color: Colors.yellow),
+              ),
+            ],
+          ),
+          content: Text(
+            '$input has been invited.',
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // غلق الحوار
+              },
+              child: Text('OK', style: TextStyle(color: Colors.yellow)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +119,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.yellow,
-            ),
+            icon: Icon(Icons.arrow_back, color: Colors.yellow),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -49,10 +145,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                Image.asset(
-                  'logo1.jpeg',
-                  height: 150,
-                ),
+                Image.asset('logo1.jpeg', height: 150),
                 SizedBox(height: 20),
                 Text(
                   'Welcome to Pro Gym!',
@@ -76,7 +169,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                       child: Center(
                         child: Image.asset(
                           _isQRCode ? 'img_1.png' : 'parcode.jfif',
-                          fit: BoxFit.contain, // الحفاظ على نسبة الصورة
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -92,11 +185,10 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),
-                // الزر لتغيير الصورة
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _isQRCode = !_isQRCode; // تغيير الحالة عند الضغط
+                      _isQRCode = !_isQRCode;
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -112,6 +204,29 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                       SizedBox(width: 8),
                       Text(
                         _isQRCode ? 'Switch to Barcode' : 'Switch to QR Code',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    _showInvitationDialog(); // عرض مربع الحوار
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.yellow,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.envelope,
+                        color: Colors.black,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        'Send Invitation',
                         style: TextStyle(color: Colors.black),
                       ),
                     ],
