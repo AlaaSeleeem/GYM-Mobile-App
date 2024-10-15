@@ -134,7 +134,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Image.asset('logo1.jpeg', height: 120),
+              child: Image.asset('assets/logo1.jpeg', height: 120),
             ),
           ],
         ),
@@ -145,7 +145,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                Image.asset('logo1.jpeg', height: 150),
+                Image.asset('assets/logo1.jpeg', height: 150),
                 SizedBox(height: 20),
                 Text(
                   'Welcome to Pro Gym!',
@@ -168,7 +168,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                       ),
                       child: Center(
                         child: Image.asset(
-                          _isQRCode ? 'img_1.png' : 'parcode.jfif',
+                          _isQRCode ? 'assets/img_1.png' : 'assets/parcode.jfif',
                           fit: BoxFit.contain,
                         ),
                       ),

@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         ),
                       ],
                     ),
-                    Image.asset('logo1.jpeg', height: 100), // عرض اللوجو
+                    Image.asset('assets/logo1.jpeg', height: 100), // عرض اللوجو
                   ],
                 ),
               ),
@@ -113,8 +113,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     },
                   ),
                   items: [
-                    'offer1.jfif', // الصورة الأولى
-                    'offer2.jfif', // الصورة الثانية
+                    'assets/offer1.jfif', // الصورة الأولى
+                    'assets/offer2.jfif', // الصورة الثانية
                   ].map((image) {
                     return Builder(
                       builder: (BuildContext context) {

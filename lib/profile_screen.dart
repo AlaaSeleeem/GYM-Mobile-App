@@ -178,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Image.asset('logo1.jpeg', height: 120),
+              child: Image.asset('assets/logo1.jpeg', height: 120),
             ),
           ],
         ),
@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             children: [
               SizedBox(height: 40),
               CircleAvatar(
-                backgroundImage: _image != null ? FileImage(_image!) : AssetImage('user.jpg') as ImageProvider,
+                backgroundImage: _image != null ? FileImage(_image!) : AssetImage('assets/user.jpg') as ImageProvider,
                 radius: 100,
               ),
               SizedBox(height: 20),
