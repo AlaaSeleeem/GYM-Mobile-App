@@ -7,12 +7,16 @@ import 'FINALbuttonNAVbar.dart';
 import 'cartPage.dart';
 import 'package:provider/provider.dart';
 
+import 'components/animated_dialog.dart';
+
 class ProductsPage extends StatefulWidget {
+  const ProductsPage({super.key});
+
   @override
-  _ProductsPageState createState() => _ProductsPageState();
+  ProductsPageState createState() => ProductsPageState();
 }
 
-class _ProductsPageState extends State<ProductsPage> {
+class ProductsPageState extends State<ProductsPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _timer;
@@ -107,7 +111,7 @@ class _ProductsPageState extends State<ProductsPage> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('Products',
+              const Text('Products',
                   style: TextStyle(color: Colors.yellow, fontSize: 20)),
               SizedBox(width: 80),
               Expanded(
@@ -183,9 +187,9 @@ class _ProductsPageState extends State<ProductsPage> {
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.7,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.4,
+                    mainAxisSpacing: 4,
+                    crossAxisSpacing: 5,
                   ),
                   itemCount: filteredProducts.length,
                   shrinkWrap: true,
@@ -216,74 +220,6 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 }
 
-class AnimatedDialog extends StatefulWidget {
-  final String productName;
-
-  AnimatedDialog({required this.productName});
-
-  @override
-  _AnimatedDialogState createState() => _AnimatedDialogState();
-}
-
-class _AnimatedDialogState extends State<AnimatedDialog>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..forward();
-
-    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
-    _scaleAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
-
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pop();
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _animation,
-      child: AlertDialog(
-        backgroundColor: Colors.grey[900],
-        title: Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: Icon(Icons.check_circle, color: Colors.yellow, size: 40),
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Product Added',
-              style: TextStyle(color: Colors.yellow),
-            ),
-          ],
-        ),
-        content: Text(
-          '${widget.productName} has been added to your cart.',
-          style: const TextStyle(color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}
 
 class ZoomableProductCard extends StatelessWidget {
   final Product product;

@@ -5,7 +5,7 @@ import 'package:gymm/providers/Cart.dart';
 import 'package:gymm/sign%20in.dart';
 import 'package:provider/provider.dart';
 
-import 'Home.dart';
+import 'MainPage.dart';
 import 'QRscan.dart';
 import 'Store.dart';
 import 'login.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/": (context) => HomePage(),
+        "/": (context) => MainPage(),
         //  "/home": (context) => HomeScreen(),
       },
     );

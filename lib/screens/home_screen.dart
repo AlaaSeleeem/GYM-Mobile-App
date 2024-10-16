@@ -1,65 +1,80 @@
+// home_page.dart
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'FINALbuttonNAVbar.dart'; // استيراد شريط التنقل السفلي
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  int _currentPage = 0; // المتغير لتتبع الصفحة الحالية في السلايدر
-  Timer? _timer; // المؤقت للتمرير التلقائي
-  late AnimationController _controller; // للتحكم في الحركة
-  late Animation<double> _animation; // لتحديد قيمة الحركة
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  int _currentPage = 0;
+  Timer? _timer;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
-  // متغيرات الاشتراك
-  int totalDays = 30; // إجمالي عدد الأيام للاشتراك
-  int daysUsed = 12; // عدد الأيام المستخدمة
-  int daysLeft = 0; // عدد الأيام المتبقية
+  int totalDays = 30;
+  int daysUsed = 12;
+  int daysLeft = 0;
 
-  // تواريخ الاشتراك
-  DateTime subscriptionStartDate = DateTime.now().subtract(Duration(days: 10)); // تاريخ البداية
-  DateTime subscriptionEndDate = DateTime.now().add(Duration(days: 20)); // تاريخ النهاية
+  DateTime subscriptionStartDate = DateTime.now().subtract(Duration(days: 10));
+  DateTime subscriptionEndDate = DateTime.now().add(Duration(days: 20));
+
+  List<String> subscriptionTypes = ["Premium Plan", "Basic Plan"];
+  String selectedSubscriptionType = "Premium Plan";
 
   @override
   void initState() {
     super.initState();
-    _startAutoSlider(); // بدء التمرير التلقائي للسلايدر
+    _startAutoSlider();
 
-    // إعداد AnimationController
     _controller = AnimationController(
-      duration: const Duration(seconds: 2), // مدة الحركة
-      vsync: this, // لتوفير الإيقاف المتزامن
+      duration: const Duration(seconds: 2),
+      vsync: this,
     );
 
-    // إعداد Tween للتحكم في قيمة الحركة
-    _animation = Tween<double>(begin: 0.0, end: daysUsed.toDouble() / totalDays).animate(_controller);
-    _controller.forward(); // بدء الحركة
-
-    // حساب الأيام المتبقية
     daysLeft = totalDays - daysUsed;
+    _updateSubscriptionDetails();
   }
 
-  // دالة لبدء التمرير التلقائي للسلايدر
   void _startAutoSlider() {
     _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
       if (_currentPage < 1) {
-        _currentPage++; // الانتقال إلى الصفحة التالية
+        _currentPage++;
       } else {
-        _currentPage = 0; // إعادة تعيين الصفحة عند الوصول للنهاية
+        _currentPage = 0;
       }
       setState(() {
-        _currentPage; // تحديث الصفحة
+        _currentPage;
       });
     });
   }
 
+  void _updateSubscriptionDetails() {
+    if (selectedSubscriptionType == "Premium Plan") {
+      totalDays = 30;
+      daysUsed = 12;
+      subscriptionStartDate = DateTime.now().subtract(Duration(days: 10));
+      subscriptionEndDate = DateTime.now().add(Duration(days: 20));
+    } else {
+      totalDays = 15;
+      daysUsed = 5;
+      subscriptionStartDate = DateTime.now().subtract(Duration(days: 5));
+      subscriptionEndDate = DateTime.now().add(Duration(days: 10));
+    }
+    daysLeft = totalDays - daysUsed;
+
+    _animation = Tween<double>(begin: 0.0, end: daysUsed.toDouble() / totalDays)
+        .animate(_controller);
+    _controller.forward();
+  }
+
   @override
   void dispose() {
-    _timer?.cancel(); // إلغاء المؤقت عند التخلص من الواجهة
-    _controller.dispose(); // التخلص من AnimationController
+    _timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -67,7 +82,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black, // خلفية الصفحة
+        backgroundColor: Colors.black,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -135,10 +150,33 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
               SizedBox(height: 40),
               // عنوان بيانات الاشتراك
-              Text(
-                'Subscription Data',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-                textAlign: TextAlign.right, // محاذاة النص لليمين
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Subscription Data',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    DropdownButton<String>(
+                      value: selectedSubscriptionType,
+                      dropdownColor: Colors.grey[900],
+                      items: subscriptionTypes.map((String type) {
+                        return DropdownMenuItem<String>(
+                          value: type,
+                          child: Text(type, style: TextStyle(color: Colors.white)),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedSubscriptionType = newValue!;
+                          _updateSubscriptionDetails(); // تحديث التفاصيل عند تغيير النوع
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               // دائرة LinearProgressIndicator
               Padding(
@@ -182,7 +220,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Premium Plan', // نوع الاشتراك
+                                selectedSubscriptionType, // نوع الاشتراك
                                 style: TextStyle(color: Colors.white, fontSize: 16),
                               ),
                               SizedBox(height: 8),
@@ -233,7 +271,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   children: [
                     _buildDateBox('Start Date', subscriptionStartDate.toLocal().toString().split(' ')[0]), // تاريخ البداية
                     SizedBox(width: 16), // مسافة بين المربعات
-                    _buildDateBox('End Date', subscriptionEndDate.toLocal().toString().split(' ')[0]), // تاريخ النهاية
+                    _buildDateBox('End Date', subscriptionEndDate.toLocal().toString().split(' ')[0]), // تاريخ البداية
                   ],
                 ),
               ),
@@ -255,7 +293,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ],
           ),
         ),
-        bottomNavigationBar: BottonNavBar(), // شريط التنقل السفلي
       ),
     );
   }
