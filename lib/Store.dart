@@ -92,126 +92,125 @@ class _ProductsPageState extends State<ProductsPage> {
     List<Product> filteredProducts = products.where((product) {
       return product.name.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
+    print(MediaQuery.sizeOf(context));
 
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.yellow),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text('Products',
-                  style: TextStyle(color: Colors.yellow, fontSize: 20)),
-              SizedBox(width: 80),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintText: 'Search here...',
-                          hintStyle: TextStyle(color: Colors.white54),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _searchQuery = value;
-                          });
-                        },
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.yellow),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text('Products',
+                style: TextStyle(color: Colors.yellow, fontSize: 20)),
+            SizedBox(width: 80),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: 'Search here...',
+                        hintStyle: TextStyle(color: Colors.white54),
+                        border: InputBorder.none,
                       ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.search, color: Colors.white),
-                      onPressed: () {
-                        // Add search functionality here
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value;
+                        });
                       },
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 16),
-              Image.asset('assets/logo1.jpeg', height: 40),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200,
-                    initialPage: _currentPage,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentPage = index;
-                      });
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.search, color: Colors.white),
+                    onPressed: () {
+                      // Add search functionality here
                     },
                   ),
-                  items: offers.map((image) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: AssetImage(image),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
+                ],
               ),
-              SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.7,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                  ),
-                  itemCount: filteredProducts.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ZoomableProductCard(
-                      product: filteredProducts[index],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(width: 16),
+            Image.asset('assets/logo1.jpeg', height: 40),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CartPage()),
-            );
-          },
-          backgroundColor: Colors.yellow,
-          child: Icon(Icons.shopping_cart, color: Colors.black),
-        ),
-        bottomNavigationBar: BottonNavBar(),
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: CarouselSlider(
+            //     options: CarouselOptions(
+            //       height: 200,
+            //       initialPage: _currentPage,
+            //       autoPlay: true,
+            //       enlargeCenterPage: true,
+            //       onPageChanged: (index, reason) {
+            //         setState(() {
+            //           _currentPage = index;
+            //         });
+            //       },
+            //     ),
+            //     items: offers.map((image) {
+            //       return Builder(
+            //         builder: (BuildContext context) {
+            //           return Container(
+            //             margin: EdgeInsets.symmetric(horizontal: 8),
+            //             decoration: BoxDecoration(
+            //               borderRadius: BorderRadius.circular(12),
+            //               image: DecorationImage(
+            //                 image: AssetImage(image),
+            //                 fit: BoxFit.cover,
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       );
+            //     }).toList(),
+            //   ),
+            // ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.6,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+                itemCount: filteredProducts.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return ZoomableProductCard(
+                    product: filteredProducts[index],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CartPage()),
+          );
+        },
+        backgroundColor: Colors.yellow,
+        child: Icon(Icons.shopping_cart, color: Colors.black),
+      ),
+      bottomNavigationBar: BottonNavBar(),
     );
   }
 }
@@ -325,19 +324,17 @@ class ProductCard extends StatelessWidget {
     }
 
     return Center(
-      // Center the Stack
       child: Stack(
         children: [
           Column(
             mainAxisSize: MainAxisSize.min,
-            // Take minimum space
-            crossAxisAlignment: CrossAxisAlignment.center,
-            // Center the children
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 child: Container(
-                  width: 300, // Set a specific width for the image
+                  width: double.infinity,
+                  height: 150, // Set a fixed height
                   child: Image.asset(
                     product.image,
                     fit: BoxFit.cover,
@@ -351,19 +348,18 @@ class ProductCard extends StatelessWidget {
                   children: [
                     Text(
                       product.name,
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(fontSize: 16, color: Colors.white), // Reduced font size
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         if (product.discount != null) ...[
                           Text(
                             '${product.price} L.E',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Colors.red,
                               decoration: TextDecoration.lineThrough,
                             ),
@@ -371,14 +367,12 @@ class ProductCard extends StatelessWidget {
                           SizedBox(width: 8),
                           Text(
                             '${product.price - product.discount!} L.E',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.yellow),
+                            style: TextStyle(fontSize: 16, color: Colors.yellow),
                           ),
                         ] else ...[
                           Text(
                             '${product.price} L.E',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.yellow),
+                            style: TextStyle(fontSize: 16, color: Colors.yellow),
                           ),
                         ],
                       ],

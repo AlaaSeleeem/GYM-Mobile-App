@@ -65,198 +65,196 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black, // خلفية الصفحة
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // رأس الصفحة مع اللوجو والترحيب
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome, Mohammed',
-                          style: TextStyle(color: Colors.yellow, fontSize: 24), // نص الترحيب
+    return Scaffold(
+      backgroundColor: Colors.black, // خلفية الصفحة
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // رأس الصفحة مع اللوجو والترحيب
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome, Mohammed',
+                        style: TextStyle(color: Colors.yellow, fontSize: 24), // نص الترحيب
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Client Code: 123456',
+                        style: TextStyle(color: Colors.white), // عرض كود العميل
+                      ),
+                    ],
+                  ),
+                  Image.asset('assets/logo1.jpeg', height: 100), // عرض اللوجو
+                ],
+              ),
+            ),
+            // السلايدر للعروض
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: 200,
+                  initialPage: _currentPage, // الصفحة الأولية
+                  autoPlay: true, // التمرير التلقائي
+                  autoPlayInterval: Duration(seconds: 3), // مدة الانتظار بين الصفحات
+                  autoPlayAnimationDuration: Duration(milliseconds: 800), // مدة الأنيميشن
+                  enlargeCenterPage: true, // تكبير الصفحة الوسطى
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentPage = index; // تحديث الصفحة الحالية
+                    });
+                  },
+                ),
+                items: [
+                  'assets/offer1.jfif', // الصورة الأولى
+                  'assets/offer2.jfif', // الصورة الثانية
+                ].map((image) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 8), // الهامش بين العناصر
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12), // الزوايا المدورة
+                          image: DecorationImage(
+                            image: AssetImage(image), // تحميل الصورة
+                            fit: BoxFit.cover, // ملء المساحة
+                          ),
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Client Code: 123456',
-                          style: TextStyle(color: Colors.white), // عرض كود العميل
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(height: 40),
+            // عنوان بيانات الاشتراك
+            Text(
+              'Subscription Data',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+              textAlign: TextAlign.right, // محاذاة النص لليمين
+            ),
+            // دائرة LinearProgressIndicator
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(12), // الزوايا المدورة
+                ),
+                child: Center(
+                  child: SizedBox(
+                    width: 250, // عرض الدائرة
+                    height: 250, // ارتفاع الدائرة
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // قطر الدائرة مع الحركة
+                        AnimatedBuilder(
+                          animation: _animation,
+                          builder: (context, child) {
+                            return SizedBox(
+                              height: 250,
+                              width: 250,
+                              child: CircularProgressIndicator(
+                                value: _animation.value, // استخدام القيمة المتغيرة
+                                backgroundColor: Colors.grey[800], // لون الخلفية
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  daysLeft <= 0
+                                      ? Colors.red // عند انتهاء الاشتراك
+                                      : (daysUsed >= totalDays * 0.9
+                                      ? Colors.red // عند الاقتراب من الانتهاء
+                                      : Colors.yellow), // لون عادي
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        // محتوى الدائرة
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Premium Plan', // نوع الاشتراك
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Subscription Code: XYZ123', // كود الاشتراك
+                              style: TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                            SizedBox(height: 8),
+                            // عدد الأيام المتبقية
+                            Text(
+                              'Remaining Days: $daysLeft', // عدد الأيام المتبقية
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.yellow, // تغيير اللون إلى الأصفر
+                                fontSize: 16,
+                              ),
+                            ),
+                            // إضافة رسالة تجديد الباقة في حالة انتهاء الاشتراك
+                            if (daysLeft <= 0)
+                              Column(
+                                children: [
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Please renew your subscription', // رسالة التجديد
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Icon(
+                                    Icons.notifications,
+                                    color: Colors.red,
+                                    size: 24,
+                                  ),
+                                ],
+                              ),
+                          ],
                         ),
                       ],
                     ),
-                    Image.asset('assets/logo1.jpeg', height: 100), // عرض اللوجو
-                  ],
-                ),
-              ),
-              // السلايدر للعروض
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200,
-                    initialPage: _currentPage, // الصفحة الأولية
-                    autoPlay: true, // التمرير التلقائي
-                    autoPlayInterval: Duration(seconds: 3), // مدة الانتظار بين الصفحات
-                    autoPlayAnimationDuration: Duration(milliseconds: 800), // مدة الأنيميشن
-                    enlargeCenterPage: true, // تكبير الصفحة الوسطى
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentPage = index; // تحديث الصفحة الحالية
-                      });
-                    },
-                  ),
-                  items: [
-                    'assets/offer1.jfif', // الصورة الأولى
-                    'assets/offer2.jfif', // الصورة الثانية
-                  ].map((image) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8), // الهامش بين العناصر
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12), // الزوايا المدورة
-                            image: DecorationImage(
-                              image: AssetImage(image), // تحميل الصورة
-                              fit: BoxFit.cover, // ملء المساحة
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-              ),
-              SizedBox(height: 40),
-              // عنوان بيانات الاشتراك
-              Text(
-                'Subscription Data',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-                textAlign: TextAlign.right, // محاذاة النص لليمين
-              ),
-              // دائرة LinearProgressIndicator
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12), // الزوايا المدورة
-                  ),
-                  child: Center(
-                    child: SizedBox(
-                      width: 250, // عرض الدائرة
-                      height: 250, // ارتفاع الدائرة
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // قطر الدائرة مع الحركة
-                          AnimatedBuilder(
-                            animation: _animation,
-                            builder: (context, child) {
-                              return SizedBox(
-                                height: 250,
-                                width: 250,
-                                child: CircularProgressIndicator(
-                                  value: _animation.value, // استخدام القيمة المتغيرة
-                                  backgroundColor: Colors.grey[800], // لون الخلفية
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    daysLeft <= 0
-                                        ? Colors.red // عند انتهاء الاشتراك
-                                        : (daysUsed >= totalDays * 0.9
-                                        ? Colors.red // عند الاقتراب من الانتهاء
-                                        : Colors.yellow), // لون عادي
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          // محتوى الدائرة
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Premium Plan', // نوع الاشتراك
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Subscription Code: XYZ123', // كود الاشتراك
-                                style: TextStyle(color: Colors.white, fontSize: 14),
-                              ),
-                              SizedBox(height: 8),
-                              // عدد الأيام المتبقية
-                              Text(
-                                'Remaining Days: $daysLeft', // عدد الأيام المتبقية
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.yellow, // تغيير اللون إلى الأصفر
-                                  fontSize: 16,
-                                ),
-                              ),
-                              // إضافة رسالة تجديد الباقة في حالة انتهاء الاشتراك
-                              if (daysLeft <= 0)
-                                Column(
-                                  children: [
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Please renew your subscription', // رسالة التجديد
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Icon(
-                                      Icons.notifications,
-                                      color: Colors.red,
-                                      size: 24,
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),
-              // مربعات التواريخ مع إطار أصفر
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            ),
+            // مربعات التواريخ مع إطار أصفر
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center, // محاذاة للوسط
+                children: [
+                  _buildDateBox('Start Date', subscriptionStartDate.toLocal().toString().split(' ')[0]), // تاريخ البداية
+                  SizedBox(width: 16), // مسافة بين المربعات
+                  _buildDateBox('End Date', subscriptionEndDate.toLocal().toString().split(' ')[0]), // تاريخ النهاية
+                ],
+              ),
+            ),
+            // الأزرار مع التمرير الأفقي
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal, // التمرير الأفقي
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // محاذاة للوسط
                   children: [
-                    _buildDateBox('Start Date', subscriptionStartDate.toLocal().toString().split(' ')[0]), // تاريخ البداية
-                    SizedBox(width: 16), // مسافة بين المربعات
-                    _buildDateBox('End Date', subscriptionEndDate.toLocal().toString().split(' ')[0]), // تاريخ النهاية
+                    _buildSquareButton('Schedule', Icons.access_time),
+                    _buildSquareButton('Exercises', Icons.fitness_center),
+                    _buildSquareButton('List', Icons.list),
+                    _buildSquareButton('Contact', Icons.contact_phone),
                   ],
                 ),
               ),
-              // الأزرار مع التمرير الأفقي
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal, // التمرير الأفقي
-                  child: Row(
-                    children: [
-                      _buildSquareButton('Schedule', Icons.access_time),
-                      _buildSquareButton('Exercises', Icons.fitness_center),
-                      _buildSquareButton('List', Icons.list),
-                      _buildSquareButton('Contact', Icons.contact_phone),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        bottomNavigationBar: BottonNavBar(), // شريط التنقل السفلي
       ),
+      bottomNavigationBar: BottonNavBar(), // شريط التنقل السفلي
     );
   }
 
