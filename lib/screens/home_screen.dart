@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'FINALbuttonNAVbar.dart'; // استيراد شريط التنقل السفلي
+import 'package:gymm/FINALbuttonNAVbar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -254,7 +254,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ],
         ),
       ),
-      bottomNavigationBar: BottonNavBar(), // شريط التنقل السفلي
     );
   }
 
