@@ -29,7 +29,7 @@ class ProductDetailPage extends StatelessWidget {
               ),
             ),
             Image.asset(
-              'logo1.jpeg', // تأكد من مسار الشعار
+              'assets/logo1.jpeg', // تأكد من مسار الشعار
               height: 40,
             ),
           ],
