@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymm/MainPage.dart';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/screens/home_screen.dart';
 import 'package:gymm/theme/colors.dart';
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         await saveClientData(data);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => const MainPage()));
       } else {
         setState(() {
           errorMessage = json.decode(response.body)["error"];
