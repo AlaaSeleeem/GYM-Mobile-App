@@ -1,27 +1,437 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:gymm/components/circular_subscription.dart';
+import 'package:gymm/components/multiple_subscriptions.dart';
+import 'package:gymm/components/no_active_subscriptions.dart';
+import 'package:gymm/models/subscriptions.dart';
+import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/prefrences.dart';
+
+List subscription1 = [
+  {
+    "id": 4603,
+    "url": "http://127.0.0.1:8000/api/subscriptions/subscription/4603/",
+    "plan": {
+      "id": 28,
+      "url": "http://127.0.0.1:8000/api/subscriptions/subscription-plan/28/",
+      "sub_type": "اشتراك أساسى",
+      "duration_display": "210 يوم",
+      "num_subscriptions": null,
+      "name": "6 شهور +30",
+      "price": 1300.0,
+      "days": 210,
+      "subscription_type": "main",
+      "description": "6 شهور +30",
+      "freezable": false,
+      "freeze_no": null,
+      "invitations": 0,
+      "for_students": false,
+      "validity": 210,
+      "is_duration": true,
+      "classes_no": null
+    },
+    "trainer": {
+      "id": 2,
+      "nationality": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
+        "name": "مصرى"
+      },
+      "marital_status": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
+        "name": "أعزب"
+      },
+      "city": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/city/1/",
+        "name": "شبين الكوم"
+      },
+      "district": null,
+      "added_by": {
+        "id": 1,
+        "username": "ahmed",
+        "name": "Dev",
+        "phone": "***********",
+        "national_id": "**************",
+        "is_superuser": true,
+        "is_moderator": false,
+        "url": "http://127.0.0.1:8000/api/users/users/1/",
+        "is_root": true
+      },
+      "emp_type": {
+        "id": 2,
+        "url": "http://127.0.0.1:8000/api/users/employee-type/2/",
+        "name": "ريسيبشن"
+      },
+      "url": "http://127.0.0.1:8000/api/users/employee/2/",
+      "name": "ألاء",
+      "gander": "female",
+      "religion": "muslim",
+      "birth_date": null,
+      "age": 21,
+      "phone": "0100",
+      "phone2": "",
+      "national_id": "0200",
+      "address": "",
+      "email": "",
+      "photo": null
+    },
+    "referrer": {
+      "id": 3,
+      "nationality": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
+        "name": "مصرى"
+      },
+      "marital_status": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
+        "name": "أعزب"
+      },
+      "city": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/city/1/",
+        "name": "شبين الكوم"
+      },
+      "district": null,
+      "added_by": {
+        "id": 2,
+        "username": "kaffo",
+        "name": "Manager",
+        "phone": "01147617485",
+        "national_id": "01147617485",
+        "is_superuser": true,
+        "is_moderator": false,
+        "url": "http://127.0.0.1:8000/api/users/users/2/",
+        "is_root": false
+      },
+      "emp_type": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/employee-type/1/",
+        "name": "مدرب"
+      },
+      "url": "http://127.0.0.1:8000/api/users/employee/3/",
+      "name": "عبد الرحمن اسامة رمزي",
+      "gander": "male",
+      "religion": "muslim",
+      "birth_date": "2003-07-14",
+      "age": 21,
+      "phone": "01095414508",
+      "phone2": "",
+      "national_id": "1221",
+      "address": "شبين",
+      "email": "",
+      "photo": null
+    },
+    "client_name": "ahmed hatem",
+    "client_id": "5000",
+    "is_expired": false,
+    "added_by": "Dev",
+    "created_at": "2024-11-19 - 00:17:57",
+    "start_date": "2024-11-19",
+    "end_date": "2025-06-17",
+    "freeze_days_used": 0,
+    "freeze_start_date": null,
+    "is_frozen": false,
+    "unfreeze_date": null,
+    "total_price": 1300.0,
+    "attendance_days": 0,
+    "invitations_used": 0,
+    "client": 4126,
+    "transaction": 802
+  }
+];
+List subscription2 = [
+  {
+    "id": 4603,
+    "url": "http://127.0.0.1:8000/api/subscriptions/subscription/4603/",
+    "plan": {
+      "id": 28,
+      "url": "http://127.0.0.1:8000/api/subscriptions/subscription-plan/28/",
+      "sub_type": "اشتراك أساسى",
+      "duration_display": "210 يوم",
+      "num_subscriptions": null,
+      "name": "6 شهور +30",
+      "price": 1300.0,
+      "days": 210,
+      "subscription_type": "main",
+      "description": "6 شهور +30",
+      "freezable": false,
+      "freeze_no": null,
+      "invitations": 0,
+      "for_students": false,
+      "validity": 210,
+      "is_duration": true,
+      "classes_no": null
+    },
+    "trainer": {
+      "id": 2,
+      "nationality": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
+        "name": "مصرى"
+      },
+      "marital_status": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
+        "name": "أعزب"
+      },
+      "city": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/city/1/",
+        "name": "شبين الكوم"
+      },
+      "district": null,
+      "added_by": {
+        "id": 1,
+        "username": "ahmed",
+        "name": "Dev",
+        "phone": "***********",
+        "national_id": "**************",
+        "is_superuser": true,
+        "is_moderator": false,
+        "url": "http://127.0.0.1:8000/api/users/users/1/",
+        "is_root": true
+      },
+      "emp_type": {
+        "id": 2,
+        "url": "http://127.0.0.1:8000/api/users/employee-type/2/",
+        "name": "ريسيبشن"
+      },
+      "url": "http://127.0.0.1:8000/api/users/employee/2/",
+      "name": "ألاء",
+      "gander": "female",
+      "religion": "muslim",
+      "birth_date": null,
+      "age": 21,
+      "phone": "0100",
+      "phone2": "",
+      "national_id": "0200",
+      "address": "",
+      "email": "",
+      "photo": null
+    },
+    "referrer": {
+      "id": 3,
+      "nationality": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
+        "name": "مصرى"
+      },
+      "marital_status": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
+        "name": "أعزب"
+      },
+      "city": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/city/1/",
+        "name": "شبين الكوم"
+      },
+      "district": null,
+      "added_by": {
+        "id": 2,
+        "username": "kaffo",
+        "name": "Manager",
+        "phone": "01147617485",
+        "national_id": "01147617485",
+        "is_superuser": true,
+        "is_moderator": false,
+        "url": "http://127.0.0.1:8000/api/users/users/2/",
+        "is_root": false
+      },
+      "emp_type": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/employee-type/1/",
+        "name": "مدرب"
+      },
+      "url": "http://127.0.0.1:8000/api/users/employee/3/",
+      "name": "عبد الرحمن اسامة رمزي",
+      "gander": "male",
+      "religion": "muslim",
+      "birth_date": "2003-07-14",
+      "age": 21,
+      "phone": "01095414508",
+      "phone2": "",
+      "national_id": "1221",
+      "address": "شبين",
+      "email": "",
+      "photo": null
+    },
+    "client_name": "ahmed hatem",
+    "client_id": "5000",
+    "is_expired": false,
+    "added_by": "Dev",
+    "created_at": "2024-11-19 - 00:17:57",
+    "start_date": "2024-11-19",
+    "end_date": "2025-06-17",
+    "freeze_days_used": 0,
+    "freeze_start_date": null,
+    "is_frozen": false,
+    "unfreeze_date": null,
+    "total_price": 1300.0,
+    "attendance_days": 0,
+    "invitations_used": 0,
+    "client": 4126,
+    "transaction": 802
+  },
+  {
+    "id": 4604,
+    "url": "http://127.0.0.1:8000/api/subscriptions/subscription/4604/",
+    "plan": {
+      "id": 14,
+      "url": "http://127.0.0.1:8000/api/subscriptions/subscription-plan/14/",
+      "sub_type": "اشتراك أساسى",
+      "duration_display": "8 حصص",
+      "num_subscriptions": null,
+      "name": "٨ سيشن",
+      "price": 200.0,
+      "days": null,
+      "subscription_type": "main",
+      "description": "",
+      "freezable": false,
+      "freeze_no": null,
+      "invitations": 0,
+      "for_students": false,
+      "validity": 30,
+      "is_duration": false,
+      "classes_no": 8
+    },
+    "trainer": {
+      "id": 2,
+      "nationality": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
+        "name": "مصرى"
+      },
+      "marital_status": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
+        "name": "أعزب"
+      },
+      "city": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/city/1/",
+        "name": "شبين الكوم"
+      },
+      "district": null,
+      "added_by": {
+        "id": 1,
+        "username": "ahmed",
+        "name": "Dev",
+        "phone": "***********",
+        "national_id": "**************",
+        "is_superuser": true,
+        "is_moderator": false,
+        "url": "http://127.0.0.1:8000/api/users/users/1/",
+        "is_root": true
+      },
+      "emp_type": {
+        "id": 2,
+        "url": "http://127.0.0.1:8000/api/users/employee-type/2/",
+        "name": "ريسيبشن"
+      },
+      "url": "http://127.0.0.1:8000/api/users/employee/2/",
+      "name": "ألاء",
+      "gander": "female",
+      "religion": "muslim",
+      "birth_date": null,
+      "age": 21,
+      "phone": "0100",
+      "phone2": "",
+      "national_id": "0200",
+      "address": "",
+      "email": "",
+      "photo": null
+    },
+    "referrer": {
+      "id": 3,
+      "nationality": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
+        "name": "مصرى"
+      },
+      "marital_status": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
+        "name": "أعزب"
+      },
+      "city": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/city/1/",
+        "name": "شبين الكوم"
+      },
+      "district": null,
+      "added_by": {
+        "id": 2,
+        "username": "kaffo",
+        "name": "Manager",
+        "phone": "01147617485",
+        "national_id": "01147617485",
+        "is_superuser": true,
+        "is_moderator": false,
+        "url": "http://127.0.0.1:8000/api/users/users/2/",
+        "is_root": false
+      },
+      "emp_type": {
+        "id": 1,
+        "url": "http://127.0.0.1:8000/api/users/employee-type/1/",
+        "name": "مدرب"
+      },
+      "url": "http://127.0.0.1:8000/api/users/employee/3/",
+      "name": "عبد الرحمن اسامة رمزي",
+      "gander": "male",
+      "religion": "muslim",
+      "birth_date": "2003-07-14",
+      "age": 21,
+      "phone": "01095414508",
+      "phone2": "",
+      "national_id": "1221",
+      "address": "شبين",
+      "email": "",
+      "photo": null
+    },
+    "client_name": "ahmed hatem",
+    "client_id": "5000",
+    "is_expired": false,
+    "added_by": "Dev",
+    "created_at": "2024-11-19 - 00:19:08",
+    "start_date": "2024-11-19",
+    "end_date": "2024-12-19",
+    "freeze_days_used": 0,
+    "freeze_start_date": null,
+    "is_frozen": false,
+    "unfreeze_date": null,
+    "total_price": 200.0,
+    "attendance_days": 0,
+    "invitations_used": 0,
+    "client": 4126,
+    "transaction": 803
+  }
+];
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  // top bar states
+  String name = "";
+  String id = "";
+
   int _currentPage = 0;
   Timer? _timer;
-  late AnimationController _controller;
-  late Animation<double> _animation;
 
-  int totalDays = 30;
-  int daysUsed = 12;
-  int daysLeft = 0;
-
-  DateTime subscriptionStartDate = DateTime.now().subtract(Duration(days: 10));
-  DateTime subscriptionEndDate = DateTime.now().add(Duration(days: 20));
+  List<Subscription> subscriptions = [];
 
   List<String> subscriptionTypes = ["Premium Plan", "Basic Plan"];
-  String selectedSubscriptionType = "Premium Plan";
+  String selectedSubscriptionType = "Basic Plan";
 
   // المتغيرات لتخزين تقييمات الأسئلة
   int _serviceRating = 0;
@@ -34,15 +444,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
+    _getClientData();
     _startAutoSlider();
-
-    _controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-
-    daysLeft = totalDays - daysUsed;
-    _updateSubscriptionDetails();
   }
 
   void _startAutoSlider() {
@@ -58,30 +461,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     });
   }
 
-  void _updateSubscriptionDetails() {
-    if (selectedSubscriptionType == "Premium Plan") {
-      totalDays = 30;
-      daysUsed = 12;
-      subscriptionStartDate = DateTime.now().subtract(Duration(days: 10));
-      subscriptionEndDate = DateTime.now().add(Duration(days: 20));
-    } else {
-      totalDays = 15;
-      daysUsed = 5;
-      subscriptionStartDate = DateTime.now().subtract(Duration(days: 5));
-      subscriptionEndDate = DateTime.now().add(Duration(days: 10));
-    }
-    daysLeft = totalDays - daysUsed;
-
-    _animation = Tween<double>(begin: 0.0, end: daysUsed.toDouble() / totalDays)
-        .animate(_controller);
-    _controller.forward();
+  Future<void> _getClientData() async {
+    Map data = await getClientData();
+    setState(() {
+      name = data["name"];
+      id = data["id"];
+    });
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
-    _controller.dispose();
     super.dispose();
+    _timer?.cancel();
   }
 
   @override
@@ -92,29 +483,44 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         body: SingleChildScrollView(
           child: Column(
             children: [
+              // header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome, Mohammed',
-                          style: TextStyle(color: Colors.yellow, fontSize: 24),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Client Code: 123456',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            child: Text(
+                              name,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              style: const TextStyle(
+                                  color: primaryColor, fontSize: 24),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            id,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 6,
                     ),
                     Image.asset('assets/logo1.jpeg', height: 100),
                   ],
                 ),
               ),
+
+              // carousel
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CarouselSlider(
@@ -152,111 +558,28 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+
+              const SizedBox(height: 40),
+
+              // active subscription
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Subscription Data',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    DropdownButton<String>(
-                      value: selectedSubscriptionType,
-                      dropdownColor: Colors.grey[900],
-                      items: subscriptionTypes.map((String type) {
-                        return DropdownMenuItem<String>(
-                          value: type,
-                          child: Text(type, style: TextStyle(color: Colors.white)),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedSubscriptionType = newValue!;
-                          _updateSubscriptionDetails();
-                        });
-                      },
+                      'Active Subscriptions',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: SizedBox(
-                      width: 250,
-                      height: 250,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          AnimatedBuilder(
-                            animation: _animation,
-                            builder: (context, child) {
-                              return SizedBox(
-                                height: 250,
-                                width: 250,
-                                child: CircularProgressIndicator(
-                                  value: _animation.value,
-                                  backgroundColor: Colors.grey[800],
-                                  valueColor: AlwaysStoppedAnimation<Color>(daysLeft <= 0
-                                      ? Colors.red
-                                      : (daysUsed >= totalDays * 0.9 ? Colors.red : Colors.yellow)),
-                                ),
-                              );
-                            },
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                selectedSubscriptionType,
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Subscription Code: XYZ123',
-                                style: TextStyle(color: Colors.white, fontSize: 14),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Remaining Days: $daysLeft',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.yellow,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              if (daysLeft <= 0)
-                                Column(
-                                  children: [
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Please renew your subscription',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Icon(
-                                      Icons.notifications,
-                                      color: Colors.red,
-                                      size: 24,
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              _renderActiveSubscriptions(subscription2
+                  .map((item) => Subscription.fromJson(item))
+                  .toList()),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
@@ -323,22 +646,26 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 child: Column(
                   children: [
                     // أسئلة التقييم
-                    _buildRatingQuestion('Service', _serviceRating, (int value) {
+                    _buildRatingQuestion('Service', _serviceRating,
+                        (int value) {
                       setState(() {
                         _serviceRating = value;
                       });
                     }),
-                    _buildRatingQuestion('Trainer', _trainerRating, (int value) {
+                    _buildRatingQuestion('Trainer', _trainerRating,
+                        (int value) {
                       setState(() {
                         _trainerRating = value;
                       });
                     }),
-                    _buildRatingQuestion('Schedule', _scheduleRating, (int value) {
+                    _buildRatingQuestion('Schedule', _scheduleRating,
+                        (int value) {
                       setState(() {
                         _scheduleRating = value;
                       });
                     }),
-                    _buildRatingQuestion('Equipment', _equipmentRating, (int value) {
+                    _buildRatingQuestion('Equipment', _equipmentRating,
+                        (int value) {
                       setState(() {
                         _equipmentRating = value;
                       });
@@ -393,7 +720,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget _buildRatingQuestion(String question, int currentRating, ValueChanged<int> onRatingChanged) {
+  Widget _buildRatingQuestion(
+      String question, int currentRating, ValueChanged<int> onRatingChanged) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -416,5 +744,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ),
       ],
     );
+  }
+}
+
+Widget _renderActiveSubscriptions(List<Subscription> subscriptions) {
+  if (subscriptions.isEmpty) return const NoActiveSubscription();
+
+  if (subscriptions.length > 1) {
+    return MultipleSubscriptions(subscriptions: subscriptions);
+  } else {
+    return CircularSubscription(subscription: subscriptions.first);
   }
 }

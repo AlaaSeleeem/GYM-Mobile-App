@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gymm/navigation.dart';
 import 'package:gymm/theme/colors.dart';
-import 'MainPage.dart';
-import 'QRscan.dart';
-import 'Store.dart';
-import 'profile_screen.dart';
 
 class BottomNavbar extends StatelessWidget {
-  const BottomNavbar({super.key, this.selectedItemColor});
+  const BottomNavbar({super.key, this.selectedItemColor, required this.index, required this.onTab});
 
   final Color? selectedItemColor;
-  static int index = 0;
+  final int index;
+
+  final Function(int) onTab;
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +32,24 @@ class BottomNavbar extends StatelessWidget {
               BottomNavigationBarItem(
                   icon: Icon(FontAwesomeIcons.store), label: 'Store'),
             ],
-            onTap: (value) {
-              if (value == 0) {
-                index = value;
-                goTO(context: context, screen: MainPage());
-              } else if (value == 1) {
-                index = value;
-                goTO(context: context, screen: QRCodeScreen());
-              } else if (value == 2) {
-                index = value;
-                goTO(context: context, screen: ProfileScreen());
-              } else if (value == 3) {
-                index = value;
-                goTO(context: context, screen: ProductsPage());
-              }
-            }),
+            onTap: onTab
+
+            //     (value) {
+            //   if (value == 0) {
+            //     index = value;
+            //     goTO(context: context, screen: MainPage());
+            //   } else if (value == 1) {
+            //     index = value;
+            //     goTO(context: context, screen: QRCodeScreen());
+            //   } else if (value == 2) {
+            //     index = value;
+            //     goTO(context: context, screen: ProfileScreen());
+            //   } else if (value == 3) {
+            //     index = value;
+            //     goTO(context: context, screen: ProductsPage());
+            //   }
+            // }
+            ),
       ),
     );
   }

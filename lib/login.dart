@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final data = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        await saveUserData(data);
+        await saveClientData(data);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {

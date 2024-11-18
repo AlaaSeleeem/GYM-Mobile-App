@@ -214,12 +214,10 @@ class ProductsPageState extends State<ProductsPage> {
           backgroundColor: Colors.yellow,
           child: Icon(Icons.shopping_cart, color: Colors.black),
         ),
-        bottomNavigationBar: BottomNavbar(),
       ),
     );
   }
 }
-
 
 class ZoomableProductCard extends StatelessWidget {
   final Product product;

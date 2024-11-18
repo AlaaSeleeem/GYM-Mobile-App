@@ -358,7 +358,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: BottomNavbar(),
         extendBody: true,
       ),
     );
