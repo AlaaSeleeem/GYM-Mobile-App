@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'FINALbuttonNAVbar.dart';
+import 'navbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
@@ -678,7 +678,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             ],
           ),
         ),
-        bottomNavigationBar: BottonNavBar(),
+        bottomNavigationBar: BottomNavbar(),
         extendBody: true,
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gymm/MainPage.dart';
 import 'package:gymm/login.dart';
-import 'package:gymm/screens/home_screen.dart';
 import 'package:gymm/utils/prefrences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final bool logged = await isUserLoggedIn();
     if (logged) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+          context, MaterialPageRoute(builder: (context) => MainPage()));
     } else {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const LoginScreen()));
@@ -32,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
+        // child: Placeholder(),
         child: CircularProgressIndicator(),
       ),
     );

@@ -34,13 +34,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
+    setState(() {
+      errorMessage = null;
+    });
+
     if (!formKey.currentState!.validate()) {
       return;
     }
 
     setState(() {
       isLoading = true;
-      errorMessage = null;
     });
     try {
       final response = await http

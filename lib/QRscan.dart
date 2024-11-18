@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart'; // استيراد المكتبة
-import 'FINALbuttonNAVbar.dart';
+import 'navbar.dart';
 
 class Invitation {
   final String code;
@@ -358,7 +358,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: BottonNavBar(),
+        bottomNavigationBar: BottomNavbar(),
         extendBody: true,
       ),
     );

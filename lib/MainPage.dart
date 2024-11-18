@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:gymm/screens/home_screen.dart';
-import 'FINALbuttonNAVbar.dart';
+import 'navbar.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -90,7 +90,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
       child: Scaffold(
         backgroundColor: Colors.black, // خلفية الصفحة
         body: HomePage(),
-        bottomNavigationBar: BottonNavBar(), // شريط التنقل السفلي
+        bottomNavigationBar: BottomNavbar(), // شريط التنقل السفلي
       ),
     );
   }

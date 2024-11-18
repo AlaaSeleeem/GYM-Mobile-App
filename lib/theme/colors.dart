@@ -24,7 +24,7 @@ const Map<int, Color> blackSwatch = {
   600: Color(0xFF5D5D5D),
   700: Color(0xFF4F4F4F),
   800: Color(0xFF454545),
-  900: Color(0xFF3D3D3D),
+  900: Color(0xFF0E0E0E),
   950: Color(0xFF000000),
 };
 

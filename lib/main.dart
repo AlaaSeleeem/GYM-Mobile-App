@@ -4,16 +4,9 @@ import 'package:gymm/screens/splash_screen.dart';
 import 'package:gymm/theme/dark_theme.dart';
 import 'package:provider/provider.dart';
 
-import 'MainPage.dart';
-import 'QRscan.dart';
-import 'Store.dart';
-import 'login.dart';
-
 void main() {
   runApp(ChangeNotifierProvider(
-      create: (context) => Cart(),
-      child: const MyApp())
-  );
+      create: (context) => Cart(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +20,6 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (context) => const SplashScreen(),
-        //  "/home": (context) => HomeScreen(),
       },
     );
   }
