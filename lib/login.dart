@@ -1,61 +1,63 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gymm/api/endpoints.dart';
+import 'package:gymm/screens/home_screen.dart';
+import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/prefrences.dart';
 import 'package:http/http.dart' as http;
-
-import 'Onboarding.dart';
-import 'sign in.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var email = TextEditingController();
-
+  var id = TextEditingController();
   var password = TextEditingController();
-
-  var formKey = GlobalKey<FormState>();
-
   var passwordNode = FocusNode();
+  var formKey = GlobalKey<FormState>();
 
   bool isHidden = true;
   bool isLoading = false;
   String? errorMessage;
 
+  final String phoneNumber = "1234567890";
+  final String message = "Hello there!";
+
+  void _openWhatsApp() async {
+    final Uri url = Uri.parse(
+        'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}');
+    await launchUrl(url);
+  }
+
   Future<void> _login() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
     setState(() {
       isLoading = true;
       errorMessage = null;
     });
-    const tokenURL = "https://kaffogym.pythonanywhere.com/token/";
     try {
-      final response = await http.post(Uri.parse(tokenURL),
-          headers: {"Content-Type": "application/json"},
-          body:
-              json.encode({"username": email.text, "password": password.text}));
+      final response = await http
+          .post(Uri.parse(EndPoints.login()),
+              headers: {"Content-Type": "application/json"},
+              body: json.encode({"id": id.text, "password": password.text}))
+          .timeout(const Duration(seconds: 10));
 
       final data = json.decode(response.body);
-      if (response.statusCode == 200) {
-        final access_token = data["access"];
-        final refresh_token = data["refresh"];
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: ((context) =>
-                SignUpScreen()),
-          ),
-        );
-        print(access_token);
 
-        print(refresh_token);
-        Navigator.of(context).pushReplacementNamed("/home");
+      if (response.statusCode == 200) {
+        await saveUserData(data);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {
         setState(() {
-          errorMessage = data["detail"];
+          errorMessage = json.decode(response.body)["error"];
         });
       }
     } catch (e) {
@@ -65,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } finally {
       setState(() {
         isLoading = false;
-        email.clear();
+        id.clear();
         password.clear();
       });
     }
@@ -78,248 +80,185 @@ class _LoginScreenState extends State<LoginScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.black,
-          body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: formKey,
-            child: Container(
-              width: double.infinity,
-              child: Column(
-
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'logo1.jpeg', // استبدل بمسار الصورة
-                      width: 150,
-                      height: 150,
-                    ),
-                    Text('Welcome back',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          height: 1.4,
-                          fontWeight: FontWeight.w700,
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('login to get active',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              height: 1.4,
-                              fontWeight: FontWeight.w100,
-                            )),
-                        Text('  💪',
-                            style: TextStyle(
-                              color: Colors.yellow,
-                              fontSize: 15,
-                              height: 1.4,
-                            )),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-
-                    //========================================================================
-                    // Email text field
-
-                    TextFormField(
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context).requestFocus(passwordNode);
-                      },
-                      validator: (value) {
-                        if ((value == null || value.isEmpty)) {
-                          return "Email can't be empty";
-                        }
-                        return null;
-                      },
-                      controller: email,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.grey,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          height: 4,
-                          fontWeight: FontWeight.normal),
-
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.black,
-                        focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                width: 2,
-                                color: Colors.yellow)),
-                        errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 2,
-                                color: Colors.yellow)),
-                        label: Text(
-                          ' Email address',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 144, 144, 144)),
-                        ),
-                        // hintText: 'enter the phone number',
-
-                      ),
-                      //hintStyle: title1.merge(TextStyle(color: gray)),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    //========================================================================
-
-                    // password text field
-                    StatefulBuilder(
-                      builder: (context, setState) => TextFormField(
-                        focusNode: passwordNode,
-                        validator: (value) {
-                          if ((value == null || value.isEmpty)) {
-                            return "Password can't be empty";
-                          }
-                          return null;
-                        },
-                        controller: password,
-                        obscureText: isHidden,
-                        keyboardType: TextInputType.visiblePassword,
-                        cursorColor: Colors.grey,
-
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            height: 4,
-                            fontWeight: FontWeight.normal),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.black,
-                          suffixIcon: IconButton(
-                            icon: isHidden == true
-                                ? Icon(
-                              Icons.lock,
-                              color: Color.fromARGB(255, 144, 144, 144),
-                            )
-                                : Icon(
-                              Icons.lock_open,
-                              color: Color.fromARGB(255, 144, 144, 144),
-                            ),
-                            onPressed: () {
-                              isHidden = !isHidden;
-                              setState(() {});
-                            },
+          body: Center(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: formKey,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/logo1.jpeg',
+                            width: 250,
                           ),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color:
-                                  Color.fromARGB(1000, 242, 243, 247))),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  color:
-                                  Color.fromARGB(1000, 242, 243, 247))),
-                          label: Text(' password',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 144, 144, 144))),
-                        ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "PRO GYM",
+                                style: TextStyle(
+                                    color: primaryColor[300],
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
 
-                        // hintText: 'enter the phone number',
-                        //hintStyle: title1.merge(TextStyle(color: gray)),
-                      ),
-                    ),
+                          const SizedBox(
+                            height: 10,
+                          ),
 
-                    SizedBox(
-                      height: 26,
-                    ),
-                    //=================================================================
-                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                      Text('Forgot password?',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 63, 65, 78))),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text('Click here  ',
+                          TextFormField(
+                            validator: (value) {
+                              if ((value == null || value.isEmpty)) {
+                                return "ID can't be empty";
+                              }
+                              return null;
+                            },
+                            onFieldSubmitted: (value) {
+                              passwordNode.requestFocus();
+                            },
+                            controller: id,
+                            keyboardType: TextInputType.number,
+                            cursorErrorColor: Colors.red,
+                            cursorHeight: 30,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                height: 2,
+                                fontWeight: FontWeight.normal),
+                            decoration: const InputDecoration(
+                                label: Text(
+                                  'ID',
+                                ),
+                                hintText: "Number on barcode card"),
+                          ),
+
+                          const SizedBox(
+                            height: 30,
+                          ),
+
+                          // password text field
+                          TextFormField(
+                            validator: (value) {
+                              if ((value == null || value.isEmpty)) {
+                                return "Password can't be empty";
+                              }
+                              return null;
+                            },
+                            onFieldSubmitted: (value) {
+                              _login();
+                            },
+                            focusNode: passwordNode,
+                            controller: password,
+                            obscureText: isHidden,
+                            keyboardType: TextInputType.visiblePassword,
+                            cursorHeight: 30,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                height: 2,
+                                fontWeight: FontWeight.normal),
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  icon: isHidden == true
+                                      ? Icon(
+                                          Icons.lock,
+                                          color: blackColor[300],
+                                        )
+                                      : Icon(
+                                          Icons.lock_open,
+                                          color: blackColor[300],
+                                        ),
+                                  onPressed: () {
+                                    isHidden = !isHidden;
+                                    setState(() {});
+                                  },
+                                ),
+                                label: const Text(
+                                  'Password',
+                                ),
+                                hintText: "Default: phone number"),
+                          ),
+
+                          const SizedBox(
+                            height: 45,
+                          ),
+
+                          //========================================================================
+                          Text(
+                            errorMessage ?? "",
                             style: TextStyle(
-                              color: Colors.yellow,
-                            )),
-                      ),
-                    ]),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    //========================================================================
-                    Text(
-                      errorMessage ?? "",
-                      style: TextStyle(color: Colors.red[600]),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    isLoading
-                        ? const CircularProgressIndicator()
-                        : SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              child: Text('LOG IN',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    height: 4,
-                                  )),
-                              onPressed: () {
-                                _login();
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(
-                                    Colors.yellow),
-                                // padding: WidgetStateProperty.all(EdgeInsets.all(50)),
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
+                                color: Colors.red[400],
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          isLoading
+                              ? const CircularProgressIndicator()
+                              : SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _login();
+                                      // _submitForm();
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(
+                                          primaryColor[300]),
+                                      shape: WidgetStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text('LOG IN',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          height: 4,
+                                        )),
                                   ),
                                 ),
-                              ),
-                            ),
+                          const SizedBox(
+                            height: 50,
                           ),
-                    const SizedBox(
-                      height: 50,
-                    ),
 
-                    //=========================================================================
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text('DONT HAVE AN ACCOUNT?',
-                          style: TextStyle(
-                              color: Color.fromARGB(1000, 63, 65, 78))),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => SignUpScreen()),
-                            ),
-                          );
-                        },
-                        child: Text('  SIGN UP',
-                            style: TextStyle(
-                                color: Colors.yellow,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16)),
-                      ),
-                    ]),
-                  ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('DON\'T HAVE AN ACCOUNT?',
+                                    style: TextStyle(color: blackColor[300])),
+                                TextButton(
+                                  onPressed: () {
+                                    _openWhatsApp();
+                                  },
+                                  child: const Text('Contact PRO GYM',
+                                      style: TextStyle(
+                                          color: Colors.yellow,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16)),
+                                ),
+                              ]),
+                        ]),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      )),
+          )),
     );
   }
 }

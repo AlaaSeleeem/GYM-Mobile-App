@@ -1,8 +1,7 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gymm/profile_screen.dart';
 import 'package:gymm/providers/Cart.dart';
-import 'package:gymm/sign%20in.dart';
+import 'package:gymm/screens/splash_screen.dart';
+import 'package:gymm/theme/dark_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'MainPage.dart';
@@ -23,10 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: darkTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/": (context) => MainPage(),
+        "/": (context) => const SplashScreen(),
         //  "/home": (context) => HomeScreen(),
       },
     );
