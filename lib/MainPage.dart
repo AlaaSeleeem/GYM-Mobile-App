@@ -25,7 +25,6 @@ class _MainPageState extends State<MainPage>
 
   void _changePage(int index) {
     setState(() {
-      // print(index);
       _currentPage = index;
     });
   }

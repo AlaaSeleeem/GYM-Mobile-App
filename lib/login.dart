@@ -53,10 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
               body: json.encode({"id": id.text, "password": password.text}))
           .timeout(const Duration(seconds: 10));
 
-      final data = json.decode(response.body);
+      final decodedResponse = utf8.decode(latin1.encode(response.body));
+      final data = json.decode(decodedResponse);
 
       if (response.statusCode == 200) {
         await saveClientData(data);
+        print(data["name"]);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const MainPage()));
       } else {
@@ -232,8 +234,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          height: 4,
+                                          fontSize: 20,
+                                          height: 3.25,
                                         )),
                                   ),
                                 ),
