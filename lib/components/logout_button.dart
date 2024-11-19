@@ -52,6 +52,7 @@ class _LogoutButtonState extends State<LogoutButton> {
                     child: const Text(
                       "Log out",
                       style: TextStyle(
+                          color: Colors.white,
                           fontSize: 20,
                           height: 3.25,
                           fontWeight: FontWeight.w500),
