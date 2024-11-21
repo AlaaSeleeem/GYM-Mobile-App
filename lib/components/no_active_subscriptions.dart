@@ -13,6 +13,7 @@ class NoActiveSubscription extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 20),
             Icon(
               Icons.credit_card_off,
               size: 100,
@@ -30,7 +31,7 @@ class NoActiveSubscription extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "You currently don’t have any active subscriptions.\nGet started by choosing a plan that works for you.",
+              "No currently active subscriptions.\nGet started by choosing a plan.",
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,

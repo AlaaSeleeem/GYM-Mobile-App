@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/components/logout_button.dart';
-import 'package:gymm/login.dart';
-import 'package:gymm/utils/prefrences.dart';
+import 'package:gymm/screens/login.dart';
+import 'package:gymm/utils/preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'navbar.dart';
 

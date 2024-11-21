@@ -110,8 +110,16 @@ class Subscription {
       id: json['id'],
       client: json['client_name'],
       plan: SubscriptionPlan.fromJson(json['plan']),
-      trainer: json['trainer']['name'],
-      referrer: json['referrer']['name'],
+      trainer: json['trainer'] is String
+          ? json["trainer"]
+          : json["trainer"] is Map
+              ? json["trainer"]["name"]
+              : "",
+      referrer: json['referrer'] is String
+          ? json["referrer"]
+          : json["referrer"] is Map
+              ? json["referrer"]["name"]
+              : "",
       startDate: DateTime.parse(json['start_date']),
       endDate:
           json['end_date'] != null ? DateTime.parse(json['end_date']) : null,
@@ -135,15 +143,16 @@ class Subscription {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'client': client,
+      'client_name': client,
       'plan': plan,
-      'trainer_id': trainer,
-      'referrer_id': referrer,
+      'trainer': trainer,
+      'referrer': referrer,
       'start_date': startDate.toIso8601String(),
       'end_date': endDate?.toIso8601String(),
       'freeze_days_used': freezeDaysUsed,
       'freeze_start_date': freezeStartDate?.toIso8601String(),
       'is_frozen': isFrozen,
+      'is_expired': isExpired,
       'unfreeze_date': unfreezeDate?.toIso8601String(),
       'total_price': totalPrice,
       'attendance_days': attendanceDays,

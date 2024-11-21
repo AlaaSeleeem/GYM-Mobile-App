@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:gymm/components/circular_subscription.dart';
+import 'package:gymm/api/actions.dart';
+import 'package:gymm/components/empty_subscription.dart';
+import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
 import 'package:gymm/components/no_active_subscriptions.dart';
 import 'package:gymm/models/subscriptions.dart';
 import 'package:gymm/theme/colors.dart';
-import 'package:gymm/utils/prefrences.dart';
+import 'package:gymm/utils/preferences.dart';
+import 'package:gymm/utils/snackbar.dart';
 
 List subscription1 = [
   {
@@ -137,7 +140,7 @@ List subscription1 = [
     "is_frozen": false,
     "unfreeze_date": null,
     "total_price": 1300.0,
-    "attendance_days": 0,
+    "attendance_days": 200,
     "invitations_used": 0,
     "client": 4126,
     "transaction": 802
@@ -272,7 +275,7 @@ List subscription2 = [
     "is_frozen": false,
     "unfreeze_date": null,
     "total_price": 1300.0,
-    "attendance_days": 0,
+    "attendance_days": 20,
     "invitations_used": 0,
     "client": 4126,
     "transaction": 802
@@ -425,13 +428,12 @@ class _HomePageState extends State<HomePage>
   String name = "";
   String id = "";
 
+  // subscriptions section states
+  List<Subscription> subscriptions = [];
+  bool loadingSubs = true;
+
   int _currentPage = 0;
   Timer? _timer;
-
-  List<Subscription> subscriptions = [];
-
-  List<String> subscriptionTypes = ["Premium Plan", "Basic Plan"];
-  String selectedSubscriptionType = "Basic Plan";
 
   // المتغيرات لتخزين تقييمات الأسئلة
   int _serviceRating = 0;
@@ -446,6 +448,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
     _getClientData();
     _startAutoSlider();
+    _loadSavedSubscriptions();
   }
 
   void _startAutoSlider() {
@@ -469,6 +472,35 @@ class _HomePageState extends State<HomePage>
     });
   }
 
+  Future<void> _loadSavedSubscriptions() async {
+    List<Subscription> saved = await getClientSubscriptions();
+    if (saved.isNotEmpty) {
+      setState(() {
+        subscriptions = saved;
+        loadingSubs = false;
+      });
+    }
+    try {
+      await _getPreviewLatestSubscriptions();
+    } finally {
+      setState(() {
+        loadingSubs = false;
+      });
+    }
+  }
+
+  Future<void> _getPreviewLatestSubscriptions() async {
+    try {
+      final data = await getLatestSubscriptions(int.parse(id));
+      setState(() {
+        subscriptions = data;
+      });
+    } catch (e) {
+      showSnackBar(context, "Failed loading subscriptions", "error");
+      return Future.error(e);
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -477,7 +509,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return RefreshIndicator(
+      onRefresh: _getPreviewLatestSubscriptions,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: SingleChildScrollView(
@@ -485,8 +518,8 @@ class _HomePageState extends State<HomePage>
             children: [
               // header
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.only(
+                    left: 16.0, top: 30.0, right: 10, bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -568,7 +601,7 @@ class _HomePageState extends State<HomePage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Active Subscriptions',
+                      'My Subscriptions:',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -577,9 +610,11 @@ class _HomePageState extends State<HomePage>
                   ],
                 ),
               ),
-              _renderActiveSubscriptions(subscription2
-                  .map((item) => Subscription.fromJson(item))
-                  .toList()),
+              loadingSubs
+                  ? const Loading(
+                      height: 300,
+                    )
+                  : _renderActiveSubscriptions(subscriptions),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
@@ -748,11 +783,9 @@ class _HomePageState extends State<HomePage>
 }
 
 Widget _renderActiveSubscriptions(List<Subscription> subscriptions) {
-  if (subscriptions.isEmpty) return const NoActiveSubscription();
-
-  if (subscriptions.length > 1) {
-    return MultipleSubscriptions(subscriptions: subscriptions);
+  if (subscriptions.isEmpty) {
+    return const NoActiveSubscription();
   } else {
-    return CircularSubscription(subscription: subscriptions.first);
+    return MultipleSubscriptions(subscriptions: subscriptions);
   }
 }

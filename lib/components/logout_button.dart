@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gymm/components/loading.dart';
 
-import '../login.dart';
-import '../utils/prefrences.dart';
+import '../screens/login.dart';
+import '../utils/preferences.dart';
 
 class LogoutButton extends StatefulWidget {
   const LogoutButton({super.key});
@@ -27,17 +28,7 @@ class _LogoutButtonState extends State<LogoutButton> {
   @override
   Widget build(BuildContext context) {
     return _loading
-        ? const Column(
-            children: [
-              SizedBox(
-                height: 16,
-              ),
-              CircularProgressIndicator(),
-              SizedBox(
-                height: 16,
-              )
-            ],
-          )
+        ? const Loading()
         : SizedBox(
             width: double.infinity,
             child: Padding(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:gymm/MainPage.dart';
-import 'package:gymm/login.dart';
+import 'package:gymm/screens/login.dart';
 import 'package:gymm/providers/Cart.dart';
 import 'package:gymm/theme/dark_theme.dart';
-import 'package:gymm/utils/prefrences.dart';
+import 'package:gymm/utils/preferences.dart';
 import 'package:provider/provider.dart';
 
 void main() {

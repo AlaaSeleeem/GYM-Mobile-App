@@ -22,33 +22,37 @@ class _CircularSubscriptionState extends State<CircularSubscription>
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
     _updateSubscriptionDetails(widget.subscription);
   }
 
-  void _updateSubscriptionDetails(Subscription subscription) {
-    // if (selectedSubscriptionType == "Basic Plan") {
-    //   totalDays = 30;
-    //   daysUsed = 12;
-    //   subscriptionStartDate = DateTime.now().subtract(Duration(days: 10));
-    //   subscriptionEndDate = DateTime.now().add(Duration(days: 20));
-    // } else {
-    //   totalDays = 15;
-    //   daysUsed = 5;
-    //   subscriptionStartDate = DateTime.now().subtract(Duration(days: 5));
-    //   subscriptionEndDate = DateTime.now().add(Duration(days: 10));
-    // }
-    // daysLeft = totalDays - daysUsed;
+  @override
+  void didUpdateWidget(covariant CircularSubscription oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.subscription != oldWidget.subscription) {
+      _updateSubscriptionDetails(widget.subscription);
+    }
+  }
 
+  void _updateSubscriptionDetails(Subscription subscription) {
     _animation = Tween<double>(
             begin: 0.0,
             end: subscription.attendanceDays.toDouble() /
                 subscription.totalDays())
-        .animate(_controller);
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.bounceOut));
     _controller.forward();
+  }
+
+  Color _getIndicatorColor() {
+    Subscription sub = widget.subscription;
+    if (sub.isExpired) return Colors.red[500]!;
+    if (sub.isFrozen || sub.startDate.isAfter(DateTime.now())) {
+      return primaryColor;
+    }
+    return Colors.green;
   }
 
   @override
@@ -93,6 +97,7 @@ class _CircularSubscriptionState extends State<CircularSubscription>
                         height: 250,
                         width: 250,
                         child: CircularProgressIndicator(
+                          strokeWidth: 8,
                           value: _animation.value,
                           backgroundColor: Colors.grey[800],
                           valueColor: AlwaysStoppedAnimation<Color>(
@@ -111,38 +116,79 @@ class _CircularSubscriptionState extends State<CircularSubscription>
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        subscription.plan.name,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 16),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 120),
+                        child: Text(
+                          subscription.plan.name,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        subscription.remaining(),
+                        "${subscription.id}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: primaryColor,
                           fontSize: 16,
                         ),
                       ),
-                      if (subscription.daysLeft() <= 1)
+                      const SizedBox(height: 8),
+                      Text(
+                        "Expires: ${subscription.endDate?.day}-${subscription.endDate?.month}-${subscription.endDate?.year}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      if (!subscription.isExpired)
+                        Text(
+                          subscription.remaining(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                      if (subscription.daysLeft() <= 1 ||
+                          subscription.isExpired)
                         const Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(height: 8),
-                            Text(
-                              'Expires',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            SizedBox(height: 4),
-                            Icon(
-                              Icons.add_alert,
-                              color: Colors.red,
-                              size: 24,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_alert,
+                                  color: Colors.red,
+                                  size: 24,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  'Expired',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
+                        )
                     ],
                   ),
+                  Positioned(
+                      top: 40,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                            color: _getIndicatorColor(),
+                            shape: BoxShape.circle),
+                      ))
                 ],
               ),
             ),

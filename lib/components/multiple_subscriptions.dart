@@ -59,9 +59,7 @@ class _MultipleSubscriptionsState extends State<MultipleSubscriptions> {
               height: 8,
               width: _currentPage == index ? 20 : 8,
               decoration: BoxDecoration(
-                color: _currentPage == index
-                    ? primaryColor
-                    : blackColor[500],
+                color: _currentPage == index ? primaryColor : blackColor[500],
                 borderRadius: BorderRadius.circular(4),
               ),
             );
