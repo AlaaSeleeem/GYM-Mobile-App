@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gymm/productDetail.dart';
 import 'package:gymm/providers/Cart.dart';
 import 'dart:async';
-import 'navbar.dart';
 import 'cartPage.dart';
 import 'package:provider/provider.dart';
 

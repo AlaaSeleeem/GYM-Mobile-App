@@ -1,4 +1,5 @@
-import 'package:gymm/models/subscriptions.dart';
+import 'package:gymm/models/subscription.dart';
+import 'package:gymm/models/subscription_plan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -39,5 +40,22 @@ Future<List<Subscription>> getClientSubscriptions() async {
   List list = json.decode(prefs.getString("subscriptions") ?? "[]");
   List<Subscription> subscriptions =
       list.map((sub) => Subscription.fromJson(sub)).toList();
+  return subscriptions;
+}
+
+// storing/retrieving subscription plans
+Future<void> saveSubscriptionPlans(
+    List<SubscriptionPlan> subscriptionPlans) async {
+  final prefs = await SharedPreferences.getInstance();
+  String subs =
+      json.encode(subscriptionPlans.map((sub) => sub.toJson()).toList());
+  await prefs.setString("subscription_plans", subs);
+}
+
+Future<List<SubscriptionPlan>> getSubscriptionPlans() async {
+  final prefs = await SharedPreferences.getInstance();
+  List list = json.decode(prefs.getString("subscription_plans") ?? "[]");
+  List<SubscriptionPlan> subscriptions =
+      list.map((sub) => SubscriptionPlan.fromJson(sub)).toList();
   return subscriptions;
 }

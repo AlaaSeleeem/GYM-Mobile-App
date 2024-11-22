@@ -2,418 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:gymm/api/actions.dart';
-import 'package:gymm/components/empty_subscription.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
 import 'package:gymm/components/no_active_subscriptions.dart';
-import 'package:gymm/models/subscriptions.dart';
+import 'package:gymm/models/subscription.dart';
+import 'package:gymm/screens/plans.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snackbar.dart';
-
-List subscription1 = [
-  {
-    "id": 4603,
-    "url": "http://127.0.0.1:8000/api/subscriptions/subscription/4603/",
-    "plan": {
-      "id": 28,
-      "url": "http://127.0.0.1:8000/api/subscriptions/subscription-plan/28/",
-      "sub_type": "اشتراك أساسى",
-      "duration_display": "210 يوم",
-      "num_subscriptions": null,
-      "name": "6 شهور +30",
-      "price": 1300.0,
-      "days": 210,
-      "subscription_type": "main",
-      "description": "6 شهور +30",
-      "freezable": false,
-      "freeze_no": null,
-      "invitations": 0,
-      "for_students": false,
-      "validity": 210,
-      "is_duration": true,
-      "classes_no": null
-    },
-    "trainer": {
-      "id": 2,
-      "nationality": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
-        "name": "مصرى"
-      },
-      "marital_status": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
-        "name": "أعزب"
-      },
-      "city": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/city/1/",
-        "name": "شبين الكوم"
-      },
-      "district": null,
-      "added_by": {
-        "id": 1,
-        "username": "ahmed",
-        "name": "Dev",
-        "phone": "***********",
-        "national_id": "**************",
-        "is_superuser": true,
-        "is_moderator": false,
-        "url": "http://127.0.0.1:8000/api/users/users/1/",
-        "is_root": true
-      },
-      "emp_type": {
-        "id": 2,
-        "url": "http://127.0.0.1:8000/api/users/employee-type/2/",
-        "name": "ريسيبشن"
-      },
-      "url": "http://127.0.0.1:8000/api/users/employee/2/",
-      "name": "ألاء",
-      "gander": "female",
-      "religion": "muslim",
-      "birth_date": null,
-      "age": 21,
-      "phone": "0100",
-      "phone2": "",
-      "national_id": "0200",
-      "address": "",
-      "email": "",
-      "photo": null
-    },
-    "referrer": {
-      "id": 3,
-      "nationality": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
-        "name": "مصرى"
-      },
-      "marital_status": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
-        "name": "أعزب"
-      },
-      "city": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/city/1/",
-        "name": "شبين الكوم"
-      },
-      "district": null,
-      "added_by": {
-        "id": 2,
-        "username": "kaffo",
-        "name": "Manager",
-        "phone": "01147617485",
-        "national_id": "01147617485",
-        "is_superuser": true,
-        "is_moderator": false,
-        "url": "http://127.0.0.1:8000/api/users/users/2/",
-        "is_root": false
-      },
-      "emp_type": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/employee-type/1/",
-        "name": "مدرب"
-      },
-      "url": "http://127.0.0.1:8000/api/users/employee/3/",
-      "name": "عبد الرحمن اسامة رمزي",
-      "gander": "male",
-      "religion": "muslim",
-      "birth_date": "2003-07-14",
-      "age": 21,
-      "phone": "01095414508",
-      "phone2": "",
-      "national_id": "1221",
-      "address": "شبين",
-      "email": "",
-      "photo": null
-    },
-    "client_name": "ahmed hatem",
-    "client_id": "5000",
-    "is_expired": false,
-    "added_by": "Dev",
-    "created_at": "2024-11-19 - 00:17:57",
-    "start_date": "2024-11-19",
-    "end_date": "2025-06-17",
-    "freeze_days_used": 0,
-    "freeze_start_date": null,
-    "is_frozen": false,
-    "unfreeze_date": null,
-    "total_price": 1300.0,
-    "attendance_days": 200,
-    "invitations_used": 0,
-    "client": 4126,
-    "transaction": 802
-  }
-];
-List subscription2 = [
-  {
-    "id": 4603,
-    "url": "http://127.0.0.1:8000/api/subscriptions/subscription/4603/",
-    "plan": {
-      "id": 28,
-      "url": "http://127.0.0.1:8000/api/subscriptions/subscription-plan/28/",
-      "sub_type": "اشتراك أساسى",
-      "duration_display": "210 يوم",
-      "num_subscriptions": null,
-      "name": "6 شهور +30",
-      "price": 1300.0,
-      "days": 210,
-      "subscription_type": "main",
-      "description": "6 شهور +30",
-      "freezable": false,
-      "freeze_no": null,
-      "invitations": 0,
-      "for_students": false,
-      "validity": 210,
-      "is_duration": true,
-      "classes_no": null
-    },
-    "trainer": {
-      "id": 2,
-      "nationality": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
-        "name": "مصرى"
-      },
-      "marital_status": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
-        "name": "أعزب"
-      },
-      "city": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/city/1/",
-        "name": "شبين الكوم"
-      },
-      "district": null,
-      "added_by": {
-        "id": 1,
-        "username": "ahmed",
-        "name": "Dev",
-        "phone": "***********",
-        "national_id": "**************",
-        "is_superuser": true,
-        "is_moderator": false,
-        "url": "http://127.0.0.1:8000/api/users/users/1/",
-        "is_root": true
-      },
-      "emp_type": {
-        "id": 2,
-        "url": "http://127.0.0.1:8000/api/users/employee-type/2/",
-        "name": "ريسيبشن"
-      },
-      "url": "http://127.0.0.1:8000/api/users/employee/2/",
-      "name": "ألاء",
-      "gander": "female",
-      "religion": "muslim",
-      "birth_date": null,
-      "age": 21,
-      "phone": "0100",
-      "phone2": "",
-      "national_id": "0200",
-      "address": "",
-      "email": "",
-      "photo": null
-    },
-    "referrer": {
-      "id": 3,
-      "nationality": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
-        "name": "مصرى"
-      },
-      "marital_status": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
-        "name": "أعزب"
-      },
-      "city": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/city/1/",
-        "name": "شبين الكوم"
-      },
-      "district": null,
-      "added_by": {
-        "id": 2,
-        "username": "kaffo",
-        "name": "Manager",
-        "phone": "01147617485",
-        "national_id": "01147617485",
-        "is_superuser": true,
-        "is_moderator": false,
-        "url": "http://127.0.0.1:8000/api/users/users/2/",
-        "is_root": false
-      },
-      "emp_type": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/employee-type/1/",
-        "name": "مدرب"
-      },
-      "url": "http://127.0.0.1:8000/api/users/employee/3/",
-      "name": "عبد الرحمن اسامة رمزي",
-      "gander": "male",
-      "religion": "muslim",
-      "birth_date": "2003-07-14",
-      "age": 21,
-      "phone": "01095414508",
-      "phone2": "",
-      "national_id": "1221",
-      "address": "شبين",
-      "email": "",
-      "photo": null
-    },
-    "client_name": "ahmed hatem",
-    "client_id": "5000",
-    "is_expired": false,
-    "added_by": "Dev",
-    "created_at": "2024-11-19 - 00:17:57",
-    "start_date": "2024-11-19",
-    "end_date": "2025-06-17",
-    "freeze_days_used": 0,
-    "freeze_start_date": null,
-    "is_frozen": false,
-    "unfreeze_date": null,
-    "total_price": 1300.0,
-    "attendance_days": 20,
-    "invitations_used": 0,
-    "client": 4126,
-    "transaction": 802
-  },
-  {
-    "id": 4604,
-    "url": "http://127.0.0.1:8000/api/subscriptions/subscription/4604/",
-    "plan": {
-      "id": 14,
-      "url": "http://127.0.0.1:8000/api/subscriptions/subscription-plan/14/",
-      "sub_type": "اشتراك أساسى",
-      "duration_display": "8 حصص",
-      "num_subscriptions": null,
-      "name": "٨ سيشن",
-      "price": 200.0,
-      "days": null,
-      "subscription_type": "main",
-      "description": "",
-      "freezable": false,
-      "freeze_no": null,
-      "invitations": 0,
-      "for_students": false,
-      "validity": 30,
-      "is_duration": false,
-      "classes_no": 8
-    },
-    "trainer": {
-      "id": 2,
-      "nationality": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
-        "name": "مصرى"
-      },
-      "marital_status": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
-        "name": "أعزب"
-      },
-      "city": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/city/1/",
-        "name": "شبين الكوم"
-      },
-      "district": null,
-      "added_by": {
-        "id": 1,
-        "username": "ahmed",
-        "name": "Dev",
-        "phone": "***********",
-        "national_id": "**************",
-        "is_superuser": true,
-        "is_moderator": false,
-        "url": "http://127.0.0.1:8000/api/users/users/1/",
-        "is_root": true
-      },
-      "emp_type": {
-        "id": 2,
-        "url": "http://127.0.0.1:8000/api/users/employee-type/2/",
-        "name": "ريسيبشن"
-      },
-      "url": "http://127.0.0.1:8000/api/users/employee/2/",
-      "name": "ألاء",
-      "gander": "female",
-      "religion": "muslim",
-      "birth_date": null,
-      "age": 21,
-      "phone": "0100",
-      "phone2": "",
-      "national_id": "0200",
-      "address": "",
-      "email": "",
-      "photo": null
-    },
-    "referrer": {
-      "id": 3,
-      "nationality": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/nationality/1/",
-        "name": "مصرى"
-      },
-      "marital_status": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/marital-status/1/",
-        "name": "أعزب"
-      },
-      "city": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/city/1/",
-        "name": "شبين الكوم"
-      },
-      "district": null,
-      "added_by": {
-        "id": 2,
-        "username": "kaffo",
-        "name": "Manager",
-        "phone": "01147617485",
-        "national_id": "01147617485",
-        "is_superuser": true,
-        "is_moderator": false,
-        "url": "http://127.0.0.1:8000/api/users/users/2/",
-        "is_root": false
-      },
-      "emp_type": {
-        "id": 1,
-        "url": "http://127.0.0.1:8000/api/users/employee-type/1/",
-        "name": "مدرب"
-      },
-      "url": "http://127.0.0.1:8000/api/users/employee/3/",
-      "name": "عبد الرحمن اسامة رمزي",
-      "gander": "male",
-      "religion": "muslim",
-      "birth_date": "2003-07-14",
-      "age": 21,
-      "phone": "01095414508",
-      "phone2": "",
-      "national_id": "1221",
-      "address": "شبين",
-      "email": "",
-      "photo": null
-    },
-    "client_name": "ahmed hatem",
-    "client_id": "5000",
-    "is_expired": false,
-    "added_by": "Dev",
-    "created_at": "2024-11-19 - 00:19:08",
-    "start_date": "2024-11-19",
-    "end_date": "2024-12-19",
-    "freeze_days_used": 0,
-    "freeze_start_date": null,
-    "is_frozen": false,
-    "unfreeze_date": null,
-    "total_price": 200.0,
-    "attendance_days": 0,
-    "invitations_used": 0,
-    "client": 4126,
-    "transaction": 803
-  }
-];
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -435,14 +31,6 @@ class _HomePageState extends State<HomePage>
   int _currentPage = 0;
   Timer? _timer;
 
-  // المتغيرات لتخزين تقييمات الأسئلة
-  int _serviceRating = 0;
-  int _trainerRating = 0;
-  int _scheduleRating = 0;
-  int _equipmentRating = 0;
-  int _staffRating = 0;
-  String _feedbackNotes = '';
-
   @override
   void initState() {
     super.initState();
@@ -452,7 +40,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void _startAutoSlider() {
-    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (_currentPage < 1) {
         _currentPage++;
       } else {
@@ -601,7 +189,7 @@ class _HomePageState extends State<HomePage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'My Subscriptions:',
+                      'My Subscriptions',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -615,16 +203,47 @@ class _HomePageState extends State<HomePage>
                       height: 300,
                     )
                   : _renderActiveSubscriptions(subscriptions),
+
+              const SizedBox(height: 40),
+
+              // Quick Access
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Quick Access',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildSquareButton('Schedule', Icons.access_time),
-                      _buildSquareButton('Exercises', Icons.fitness_center),
-                      _buildSquareButton('Survey', Icons.list),
-                      _buildSquareButton('Contact', Icons.contact_phone),
+                      _buildSquareButton(
+                          label: 'Plans',
+                          icon: Icons.subscriptions,
+                          page: PlansPage()),
+                      _buildSquareButton(
+                          label: 'Exercises',
+                          icon: Icons.fitness_center,
+                          page: PlansPage()),
+                      _buildSquareButton(
+                          label: 'News',
+                          icon: Icons.newspaper,
+                          page: PlansPage()),
+                      _buildSquareButton(
+                          label: 'Contact',
+                          icon: Icons.call,
+                          page: PlansPage()),
                     ],
                   ),
                 ),
@@ -636,19 +255,19 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildSquareButton(String label, IconData icon) {
+  Widget _buildSquareButton(
+      {required String label, required IconData icon, required Widget page}) {
     return Container(
       width: 170,
       height: 120,
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: ElevatedButton(
         onPressed: () {
-          if (label == 'Survey') {
-            _showSurveyDialog();
-          }
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => page));
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.yellow,
+          backgroundColor: primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -657,127 +276,12 @@ class _HomePageState extends State<HomePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: Colors.black, size: 40),
-            SizedBox(height: 8),
-            Text(label, style: TextStyle(color: Colors.black, fontSize: 16)),
+            const SizedBox(height: 8),
+            Text(label,
+                style: const TextStyle(color: Colors.black, fontSize: 16)),
           ],
         ),
       ),
-    );
-  }
-
-  void _showSurveyDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              backgroundColor: Colors.black,
-              title: Text(
-                'Rate Our Service',
-                style: TextStyle(color: Colors.white),
-              ),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // أسئلة التقييم
-                    _buildRatingQuestion('Service', _serviceRating,
-                        (int value) {
-                      setState(() {
-                        _serviceRating = value;
-                      });
-                    }),
-                    _buildRatingQuestion('Trainer', _trainerRating,
-                        (int value) {
-                      setState(() {
-                        _trainerRating = value;
-                      });
-                    }),
-                    _buildRatingQuestion('Schedule', _scheduleRating,
-                        (int value) {
-                      setState(() {
-                        _scheduleRating = value;
-                      });
-                    }),
-                    _buildRatingQuestion('Equipment', _equipmentRating,
-                        (int value) {
-                      setState(() {
-                        _equipmentRating = value;
-                      });
-                    }),
-                    _buildRatingQuestion('Staff', _staffRating, (int value) {
-                      setState(() {
-                        _staffRating = value;
-                      });
-                    }),
-
-                    // خانة الملاحظات
-                    TextField(
-                      onChanged: (text) {
-                        _feedbackNotes = text;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Additional Notes',
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                      ),
-                      style: TextStyle(color: Colors.white),
-                      maxLines: 4,
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    // هنا يمكنك إضافة كود لحفظ التقييم في قاعدة البيانات
-                    print('Service Rating: $_serviceRating');
-                    print('Trainer Rating: $_trainerRating');
-                    print('Schedule Rating: $_scheduleRating');
-                    print('Equipment Rating: $_equipmentRating');
-                    print('Staff Rating: $_staffRating');
-                    print('Feedback Notes: $_feedbackNotes');
-
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.yellow),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildRatingQuestion(
-      String question, int currentRating, ValueChanged<int> onRatingChanged) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          question,
-          style: TextStyle(color: Colors.white),
-        ),
-        Row(
-          children: List.generate(5, (index) {
-            return IconButton(
-              icon: Icon(
-                index < currentRating ? Icons.star : Icons.star_border,
-                color: Colors.yellow,
-              ),
-              onPressed: () {
-                onRatingChanged(index + 1);
-              },
-            );
-          }),
-        ),
-      ],
     );
   }
 }

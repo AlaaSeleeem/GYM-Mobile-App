@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:gymm/api/endpoints.dart';
-import 'package:gymm/models/subscriptions.dart';
+import 'package:gymm/models/subscription.dart';
+import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,6 +76,21 @@ Future<List<Subscription>> getLatestSubscriptions(int id) async {
         (response as List).map(((sub) => Subscription.fromJson(sub))).toList();
     saveClientSubscriptions(subs);
     return subs;
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get subscription plans
+Future<(List<SubscriptionPlan>, bool)> getSubscriptionPlans(int page) async {
+  try {
+    final response = await _apiRequest(
+        method: "get", url: EndPoints.subscriptionPlans(page));
+    List<SubscriptionPlan> subs = (response["results"] as List)
+        .map(((sub) => SubscriptionPlan.fromJson(sub)))
+        .toList();
+    final bool next = response["next"] != null;
+    return (subs, next);
   } catch (e) {
     return Future.error(e);
   }

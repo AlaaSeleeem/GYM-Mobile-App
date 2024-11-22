@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
-import '../models/subscriptions.dart';
+import '../models/subscription.dart';
 
 class SubscriptionDetailsPage extends StatelessWidget {
   final Subscription subscription;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymm/models/subscriptions.dart';
+import 'package:gymm/models/subscription.dart';
 import 'package:gymm/screens/subscription_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 

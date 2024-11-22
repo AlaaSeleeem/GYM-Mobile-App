@@ -5,7 +5,10 @@ final ThemeData darkTheme = ThemeData(
   primarySwatch: primaryColor,
   brightness: Brightness.dark,
   colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFFfbc02d), brightness: Brightness.dark),
+      seedColor: const Color(0xFFfbc02d),
+      brightness: Brightness.dark,
+      onPrimary: Colors.white,
+      onSurface: Colors.white),
   primaryColorDark: primaryColor,
   scaffoldBackgroundColor: Colors.black,
   textSelectionTheme: const TextSelectionThemeData(
@@ -29,4 +32,10 @@ final ThemeData darkTheme = ThemeData(
     labelStyle: TextStyle(color: blackColor[300], fontSize: 18),
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryColor),
+  appBarTheme: AppBarTheme(
+      color: blackColor,
+      surfaceTintColor: blackColor,
+      elevation: 0,
+      titleTextStyle: TextStyle(
+          fontWeight: FontWeight.bold, fontSize: 24, color: blackColor[400])),
 );
