@@ -11,6 +11,7 @@ final ThemeData darkTheme = ThemeData(
       onSurface: Colors.white),
   primaryColorDark: primaryColor,
   scaffoldBackgroundColor: Colors.black,
+  fontFamily: "cairo",
   textSelectionTheme: const TextSelectionThemeData(
     selectionHandleColor: primaryColor,
     cursorColor: primaryColor,
@@ -37,5 +38,8 @@ final ThemeData darkTheme = ThemeData(
       surfaceTintColor: blackColor,
       elevation: 0,
       titleTextStyle: TextStyle(
-          fontWeight: FontWeight.bold, fontSize: 24, color: primaryColor)),
+          fontFamily: "cairo",
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          color: primaryColor)),
 );

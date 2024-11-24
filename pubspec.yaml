@@ -39,6 +39,10 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+  fonts:
+    - family: "cairo"
+      fonts:
+        - asset: "assets/fonts/cairo/cairo-variable.ttf"
   uses-material-design: true
 
 

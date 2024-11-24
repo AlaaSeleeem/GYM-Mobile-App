@@ -59,6 +59,13 @@ class _MyAppState extends State<MyApp> {
       routes: {
         "/": (context) => _logged ? const MainPage() : const LoginScreen(),
       },
+      // builder: (context, child) {
+      //   // Remove top padding globally
+      //   return MediaQuery(
+      //     data: MediaQuery.of(context).copyWith(padding: EdgeInsets.zero),
+      //     child: child!,
+      //   );
+      // },
     );
   }
 }
