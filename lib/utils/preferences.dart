@@ -9,10 +9,10 @@ Future<void> saveClientData(Map data) async {
   await prefs.setString("client id", data["id"].toString());
 }
 
-Future<void> removeClientData() async {
+Future<void> removeSessionData() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.remove("client name");
-  await prefs.remove("client id");
+  await prefs.remove("client");
+  await prefs.remove("subscriptions");
 }
 
 Future<bool> isUserLoggedIn() async {

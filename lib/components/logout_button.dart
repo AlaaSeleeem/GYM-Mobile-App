@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/components/loading.dart';
+import 'package:gymm/theme/colors.dart';
 
 import '../screens/login.dart';
 import '../utils/preferences.dart';
@@ -18,11 +19,49 @@ class _LogoutButtonState extends State<LogoutButton> {
     setState(() {
       _loading = true;
     });
-    await removeClientData();
+    await removeSessionData();
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => const LoginScreen()));
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: const Padding(
+                padding: EdgeInsets.all(12),
+                child: Text(
+                  "Are you sure?",
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+              icon: const Icon(
+                Icons.info_outline,
+                color: primaryColor,
+                size: 44,
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    )),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      _logout();
+                    },
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(fontSize: 16, color: Colors.red[500]),
+                    ))
+              ],
+            ));
   }
 
   @override
@@ -34,7 +73,7 @@ class _LogoutButtonState extends State<LogoutButton> {
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
-                    onPressed: _logout,
+                    onPressed: _showLogoutDialog,
                     style: ButtonStyle(
                         backgroundColor:
                             WidgetStateProperty.all(Colors.red[500]),

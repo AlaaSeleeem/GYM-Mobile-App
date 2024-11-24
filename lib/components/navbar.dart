@@ -3,7 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/theme/colors.dart';
 
 class BottomNavbar extends StatelessWidget {
-  const BottomNavbar({super.key, this.selectedItemColor, required this.index, required this.onTab});
+  const BottomNavbar(
+      {super.key,
+      this.selectedItemColor,
+      required this.index,
+      required this.onTab});
 
   final Color? selectedItemColor;
   final int index;
@@ -26,30 +30,13 @@ class BottomNavbar extends StatelessWidget {
               BottomNavigationBarItem(
                   icon: Icon(FontAwesomeIcons.house), label: 'Home'),
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.barcode), label: 'Barcode'),
+                  icon: Icon(FontAwesomeIcons.barcode), label: 'Scan'),
               BottomNavigationBarItem(
                   icon: Icon(FontAwesomeIcons.user), label: 'Profile'),
               BottomNavigationBarItem(
                   icon: Icon(FontAwesomeIcons.store), label: 'Store'),
             ],
-            onTap: onTab
-
-            //     (value) {
-            //   if (value == 0) {
-            //     index = value;
-            //     goTO(context: context, screen: MainPage());
-            //   } else if (value == 1) {
-            //     index = value;
-            //     goTO(context: context, screen: QRCodeScreen());
-            //   } else if (value == 2) {
-            //     index = value;
-            //     goTO(context: context, screen: ProfileScreen());
-            //   } else if (value == 3) {
-            //     index = value;
-            //     goTO(context: context, screen: ProductsPage());
-            //   }
-            // }
-            ),
+            onTap: onTab),
       ),
     );
   }

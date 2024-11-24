@@ -6,10 +6,10 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
 import 'package:gymm/components/no_active_subscriptions.dart';
 import 'package:gymm/models/subscription.dart';
-import 'package:gymm/screens/plans.dart';
+import 'package:gymm/screens/plans_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
-import 'package:gymm/utils/snackbar.dart';
+import 'package:gymm/utils/snack_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

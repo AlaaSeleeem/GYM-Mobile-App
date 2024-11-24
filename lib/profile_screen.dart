@@ -6,7 +6,7 @@ import 'package:gymm/components/logout_button.dart';
 import 'package:gymm/screens/login.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:image_picker/image_picker.dart';
-import 'navbar.dart';
+import 'components/navbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});

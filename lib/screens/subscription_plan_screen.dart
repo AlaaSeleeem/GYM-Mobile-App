@@ -14,7 +14,7 @@ class SubscriptionPlanPage extends StatelessWidget {
       {
         "icon": Icons.attach_money,
         "label": "Price",
-        "value": "\$${subscriptionPlan.price.toStringAsFixed(2)}"
+        "value": subscriptionPlan.price.toStringAsFixed(2)
       },
       {
         "icon": Icons.calendar_today,

@@ -6,11 +6,14 @@ void showSnackBar(BuildContext context, String message, String state) {
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
     margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
     content: SizedBox(
-      child: Text(
-        message,
-        style: TextStyle(
-            fontSize: 17,
-            color: state == "info" ? primaryColor : Colors.red[500]),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          message,
+          style: TextStyle(
+              fontSize: 20,
+              color: state == "info" ? primaryColor : Colors.red[500]),
+        ),
       ),
     ),
     behavior: SnackBarBehavior.floating,

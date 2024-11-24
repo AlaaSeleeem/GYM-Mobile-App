@@ -4,7 +4,7 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/screens/subscription_plan_screen.dart';
 import 'package:gymm/theme/colors.dart';
-import 'package:gymm/utils/snackbar.dart';
+import 'package:gymm/utils/snack_bar.dart';
 
 class PlansPage extends StatefulWidget {
   const PlansPage({super.key});
@@ -14,7 +14,7 @@ class PlansPage extends StatefulWidget {
 }
 
 class _PlansPageState extends State<PlansPage> {
-  int current_page = 1;
+  int currentPage = 1;
   bool loading = false;
   bool hasMore = true;
   late List<SubscriptionPlan> plans = [];
@@ -28,7 +28,7 @@ class _PlansPageState extends State<PlansPage> {
   Future<void> _refreshPlans() async {
     setState(() {
       plans = [];
-      current_page = 1;
+      currentPage = 1;
       hasMore = true;
     });
     await _loadMorePlans();
@@ -42,10 +42,10 @@ class _PlansPageState extends State<PlansPage> {
 
     try {
       final (List<SubscriptionPlan> newPlans, bool next) =
-          await getSubscriptionPlans(current_page);
+          await getSubscriptionPlans(currentPage);
       setState(() {
         loading = false;
-        current_page++;
+        currentPage++;
         plans.addAll(newPlans);
         if (!next) {
           hasMore = false;
