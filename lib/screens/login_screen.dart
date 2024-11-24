@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gymm/MainPage.dart';
+import 'package:gymm/screens/main_screen.dart';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';

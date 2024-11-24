@@ -129,7 +129,8 @@ class SubscriptionPlanPage extends StatelessWidget {
                   },
                 );
               }),
-              if (subscriptionPlan.description != null && subscriptionPlan.description!.isNotEmpty)
+              if (subscriptionPlan.description != null &&
+                  subscriptionPlan.description!.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

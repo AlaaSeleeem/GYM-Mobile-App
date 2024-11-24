@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/screens/scan_screen.dart';
 import 'package:gymm/Store.dart';
-import 'package:gymm/profile_screen.dart';
+import 'package:gymm/screens/profile_screen.dart';
 import 'package:gymm/screens/home_screen.dart';
-import 'components/navbar.dart';
+import '../components/navbar.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage>
   final List<Widget> _pages = [
     const HomePage(),
     const ScanPage(),
-    ProfileScreen(),
+    const ProfilePage(),
     const ProductsPage(),
   ];
 

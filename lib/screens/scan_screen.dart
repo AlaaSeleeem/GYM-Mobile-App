@@ -72,15 +72,15 @@ class _ScanPageState extends State<ScanPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'Scan code to enter',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                        // const SizedBox(height: 20),
+                        // const Text(
+                        //   'Scan code to enter',
+                        //   style: TextStyle(
+                        //     color: Colors.white,
+                        //     fontSize: 20,
+                        //   ),
+                        //   textAlign: TextAlign.center,
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 40),

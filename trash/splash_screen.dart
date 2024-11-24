@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gymm/MainPage.dart';
-import 'package:gymm/screens/login.dart';
+import 'package:gymm/screens/main_screen.dart';
+import 'package:gymm/screens/login_screen.dart';
 import 'package:gymm/utils/preferences.dart';
 
 class SplashScreen extends StatefulWidget {

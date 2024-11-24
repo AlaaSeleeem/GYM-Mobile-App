@@ -6,6 +6,8 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
 import 'package:gymm/components/no_active_subscriptions.dart';
 import 'package:gymm/models/subscription.dart';
+import 'package:gymm/screens/exercises_screen.dart';
+import 'package:gymm/screens/news_screen.dart';
 import 'package:gymm/screens/plans_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
@@ -231,15 +233,15 @@ class _HomePageState extends State<HomePage>
                       _buildSquareButton(
                           label: 'Plans',
                           icon: Icons.subscriptions,
-                          page: PlansPage()),
-                      _buildSquareButton(
-                          label: 'Exercises',
-                          icon: Icons.fitness_center,
-                          page: PlansPage()),
+                          page: const PlansPage()),
                       _buildSquareButton(
                           label: 'News',
                           icon: Icons.newspaper,
-                          page: PlansPage()),
+                          page: const NewsPage()),
+                      _buildSquareButton(
+                          label: 'Exercises',
+                          icon: Icons.fitness_center,
+                          page: const ExercisesPage()),
                       _buildSquareButton(
                           label: 'Contact',
                           icon: Icons.call,

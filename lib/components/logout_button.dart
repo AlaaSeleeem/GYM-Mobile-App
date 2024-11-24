@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/theme/colors.dart';
-
-import '../screens/login.dart';
+import '../screens/login_screen.dart';
 import '../utils/preferences.dart';
 
 class LogoutButton extends StatefulWidget {
@@ -70,23 +69,20 @@ class _LogoutButtonState extends State<LogoutButton> {
         ? const Loading()
         : SizedBox(
             width: double.infinity,
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                    onPressed: _showLogoutDialog,
-                    style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(Colors.red[500]),
-                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)))),
-                    child: const Text(
-                      "Log out",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          height: 3.25,
-                          fontWeight: FontWeight.w500),
-                    ))),
+            child: ElevatedButton(
+                onPressed: _showLogoutDialog,
+                style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(Colors.red[500]),
+                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)))),
+                child: const Text(
+                  "Log out",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      height: 3.25,
+                      fontWeight: FontWeight.w500),
+                )),
           );
   }
 }
