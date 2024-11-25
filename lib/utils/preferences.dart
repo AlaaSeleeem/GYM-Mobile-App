@@ -1,12 +1,13 @@
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
+import 'package:gymm/models/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-Future<void> saveClientData(Map data) async {
+Future<void> saveClientData(Map<String,dynamic> data) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setString("client name", data["name"]);
-  await prefs.setString("client id", data["id"].toString());
+  final clientJson = Client.fromJson(data).toJson();
+  await prefs.setString("client", json.encode(clientJson));
 }
 
 Future<void> removeSessionData() async {
@@ -17,15 +18,15 @@ Future<void> removeSessionData() async {
 
 Future<bool> isUserLoggedIn() async {
   final prefs = await SharedPreferences.getInstance();
-  final String? name = prefs.getString("client name");
-  return name != null;
+  final String? client = prefs.getString("client");
+  return client != null;
 }
 
-Future<Map> getClientData() async {
+Future<Client> getClientData() async {
   final prefs = await SharedPreferences.getInstance();
-  final String? name = prefs.getString("client name");
-  final String? id = prefs.getString("client id");
-  return {"name": name, "id": id};
+  final String? clientJson = prefs.getString("client");
+  final client = Client.fromJson(json.decode(clientJson!));
+  return client;
 }
 
 // storing/retrieving subscriptions

@@ -88,41 +88,44 @@ class SubscriptionPlanPage extends StatelessWidget {
                   itemCount: details.length,
                   itemBuilder: (context, index) {
                     final detail = details[index];
-                    return Container(
-                      height: 300,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: blackColor[900],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              detail["icon"] as IconData,
-                              size: 36.0,
-                              color: primaryColor,
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              detail["value"].toString(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 300),
+                      child: Container(
+                        // height: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: blackColor[900],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                detail["icon"] as IconData,
+                                size: 36.0,
+                                color: primaryColor,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 4.0),
-                            Text(
-                              detail["label"] as String,
-                              style: TextStyle(
-                                color: blackColor[500],
-                                fontSize: 14.0,
+                              const SizedBox(height: 8.0),
+                              Text(
+                                detail["value"].toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                              const SizedBox(height: 4.0),
+                              Text(
+                                detail["label"] as String,
+                                style: TextStyle(
+                                  color: blackColor[500],
+                                  fontSize: 14.0,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

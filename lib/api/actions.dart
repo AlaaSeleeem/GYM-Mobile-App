@@ -64,8 +64,6 @@ Future _apiRequest(
 
 // get latest subscriptions -> home page preview
 Future<List<Subscription>> getLatestSubscriptions(int id) async {
-  var prefs = await SharedPreferences.getInstance();
-  String? id = prefs.getString("client id");
   try {
     final response = await _apiRequest(
       method: "post",
@@ -88,6 +86,22 @@ Future<(List<SubscriptionPlan>, bool)> getSubscriptionPlans(int page) async {
         method: "get", url: EndPoints.subscriptionPlans(page));
     List<SubscriptionPlan> subs = (response["results"] as List)
         .map(((sub) => SubscriptionPlan.fromJson(sub)))
+        .toList();
+    final bool next = response["next"] != null;
+    return (subs, next);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get subscription plans
+Future<(List<Subscription>, bool)> getClientSubscriptionsHistory(
+    int id, int page) async {
+  try {
+    final response = await _apiRequest(
+        method: "get", url: EndPoints.clientSubscriptionsHistory(id, page));
+    List<Subscription> subs = (response["results"] as List)
+        .map(((sub) => Subscription.fromJson(sub)))
         .toList();
     final bool next = response["next"] != null;
     return (subs, next);

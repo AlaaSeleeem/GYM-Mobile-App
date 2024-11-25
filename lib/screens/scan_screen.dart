@@ -1,6 +1,10 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gymm/components/loading.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/preferences.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
@@ -11,6 +15,20 @@ class ScanPage extends StatefulWidget {
 
 class _ScanPageState extends State<ScanPage> {
   String code = "Barcode";
+  String? id;
+
+  @override
+  void initState() {
+    super.initState();
+    _getClientID();
+  }
+
+  _getClientID() async {
+    final client = await getClientData();
+    setState(() {
+      id = client.id.toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +61,13 @@ class _ScanPageState extends State<ScanPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 45),
+                    const SizedBox(height: 20),
+                    Text(id ?? "",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: blackColor[200],
+                            fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 35),
                     Column(
                       children: [
                         IntrinsicWidth(
@@ -58,16 +82,38 @@ class _ScanPageState extends State<ScanPage> {
                                     Border.all(color: primaryColor, width: 6),
                               ),
                               child: Center(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Image.asset(
-                                    code == "Barcode"
-                                        ? 'assets/parcode.jfif'
-                                        : 'assets/img_1.png',
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
+                                child: id != null
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        clipBehavior: Clip.antiAlias,
+                                        child: code == "Barcode"
+                                            ? BarcodeWidget(
+                                                data: id!,
+                                                barcode: Barcode.code128(),
+                                                width: 220,
+                                                height: 240,
+                                                padding: const EdgeInsets.only(
+                                                    top: 10,
+                                                    left: 10,
+                                                    right: 10),
+                                                drawText: true,
+                                                errorBuilder: (context, str) =>
+                                                    errorWidget,
+                                              )
+                                            : QrImageView(
+                                                data: id!,
+                                                version: QrVersions.auto,
+                                                size: 240,
+                                                errorStateBuilder:
+                                                    (context, err) =>
+                                                        errorWidget,
+                                                embeddedImageEmitsError: true,
+                                              ),
+                                      )
+                                    : const Loading(
+                                        height: 240,
+                                        width: 240,
+                                      ),
                               ),
                             ),
                           ),
@@ -170,3 +216,15 @@ class _ScanPageState extends State<ScanPage> {
     );
   }
 }
+
+Widget errorWidget = SizedBox(
+  width: 240,
+  height: 240,
+  child: Center(
+    child: Text(
+      "Oops! Error Happened",
+      style: TextStyle(
+          color: Colors.red[600], fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+  ),
+);

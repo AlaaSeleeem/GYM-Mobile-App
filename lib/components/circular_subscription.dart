@@ -98,14 +98,14 @@ class _CircularSubscriptionState extends State<CircularSubscription>
                         width: 250,
                         child: CircularProgressIndicator(
                           strokeWidth: 8,
-                          value: _animation.value,
+                          value: subscription.isExpired ? 1 : _animation.value,
                           backgroundColor: Colors.grey[800],
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            subscription.daysLeft() <= 0
+                            subscription.daysLeft() <= 0 ||
+                                    subscription.isExpired
                                 ? Colors.red
-                                : (subscription.attendanceDays >=
-                                        subscription.totalDays() * 0.9
-                                    ? Colors.red
+                                : (subscription.isFrozen
+                                    ? primaryColor
                                     : Colors.green),
                           ),
                         ),

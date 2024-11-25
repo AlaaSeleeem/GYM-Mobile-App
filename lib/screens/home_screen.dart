@@ -5,10 +5,12 @@ import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
 import 'package:gymm/components/no_active_subscriptions.dart';
+import 'package:gymm/models/client.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/screens/exercises_screen.dart';
 import 'package:gymm/screens/news_screen.dart';
 import 'package:gymm/screens/plans_screen.dart';
+import 'package:gymm/screens/subscriptions_history_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
@@ -55,10 +57,10 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _getClientData() async {
-    Map data = await getClientData();
+    Client client = await getClientData();
     setState(() {
-      name = data["name"];
-      id = data["id"];
+      name = client.name!;
+      id = client.id!;
     });
   }
 
@@ -123,7 +125,9 @@ class _HomePageState extends State<HomePage>
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
                               style: const TextStyle(
-                                  color: primaryColor, fontSize: 25, fontWeight: FontWeight.bold),
+                                  color: primaryColor,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -206,9 +210,38 @@ class _HomePageState extends State<HomePage>
                     )
                   : _renderActiveSubscriptions(subscriptions),
 
-              const SizedBox(height: 40),
+              // Subscriptions history btn
+              const SizedBox(height: 30),
+              Container(
+                width: double.infinity,
+                height: 65,
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: blackColor[800],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  icon: const Icon(
+                    Icons.history,
+                    size: 30,
+                  ),
+                  label: const Text(
+                    "View All Subscriptions",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            SubscriptionsHistoryPage(id: int.parse(id))));
+                  },
+                ),
+              ),
 
               // Quick Access
+              const SizedBox(height: 40),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(

@@ -29,6 +29,7 @@ class _LogoutButtonState extends State<LogoutButton> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              backgroundColor: blackColor[900],
               content: const Padding(
                 padding: EdgeInsets.all(12),
                 child: Text(
@@ -48,7 +49,7 @@ class _LogoutButtonState extends State<LogoutButton> {
                     },
                     child: const Text(
                       "Cancel",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     )),
                 TextButton(
                     onPressed: () async {
@@ -57,7 +58,10 @@ class _LogoutButtonState extends State<LogoutButton> {
                     },
                     child: Text(
                       "Logout",
-                      style: TextStyle(fontSize: 16, color: Colors.red[500]),
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.red[500],
+                          fontWeight: FontWeight.bold),
                     ))
               ],
             ));
