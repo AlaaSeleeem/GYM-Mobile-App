@@ -219,7 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           child: ElevatedButton(
                                             onPressed: () {
                                               _login();
-                                              // _submitForm();
                                             },
                                             style: ButtonStyle(
                                               backgroundColor:
@@ -245,24 +244,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 50,
                                   ),
 
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('DON\'T HAVE AN ACCOUNT?',
-                                            style: TextStyle(
-                                                color: blackColor[300])),
-                                        TextButton(
-                                          onPressed: () {
-                                            _openWhatsApp();
-                                          },
-                                          child: const Text('Contact PRO GYM',
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Wrap(
+                                        alignment: WrapAlignment.center,
+                                        spacing: 8,
+                                        runSpacing: 4,
+                                        runAlignment: WrapAlignment.center,
+                                        children: [
+                                          Text('DON\'T HAVE AN ACCOUNT?',
                                               style: TextStyle(
-                                                  color: Colors.yellow,
-                                                  fontWeight: FontWeight.w500,
+                                                  color: blackColor[300],
                                                   fontSize: 16)),
-                                        ),
-                                      ]),
+                                          TextButton(
+                                            onPressed: () {
+                                              _openWhatsApp();
+                                            },
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                              alignment: Alignment.center,
+                                              minimumSize: const Size(0, 0),
+                                              tapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                            ),
+                                            child: const Text('Contact PRO GYM',
+                                                style: TextStyle(
+                                                    color: Colors.yellow,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 17)),
+                                          ),
+                                        ]),
+                                  ),
                                 ]),
                           ),
                         ],

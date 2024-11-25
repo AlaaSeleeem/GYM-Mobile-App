@@ -10,8 +10,6 @@ class Client {
   final String? email;
   final String? address;
   final String? photoUrl;
-  final String? qrCodeUrl;
-  final String? barcodeUrl;
   final bool isBlocked;
   final double? weight;
   final double? height;
@@ -28,8 +26,6 @@ class Client {
     this.email,
     this.address,
     this.photoUrl,
-    this.qrCodeUrl,
-    this.barcodeUrl,
     this.isBlocked = false,
     this.weight,
     this.height,
@@ -51,8 +47,6 @@ class Client {
       email: json['email'] as String?,
       address: json['address'] as String?,
       photoUrl: json['photo'] as String?,
-      qrCodeUrl: json['qr_code'] as String?,
-      barcodeUrl: json['barcode'] as String?,
       isBlocked: json['is_blocked'] as bool? ?? false,
       weight: (json['weight'] as num?)?.toDouble(),
       height: (json['height'] as num?)?.toDouble(),
@@ -73,8 +67,6 @@ class Client {
       'email': email,
       'address': address,
       'photo': photoUrl,
-      'qr_code': qrCodeUrl,
-      'barcode': barcodeUrl,
       'is_blocked': isBlocked,
       'weight': weight,
       'height': height,

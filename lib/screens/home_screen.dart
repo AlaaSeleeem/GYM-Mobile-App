@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage>
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
                               style: const TextStyle(
-                                  color: primaryColor, fontSize: 24),
+                                  color: primaryColor, fontSize: 25, fontWeight: FontWeight.bold),
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -280,7 +280,10 @@ class _HomePageState extends State<HomePage>
             Icon(icon, color: Colors.black, size: 40),
             const SizedBox(height: 8),
             Text(label,
-                style: const TextStyle(color: Colors.black, fontSize: 16)),
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
           ],
         ),
       ),

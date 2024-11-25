@@ -110,7 +110,7 @@ class _PlansPageState extends State<PlansPage> {
                     const Center(
                       child: Text(
                         "No current Plans",
-                        style: TextStyle(fontSize: 24, color: primaryColor),
+                        style: TextStyle(fontSize: 24),
                       ),
                     )
                 ],
