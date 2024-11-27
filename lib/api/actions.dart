@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:gymm/api/endpoints.dart';
+import 'package:gymm/models/client.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future _apiRequest(
@@ -57,6 +60,54 @@ Future _apiRequest(
     } else {
       throw Exception("Http error: ${response.statusCode} - ${response.body}");
     }
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// download client photo
+downloadAndSaveImage(String? url) async {
+  if (url == null) return;
+  try {
+    // Get the directory to save the image
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath =
+        '${directory.path}/profile_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final prefs = await SharedPreferences.getInstance();
+
+    // Download the image
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      // Remove prev image if found
+      String? prevImage = prefs.getString("profile_image_path");
+      await removeClientSavedPhoto(prevImage);
+
+      // Save the image to a file
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      // Save the file path in shared preferences
+      await prefs.setString('profile_image_path', filePath);
+
+      return filePath;
+    } else if (response.statusCode == 404) {
+      await prefs.remove("profile_image_path");
+    } else {
+      throw Exception("error downloading photo");
+    }
+  } catch (e) {
+    throw Exception('Error downloading image: $e');
+  }
+}
+
+Future<Client> getClientData(String id) async {
+  try {
+    final response = await _apiRequest(
+        method: "post", url: EndPoints.clientData(), data: {"id": id});
+
+    await saveClientData(response);
+    final client = Client.fromJson(response);
+    return client;
   } catch (e) {
     return Future.error(e);
   }

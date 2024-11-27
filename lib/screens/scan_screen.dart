@@ -24,7 +24,7 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   _getClientID() async {
-    final client = await getClientData();
+    final client = await getClientSavedData();
     setState(() {
       id = client.id.toString();
     });

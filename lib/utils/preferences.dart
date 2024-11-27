@@ -1,11 +1,14 @@
+import 'dart:io';
+import 'package:gymm/api/actions.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/models/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-Future<void> saveClientData(Map<String,dynamic> data) async {
+Future<void> saveClientData(Map<String, dynamic> data) async {
   final prefs = await SharedPreferences.getInstance();
+  await downloadAndSaveImage(data["photo"]);
   final clientJson = Client.fromJson(data).toJson();
   await prefs.setString("client", json.encode(clientJson));
 }
@@ -14,6 +17,17 @@ Future<void> removeSessionData() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove("client");
   await prefs.remove("subscriptions");
+  String? prevImage = prefs.getString("profile_image_path");
+  await removeClientSavedPhoto(prevImage);
+  await prefs.remove("profile_image_path");
+}
+
+Future<void> removeClientSavedPhoto(String? filaPath) async {
+  if (filaPath != null) {
+    if (File(filaPath).existsSync()) {
+      File(filaPath).deleteSync();
+    }
+  }
 }
 
 Future<bool> isUserLoggedIn() async {
@@ -22,7 +36,7 @@ Future<bool> isUserLoggedIn() async {
   return client != null;
 }
 
-Future<Client> getClientData() async {
+Future<Client> getClientSavedData() async {
   final prefs = await SharedPreferences.getInstance();
   final String? clientJson = prefs.getString("client");
   final client = Client.fromJson(json.decode(clientJson!));

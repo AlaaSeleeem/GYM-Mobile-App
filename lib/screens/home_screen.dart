@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> _getClientData() async {
-    Client client = await getClientData();
+    Client client = await getClientSavedData();
     setState(() {
       name = client.name!;
       id = client.id!;
@@ -208,37 +208,48 @@ class _HomePageState extends State<HomePage>
                   ? const Loading(
                       height: 300,
                     )
-                  : _renderActiveSubscriptions(subscriptions),
+                  : Column(
+                      children: [
+                        _renderActiveSubscriptions(subscriptions),
 
-              // Subscriptions history btn
-              const SizedBox(height: 30),
-              Container(
-                width: double.infinity,
-                height: 65,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: blackColor[800],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  icon: const Icon(
-                    Icons.history,
-                    size: 30,
-                  ),
-                  label: const Text(
-                    "View All Subscriptions",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            SubscriptionsHistoryPage(id: int.parse(id))));
-                  },
-                ),
-              ),
+                        // Subscriptions history - discover plans
+                        const SizedBox(height: 30),
+                        Container(
+                          width: double.infinity,
+                          height: 65,
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: blackColor[800],
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            icon: Icon(
+                              subscriptions.isEmpty
+                                  ? Icons.subscriptions
+                                  : Icons.history,
+                              size: 30,
+                              color: primaryColor,
+                            ),
+                            label: Text(
+                              subscriptions.isEmpty
+                                  ? "Discover Plans"
+                                  : "View All Subscriptions",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => subscriptions.isEmpty
+                                      ? const PlansPage()
+                                      : SubscriptionsHistoryPage(
+                                          id: int.parse(id))));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
 
               // Quick Access
               const SizedBox(height: 40),

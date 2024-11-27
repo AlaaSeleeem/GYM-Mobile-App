@@ -174,9 +174,11 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
             Expanded(
               flex: 2,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: subscription.daysLeft() <= 0 || subscription.isExpired
+                      ? Colors.red[500]
+                      : (subscription.isFrozen ? primaryColor : Colors.green),
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(16),
                     bottomRight: Radius.circular(16),
                   ),

@@ -35,6 +35,8 @@ final ThemeData darkTheme = ThemeData(
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryColor),
   appBarTheme: const AppBarTheme(
       color: blackColor,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: primaryColor),
       surfaceTintColor: blackColor,
       elevation: 0,
       titleTextStyle: TextStyle(

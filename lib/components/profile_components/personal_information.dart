@@ -17,7 +17,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
     final client = widget.client;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: blackColor[900],
         borderRadius: BorderRadius.circular(12),
@@ -27,7 +27,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
         children: [
           const Text(
             'Personal Information',
-            style: TextStyle(color: Colors.white, fontSize: 19),
+            style: TextStyle(
+                color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 15),
           Table(
