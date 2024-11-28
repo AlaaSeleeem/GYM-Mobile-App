@@ -55,57 +55,37 @@ class _PersonalInformationState extends State<PersonalInformation> {
             },
             children: [
               _buildRow(
-                  context: context,
-                  icon: Icons.person_rounded,
-                  title: "ID",
-                  value: client.id!),
+                  icon: Icons.person_rounded, title: "ID", value: client.id!),
               _buildRow(
-                  context: context,
                   icon: Icons.credit_card,
                   title: "National",
                   value: client.nationalId),
               _buildRow(
-                  context: context,
                   icon: Icons.phone_android,
                   title: "Phone",
                   value: client.phone),
               _buildRow(
-                  context: context,
                   icon: Icons.phone_android,
                   title: "Phone 2",
                   value: client.phone2),
               _buildRow(
-                  context: context,
-                  icon: Icons.male,
-                  title: "Gander",
-                  value: client.gender),
+                  icon: Icons.male, title: "Gander", value: client.gender),
               _buildRow(
-                  context: context,
                   icon: Icons.calendar_month,
                   title: "Birth Date",
                   value: client.birthDateString()),
               _buildRow(
-                  context: context,
                   icon: Icons.numbers,
                   title: "Age",
                   value: client.age?.toString()),
+              _buildRow(icon: Icons.email, title: "Email", value: client.email),
               _buildRow(
-                  context: context,
-                  icon: Icons.email,
-                  title: "Email",
-                  value: client.email),
+                  icon: Icons.house, title: "Address", value: client.address),
               _buildRow(
-                  context: context,
-                  icon: Icons.house,
-                  title: "Address",
-                  value: client.address),
-              _buildRow(
-                  context: context,
                   icon: Icons.directions_run,
                   title: "Weight",
                   value: client.weight?.toString()),
               _buildRow(
-                  context: context,
                   icon: Icons.height,
                   title: "Height",
                   value: client.height?.toString()),
@@ -117,10 +97,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
   }
 
   TableRow _buildRow(
-      {required BuildContext context,
-      required IconData icon,
-      required String title,
-      String? value}) {
+      {required IconData icon, required String title, String? value}) {
     bool noValue = value == null || value.isEmpty;
     return TableRow(
       children: [

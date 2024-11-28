@@ -7,6 +7,39 @@ class SubscriptionDetailsPage extends StatelessWidget {
 
   const SubscriptionDetailsPage({super.key, required this.subscription});
 
+  TableRow _buildRow(
+      {required String title,
+      required String value,
+      Color color = Colors.white}) {
+    return TableRow(children: [
+      SizedBox(
+        height: 40,
+        child: Row(
+          children: [
+            Expanded(
+                child: Text(
+              title,
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            ))
+          ],
+        ),
+      ),
+      ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 40),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+                child: Text(
+              value,
+              style: TextStyle(fontSize: 20, color: color),
+            ))
+          ],
+        ),
+      )
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,68 +61,81 @@ class SubscriptionDetailsPage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: primaryColor),
               ),
-              const SizedBox(height: 8),
-              Text(
-                "Code: ${subscription.id}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Status: ${subscription.isExpired ? "Expired" : subscription.isFrozen ? "Frozen" : "Active"}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Start Date: "
-                "${subscription.startDate.day}"
-                "-${subscription.startDate.month}"
-                "-${subscription.startDate.year}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Start Date: "
-                "${subscription.endDate?.day}"
-                "-${subscription.endDate?.month}"
-                "-${subscription.endDate?.year}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Attendance: ${subscription.attendanceDays} "
-                "${subscription.plan.isDuration ? "Days" : "Classes"}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                subscription.remaining(),
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Freezable: ${subscription.plan.freezable ? "Yes" : "No"}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              if (subscription.plan.freezable)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8),
-                    Text(
-                      "Max Freeze Days: ${subscription.plan?.freezeNo} Days",
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Freeze Days Used: ${subscription.freezeDaysUsed} Days",
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                  ],
-                ),
-              const SizedBox(height: 8),
-              Text(
-                "Invitations: ${subscription.plan.invitations}",
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+              const SizedBox(height: 12),
+              Table(
+                columnWidths: const {
+                  0: FlexColumnWidth(1.3),
+                  1: FlexColumnWidth(3)
+                },
+                children: [
+                  // Code
+                  _buildRow(title: "Code", value: subscription.id.toString()),
+
+                  // Status
+                  _buildRow(
+                      title: "Status",
+                      value: subscription.isExpired
+                          ? "Expired"
+                          : subscription.startDate.isAfter(DateTime.now())
+                              ? "Waiting"
+                              : subscription.isFrozen
+                                  ? "Frozen"
+                                  : "Active",
+                      color: subscription.isExpired
+                          ? Colors.red
+                          : subscription.startDate.isAfter(DateTime.now())
+                              ? Colors.purpleAccent
+                              : subscription.isFrozen
+                                  ? primaryColor
+                                  : Colors.green),
+
+                  // Start date
+                  _buildRow(
+                      title: "Start Date",
+                      value: "${subscription.startDate.day}"
+                          "-${subscription.startDate.month}"
+                          "-${subscription.startDate.year}"),
+
+                  // End date
+                  _buildRow(
+                      title: "End Date",
+                      value: "${subscription.endDate?.day}"
+                          "-${subscription.endDate?.month}"
+                          "-${subscription.endDate?.year}"),
+
+                  // Attendance
+                  _buildRow(
+                      title: "Attendance",
+                      value:
+                          "${subscription.attendanceDays} ${subscription.plan.isDuration ? "Days" : "Classes"}"),
+
+                  // Remaining
+                  _buildRow(
+                      title: "Remaining",
+                      value: subscription.remaining(prefix: false)),
+
+                  // Remaining
+                  _buildRow(
+                      title: "Freezable",
+                      value: subscription.plan.freezable ? "Yes" : "No"),
+
+                  // Max freeze days
+                  if (subscription.plan.freezable)
+                    _buildRow(
+                        title: "Max Freeze Days",
+                        value: "${subscription.plan.freezeNo} Days"),
+
+                  // Freeze days used
+                  if (subscription.plan.freezable)
+                    _buildRow(
+                        title: "Freeze Days Used",
+                        value: "${subscription.freezeDaysUsed} Days"),
+
+                  // Invitations
+                  _buildRow(
+                      title: "Invitations",
+                      value: "${subscription.plan.invitations}"),
+                ],
               ),
               if (subscription.plan.description != null &&
                   subscription.plan.description!.isNotEmpty)

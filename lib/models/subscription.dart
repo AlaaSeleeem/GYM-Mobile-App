@@ -96,10 +96,10 @@ class Subscription {
     };
   }
 
-  String remaining() {
+  String remaining({bool prefix = true}) {
     return plan.isDuration
-        ? "Remaining: ${plan.days! - attendanceDays} Days"
-        : "Remaining: ${plan.classesNo! - attendanceDays} Classes";
+        ? "${prefix? "Remaining: " : ""}${plan.days! - attendanceDays} Days"
+        : "${prefix? "Remaining: " : ""}${plan.classesNo! - attendanceDays} Classes";
   }
 
   int daysLeft() {

@@ -46,13 +46,68 @@ class _CircularSubscriptionState extends State<CircularSubscription>
     _controller.forward();
   }
 
-  Color _getIndicatorColor() {
-    Subscription sub = widget.subscription;
+  Color _getIndicatorColor(Subscription sub) {
+    // Subscription sub = widget.subscription;
     if (sub.isExpired) return Colors.red[500]!;
-    if (sub.isFrozen || sub.startDate.isAfter(DateTime.now())) {
-      return primaryColor;
-    }
+    if (sub.startDate.isAfter(DateTime.now())) return Colors.purpleAccent;
+    if (sub.isFrozen) return primaryColor;
     return Colors.green;
+  }
+
+  Widget _timingDetails(Subscription sub) {
+    return Column(children: [
+      // start|end dates
+      Text(
+        sub.startDate.isAfter(DateTime.now())
+            ? "Starts: ${sub.startDate.day}-${sub.startDate.month}-${sub.startDate.year}"
+            : "Expires: ${sub.endDate?.day}-${sub.endDate?.month}-${sub.endDate?.year}",
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+      const SizedBox(height: 8),
+      if (sub.startDate.isAfter(DateTime.now()))
+        const Text(
+          "Waiting",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.purpleAccent,
+            fontSize: 16,
+          ),
+        ),
+      if (!sub.isExpired && sub.startDate.isBefore(DateTime.now()))
+        Text(
+          sub.remaining(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: sub.daysLeft() <= 1 ? Colors.red : primaryColor,
+            fontSize: 16,
+          ),
+        ),
+      if (sub.isExpired)
+        const Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_alert,
+                  color: Colors.red,
+                  size: 24,
+                ),
+                SizedBox(width: 4),
+                Text(
+                  'Expired',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ],
+            ),
+          ],
+        )
+    ]);
   }
 
   @override
@@ -138,46 +193,7 @@ class _CircularSubscriptionState extends State<CircularSubscription>
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        "Expires: ${subscription.endDate?.day}-${subscription.endDate?.month}-${subscription.endDate?.year}",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      if (!subscription.isExpired)
-                        Text(
-                          subscription.remaining(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: primaryColor,
-                            fontSize: 16,
-                          ),
-                        ),
-                      if (subscription.daysLeft() <= 1 ||
-                          subscription.isExpired)
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add_alert,
-                                  color: Colors.red,
-                                  size: 24,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  'Expired',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
+                      _timingDetails(subscription),
                     ],
                   ),
                   Positioned(
@@ -186,7 +202,7 @@ class _CircularSubscriptionState extends State<CircularSubscription>
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                            color: _getIndicatorColor(),
+                            color: _getIndicatorColor(subscription),
                             shape: BoxShape.circle),
                       ))
                 ],
