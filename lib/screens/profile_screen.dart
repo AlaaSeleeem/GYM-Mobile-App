@@ -170,12 +170,13 @@ class _ProfilePageState extends State<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
-      child: Scaffold(
-        body: client == null
-            ? const Center(child: Loading())
-            : SingleChildScrollView(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: client == null
+          ? const Center(child: Loading())
+          : RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -216,7 +217,9 @@ class _ProfilePageState extends State<ProfilePage>
 
                       // personal info
                       const SizedBox(height: 20),
-                      PersonalInformation(client: client!),
+                      PersonalInformation(
+                        client: client!,
+                      ),
 
                       const SizedBox(height: 20),
                       Container(
@@ -625,7 +628,7 @@ class _ProfilePageState extends State<ProfilePage>
                   ),
                 ),
               ),
-      ),
+            ),
     );
   }
 }

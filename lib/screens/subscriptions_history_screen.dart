@@ -5,6 +5,7 @@ import 'package:gymm/models/subscription.dart';
 import 'package:gymm/screens/subscription_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/snack_bar.dart';
+import 'package:async/async.dart';
 
 class SubscriptionsHistoryPage extends StatefulWidget {
   const SubscriptionsHistoryPage({super.key, required this.id});
@@ -21,6 +22,8 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
   bool loading = false;
   bool hasMore = true;
   late List<Subscription> subscriptions = [];
+
+  CancelableOperation? _currentOperation;
 
   @override
   void initState() {
@@ -43,23 +46,37 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
       loading = true;
     });
 
-    try {
-      final (List<Subscription> newSubscriptions, bool next) =
-          await getClientSubscriptionsHistory(widget.id, currentPage);
+    _currentOperation = CancelableOperation.fromFuture(
+        getClientSubscriptionsHistory(widget.id, currentPage), onCancel: () {
+      print("operation canceled");
+    });
+
+    _currentOperation!.value.then((value) {
+      if (!mounted) return;
+
+      final (List<Subscription> newSubscriptions, bool next) = value;
       setState(() {
-        loading = false;
         currentPage++;
         subscriptions.addAll(newSubscriptions);
         if (!next) {
           hasMore = false;
         }
       });
-    } catch (e) {
+    }).catchError((e) {
+      if (!mounted) return;
       showSnackBar(context, "Failed loading subscriptions history", "error");
+    }).whenComplete(() {
+      if (!mounted) return;
       setState(() {
         loading = false;
       });
-    }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentOperation?.cancel();
   }
 
   @override

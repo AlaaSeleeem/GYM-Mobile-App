@@ -12,7 +12,7 @@ void showSnackBar(BuildContext context, String message, String state) {
           message,
           style: TextStyle(
               fontSize: 20,
-              color: state == "info" ? primaryColor : Colors.red[500]),
+              color: state == "info" ? Colors.white : Colors.red[500]),
         ),
       ),
     ),

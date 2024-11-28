@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:gymm/api/endpoints.dart';
+import 'package:gymm/api/exceptions.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
@@ -54,12 +55,24 @@ Future _apiRequest(
         throw ArgumentError("Unsupported request method");
     }
 
+    final decodedResponse = utf8.decode(latin1.encode(response.body));
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      final decodedResponse = utf8.decode(latin1.encode(response.body));
       return json.decode(decodedResponse);
     } else {
-      throw Exception("Http error: ${response.statusCode} - ${response.body}");
+      throw ClientErrorException(
+          statusCode: response.statusCode,
+          responseBody: json.decode(decodedResponse));
     }
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// change client personal information
+Future<void> updateClientData(String id, Map<String, dynamic> data) async {
+  try {
+    await _apiRequest(
+        method: "patch", url: EndPoints.clientDetail(id), data: data);
   } catch (e) {
     return Future.error(e);
   }

@@ -1,4 +1,5 @@
 class Client {
+  final int customPk;
   final String? id;
   final String? name;
   final String? nationalId;
@@ -15,6 +16,7 @@ class Client {
   final double? height;
 
   Client({
+    required this.customPk,
     this.id,
     this.name,
     this.nationalId,
@@ -34,6 +36,7 @@ class Client {
   // fromJson factory method
   factory Client.fromJson(Map<String, dynamic> json) {
     return Client(
+      customPk: json["custom_pk"],
       id: json['id'] as String?,
       name: json['name'] as String?,
       nationalId: json['national_id'] as String?,
@@ -56,6 +59,7 @@ class Client {
   // toJson method
   Map<String, dynamic> toJson() {
     return {
+      'custom_pk': customPk,
       'id': id,
       'name': name,
       'national_id': nationalId,
@@ -72,4 +76,8 @@ class Client {
       'height': height,
     };
   }
+
+  String? birthDateString() => birthDate != null
+      ? "${birthDate!.year}-${birthDate!.month}-${birthDate!.day}"
+      : null;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/models/client.dart';
+import 'package:gymm/screens/edit_personal_info_screen.dart';
 import 'package:gymm/theme/colors.dart';
 
 class PersonalInformation extends StatefulWidget {
@@ -25,10 +26,26 @@ class _PersonalInformationState extends State<PersonalInformation> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Personal Information',
-            style: TextStyle(
-                color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Personal Information',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          const EditPersonalInfoPage()));
+                },
+                icon: const Icon(Icons.edit, color: primaryColor),
+                padding: EdgeInsets.zero,
+              )
+            ],
           ),
           const SizedBox(height: 15),
           Table(
@@ -38,39 +55,57 @@ class _PersonalInformationState extends State<PersonalInformation> {
             },
             children: [
               _buildRow(
-                  icon: Icons.person_rounded, title: "ID", value: client.id!),
+                  context: context,
+                  icon: Icons.person_rounded,
+                  title: "ID",
+                  value: client.id!),
               _buildRow(
+                  context: context,
                   icon: Icons.credit_card,
                   title: "National",
                   value: client.nationalId),
               _buildRow(
+                  context: context,
                   icon: Icons.phone_android,
                   title: "Phone",
                   value: client.phone),
               _buildRow(
+                  context: context,
                   icon: Icons.phone_android,
                   title: "Phone 2",
                   value: client.phone2),
               _buildRow(
-                  icon: Icons.male, title: "Gander", value: client.gender),
+                  context: context,
+                  icon: Icons.male,
+                  title: "Gander",
+                  value: client.gender),
               _buildRow(
+                  context: context,
                   icon: Icons.calendar_month,
                   title: "Birth Date",
-                  value: client.birthDate != null
-                      ? "${client.birthDate!.day} - ${client.birthDate!.month} - ${client.birthDate!.year}"
-                      : null),
+                  value: client.birthDateString()),
               _buildRow(
+                  context: context,
                   icon: Icons.numbers,
                   title: "Age",
                   value: client.age?.toString()),
-              _buildRow(icon: Icons.email, title: "Email", value: client.email),
               _buildRow(
-                  icon: Icons.house, title: "Address", value: client.address),
+                  context: context,
+                  icon: Icons.email,
+                  title: "Email",
+                  value: client.email),
               _buildRow(
+                  context: context,
+                  icon: Icons.house,
+                  title: "Address",
+                  value: client.address),
+              _buildRow(
+                  context: context,
                   icon: Icons.directions_run,
                   title: "Weight",
                   value: client.weight?.toString()),
               _buildRow(
+                  context: context,
                   icon: Icons.height,
                   title: "Height",
                   value: client.height?.toString()),
@@ -80,34 +115,41 @@ class _PersonalInformationState extends State<PersonalInformation> {
       ),
     );
   }
-}
 
-TableRow _buildRow(
-    {required IconData icon, required String title, required String? value}) {
-  bool noValue = value == null || value.isEmpty;
-  return TableRow(
-    children: [
-      SizedBox(
-        height: 40,
-        child: Row(
-          children: [
-            Icon(icon, color: primaryColor, size: 24),
-            const SizedBox(width: 10),
-            Text(title,
-                style: const TextStyle(color: Colors.white, fontSize: 18)),
-          ],
-        ),
-      ),
-      SizedBox(
-          height: 40,
+  TableRow _buildRow(
+      {required BuildContext context,
+      required IconData icon,
+      required String title,
+      String? value}) {
+    bool noValue = value == null || value.isEmpty;
+    return TableRow(
+      children: [
+        SizedBox(
+          height: 50,
           child: Row(
             children: [
-              Text(noValue ? "unset" : value,
-                  style: TextStyle(
-                      color: noValue ? Colors.red[500] : Colors.white,
-                      fontSize: 18)),
+              Icon(icon, color: primaryColor, size: 24),
+              const SizedBox(width: 10),
+              Text(title,
+                  style: const TextStyle(color: Colors.white, fontSize: 18)),
             ],
-          )),
-    ],
-  );
+          ),
+        ),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 50),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(noValue ? "unset" : value,
+                    softWrap: true,
+                    style: TextStyle(
+                        color: noValue ? Colors.red[500] : Colors.white,
+                        fontSize: 18)),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
