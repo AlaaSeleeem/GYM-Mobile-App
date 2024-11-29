@@ -188,8 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   color: blackColor[300],
                                                 ),
                                           onPressed: () {
-                                            isHidden = !isHidden;
-                                            setState(() {});
+                                            setState(() {
+                                              isHidden = !isHidden;
+                                            });
                                           },
                                         ),
                                         label: const Text(

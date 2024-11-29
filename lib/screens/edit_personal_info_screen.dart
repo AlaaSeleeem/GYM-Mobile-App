@@ -171,7 +171,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
       onTap: () async {
         DateTime? selectedDate = await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
+          initialDate: client?.birthDate ?? DateTime.now(),
           firstDate: DateTime(1900),
           lastDate: DateTime.now(),
         );
@@ -221,11 +221,12 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
       "phone2": phone2Controller.text,
       "national_id": nationalIdController.text,
       "gander": selectedGender,
-      "birthdate": birthdateController.text,
+      "birth_date": birthdateController.text,
       "email": email,
       "address": addressController.text,
-      if (weightController.text.isNotEmpty) "weight": weightController.text,
-      if (heightController.text.isNotEmpty) "height": heightController.text,
+      "weight": weightController.text.isNotEmpty ? weightController.text : null,
+      "height":
+          (heightController.text.isNotEmpty) ? heightController.text : null,
     };
 
     setState(() {
@@ -252,8 +253,10 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
       setState(() {
         if (error is ClientErrorException) {
           setState(() {
-            (error).responseBody.keys.forEach((k) {
-              fieldErrors[k] = "Invalid Value";
+            (error).responseBody.forEach((k, v) {
+              fieldErrors[k] = v.toString().contains("exist")
+                  ? "Phone number exists"
+                  : "Invalid Value";
             });
           });
         } else {
