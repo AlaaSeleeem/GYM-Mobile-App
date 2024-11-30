@@ -1,9 +1,9 @@
 class EndPoints {
   // production:
-  static const String _baseUrl = 'https://progym.pythonanywhere.com/';
+  // static const String _baseUrl = 'https://progym.pythonanywhere.com/';
 
   // local emulator:
-  // static const String _baseUrl = 'http://10.0.2.2:8000/';
+  static const String _baseUrl = 'http://10.0.2.2:8000/';
 
   // local edge:
   // static const String _baseUrl = 'http://localhost:8000/';
@@ -22,6 +22,8 @@ class EndPoints {
   static const String _subscriptionPlans =
       "api/subscriptions/subscription-plan/";
 
+  static const String _news = "api/clients/new/";
+
   static String login() => '$_baseUrl$_loginUrl';
 
   static String clientDetail(String id) => '$_baseUrl$_clientDetail$id/';
@@ -38,4 +40,6 @@ class EndPoints {
 
   static String subscriptionPlans(int page) =>
       '$_baseUrl$_subscriptionPlans?page=$page';
+
+  static String news(int page) => '$_baseUrl$_news?page=$page';
 }

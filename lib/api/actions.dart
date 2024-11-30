@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/api/exceptions.dart';
 import 'package:gymm/models/client.dart';
+import 'package:gymm/models/news.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/utils/preferences.dart';
@@ -179,6 +180,21 @@ Future<(List<Subscription>, bool)> getClientSubscriptionsHistory(
         .toList();
     final bool next = response["next"] != null;
     return (subs, next);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get news
+Future<(List<News>, bool)> getNews(int page) async {
+  try {
+    final response =
+        await _apiRequest(method: "get", url: EndPoints.news(page));
+    List<News> news = (response["results"] as List)
+        .map(((sub) => News.fromJson(sub)))
+        .toList();
+    final bool next = response["next"] != null;
+    return (news, next);
   } catch (e) {
     return Future.error(e);
   }

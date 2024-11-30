@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/loading.dart';
@@ -18,11 +19,18 @@ class _PlansPageState extends State<PlansPage> {
   bool loading = false;
   bool hasMore = true;
   late List<SubscriptionPlan> plans = [];
+  CancelableOperation? _currentOperation;
 
   @override
   void initState() {
     super.initState();
     _loadMorePlans();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentOperation?.cancel();
   }
 
   Future<void> _refreshPlans() async {
@@ -40,23 +48,30 @@ class _PlansPageState extends State<PlansPage> {
       loading = true;
     });
 
-    try {
-      final (List<SubscriptionPlan> newPlans, bool next) =
-          await getSubscriptionPlans(currentPage);
+    _currentOperation?.cancel();
+    _currentOperation =
+        CancelableOperation.fromFuture(getSubscriptionPlans(currentPage));
+
+    _currentOperation!.value.then((value) {
+      if (!mounted) return;
+
+      final (List<SubscriptionPlan> newPlans, bool next) = value;
       setState(() {
-        loading = false;
         currentPage++;
         plans.addAll(newPlans);
         if (!next) {
           hasMore = false;
         }
       });
-    } catch (e) {
+    }).catchError((e) {
       showSnackBar(context, "Failed loading plans", "error");
-      setState(() {
-        loading = false;
-      });
-    }
+    }).whenComplete(() {
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+      }
+    });
   }
 
   @override

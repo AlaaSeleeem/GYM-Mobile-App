@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
 
-class NewsDetailPage extends StatelessWidget {
-  final String image;
-  final String title;
-  final DateTime date;
-  final String content;
+import '../models/news.dart';
 
-  const NewsDetailPage({
-    super.key,
-    required this.image,
-    required this.title,
-    required this.date,
-    required this.content,
-  });
+class NewsDetailPage extends StatelessWidget {
+  final News item;
+
+  const NewsDetailPage({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +18,18 @@ class NewsDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             // Picture
             Container(
               width: double.infinity,
               height: 250,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(image),
+                  image: item.picture != null
+                      ? NetworkImage(item.picture!)
+                      : const AssetImage("assets/logo1.jpeg"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -42,7 +39,7 @@ class NewsDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                title,
+                item.title ?? "",
                 style: const TextStyle(
                   fontSize: 28,
                   color: primaryColor,
@@ -52,30 +49,32 @@ class NewsDetailPage extends StatelessWidget {
             ),
 
             // Date
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                "Published on: ${_formatDate(date)}",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: blackColor[400],
+            if (item.createdAt != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Published on: ${_formatDate(item.createdAt!)}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: blackColor[400],
+                  ),
                 ),
               ),
-            ),
 
             const SizedBox(height: 16),
 
             // Content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                content,
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.5,
+            if (item.content != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  item.content!,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    height: 1.5,
+                  ),
                 ),
               ),
-            ),
 
             const SizedBox(height: 16),
           ],
