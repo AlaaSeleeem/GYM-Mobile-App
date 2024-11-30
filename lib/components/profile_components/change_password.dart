@@ -89,6 +89,7 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                               _submit();
                             },
                           )),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -111,7 +112,7 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                                             height: 20,
                                             child: CircularProgressIndicator(
                                                 strokeWidth: 2,
-                                                color: Colors.white)),
+                                                color: blackColor)),
                                         SizedBox(
                                           width: 10,
                                         )
@@ -120,8 +121,9 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                                   const Text(
                                     "Change Password",
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
+                                        color: blackColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
                                   ),
                                 ],
                               ))

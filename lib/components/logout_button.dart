@@ -83,9 +83,9 @@ class _LogoutButtonState extends State<LogoutButton> {
                   "Log out",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 22,
                       height: 3.25,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.bold),
                 )),
           );
   }

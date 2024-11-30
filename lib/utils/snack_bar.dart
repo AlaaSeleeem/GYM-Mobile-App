@@ -17,7 +17,7 @@ void showSnackBar(BuildContext context, String message, String state) {
       ),
     ),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: blackColor[500],
+    backgroundColor: blackColor[600],
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     duration: const Duration(seconds: 3),
   );
