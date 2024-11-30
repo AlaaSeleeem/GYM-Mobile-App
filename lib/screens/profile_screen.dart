@@ -162,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage>
 
                         // change password
                         const SizedBox(height: 20),
-                        const ChangePasswordForm(),
+                        ChangePasswordForm(client: client),
 
                         // change photo
                         const SizedBox(height: 20),

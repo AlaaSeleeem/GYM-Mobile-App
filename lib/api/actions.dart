@@ -78,6 +78,16 @@ Future<void> updateClientData(String id, Map<String, dynamic> data) async {
   }
 }
 
+// change client personal information
+Future<void> changeClientPassword(Map<String, dynamic> data) async {
+  try {
+    await _apiRequest(
+        method: "post", url: EndPoints.changeClientPassword(), data: data);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
 // download client photo
 downloadAndSaveImage(String? url) async {
   if (url == null) return;

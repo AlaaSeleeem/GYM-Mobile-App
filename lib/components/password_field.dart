@@ -8,13 +8,15 @@ class PasswordField extends StatefulWidget {
       this.onFieldSubmit,
       required this.controller,
       required this.label,
-      this.focusNode});
+      this.focusNode,
+      this.error});
 
   final String requiredMsg;
   final Function? onFieldSubmit;
   final TextEditingController controller;
   final String label;
   final FocusNode? focusNode;
+  final String? error;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
@@ -67,6 +69,7 @@ class _PasswordFieldState extends State<PasswordField> {
         label: Text(
           widget.label,
         ),
+        errorText: widget.error
       ),
     );
   }

@@ -11,6 +11,8 @@ class EndPoints {
   static const String _loginUrl = "api/clients/client-login/";
   static const String _clientDetail = "api/clients/client/";
   static const String _clientData = "api/clients/client-data/";
+  static const String _changeClientPassword =
+      "api/clients/change-client-password/";
   static const String _clientLatestSubscriptions =
       "api/clients/client-latest-subscriptions/";
 
@@ -25,6 +27,8 @@ class EndPoints {
   static String clientDetail(String id) => '$_baseUrl$_clientDetail$id/';
 
   static String clientData() => '$_baseUrl$_clientData';
+
+  static String changeClientPassword() => '$_baseUrl$_changeClientPassword';
 
   static String clientLatestSubscriptions() =>
       '$_baseUrl$_clientLatestSubscriptions';
