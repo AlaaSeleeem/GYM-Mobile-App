@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -12,6 +13,7 @@ import 'package:gymm/screens/news_screen.dart';
 import 'package:gymm/screens/plans_screen.dart';
 import 'package:gymm/screens/subscriptions_history_screen.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 
@@ -32,8 +34,11 @@ class _HomePageState extends State<HomePage>
   List<Subscription> subscriptions = [];
   bool loadingSubs = true;
 
+  // carousel states
   int _currentPage = 0;
   Timer? _timer;
+
+  CancelableOperation? _currentOperation;
 
   @override
   void initState() {
@@ -72,31 +77,40 @@ class _HomePageState extends State<HomePage>
         loadingSubs = false;
       });
     }
-    try {
-      await _getPreviewLatestSubscriptions();
-    } finally {
-      setState(() {
-        loadingSubs = false;
-      });
+
+    // refresh data automatically on app start
+    if (firstInitialization) {
+      try {
+        await _getPreviewLatestSubscriptions();
+      } finally {
+        setState(() {
+          loadingSubs = false;
+        });
+        firstInitialization = false;
+      }
     }
   }
 
   Future<void> _getPreviewLatestSubscriptions() async {
-    try {
-      final data = await getLatestSubscriptions(int.parse(id));
+    _currentOperation?.cancel();
+    _currentOperation =
+        CancelableOperation.fromFuture(getLatestSubscriptions(int.parse(id)));
+
+    await _currentOperation!.value.then((data) {
+      if (!mounted) return;
       setState(() {
         subscriptions = data;
       });
-    } catch (e) {
+    }).catchError((e) {
       showSnackBar(context, "Failed loading subscriptions", "error");
-      return Future.error(e);
-    }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     _timer?.cancel();
+    _currentOperation?.cancel();
   }
 
   @override
