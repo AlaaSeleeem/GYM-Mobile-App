@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymm/screens/main_screen.dart';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -56,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final data = json.decode(decodedResponse);
 
       if (response.statusCode == 200) {
+        firstInitialization = true;
         await saveClientData(data);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const MainPage()));
@@ -65,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     } catch (e) {
-      print(e);
       setState(() {
         errorMessage = "Authentication Failed";
       });
@@ -225,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             style: ButtonStyle(
                                               backgroundColor:
                                                   WidgetStateProperty.all(
-                                                      primaryColor[300]),
+                                                      primaryColor[400]),
                                               shape: WidgetStateProperty.all(
                                                 RoundedRectangleBorder(
                                                   borderRadius:

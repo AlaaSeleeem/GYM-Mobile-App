@@ -75,21 +75,6 @@ class _NewsPageState extends State<NewsPage> {
     });
   }
 
-  // List news = [
-  //   {
-  //     "title": "Discover our new treadmills",
-  //     "image": null /*"assets/treadmills.jpg"*/
-  //   },
-  //   {"title": "Expert boxing training", "image": "assets/boxing.jpg"},
-  //   {"title": "Unwind with yoga sessions", "image": "assets/yoga.jpg"},
-  //   {"title": "High-intensity interval training", "image": "assets/hiit.jpg"},
-  //   {
-  //     "title": "Advanced weightlifting equipment",
-  //     "image": "assets/weightlifting.webp"
-  //   },
-  //   {"title": "Personalized fitness coaching", "image": "assets/coaching.webp"}
-  // ];
-
   @override
   Widget build(BuildContext context) {
     bool isLandscape =
@@ -138,7 +123,8 @@ class _NewsPageState extends State<NewsPage> {
                   if (!loading && news.isEmpty)
                     const Center(
                       child: Text(
-                        "No current Plans",
+                        "We will publish news soon,\nStay tuned!",
+                        textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 24),
                       ),
                     )

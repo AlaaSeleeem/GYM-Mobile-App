@@ -2,6 +2,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
@@ -9,6 +10,7 @@ import 'package:gymm/components/no_active_subscriptions.dart';
 import 'package:gymm/components/no_offers.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/models/subscription.dart';
+import 'package:gymm/screens/about_screen.dart';
 import 'package:gymm/screens/exercises_screen.dart';
 import 'package:gymm/screens/news_screen.dart';
 import 'package:gymm/screens/plans_screen.dart';
@@ -305,9 +307,9 @@ class _HomePageState extends State<HomePage>
                           icon: Icons.fitness_center,
                           page: const ExercisesPage()),
                       _buildSquareButton(
-                          label: 'Contact',
-                          icon: Icons.call,
-                          page: PlansPage()),
+                          label: 'About',
+                          icon: FontAwesomeIcons.circleInfo,
+                          page: const AboutPage()),
                     ],
                   ),
                 ),
