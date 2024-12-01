@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/loading.dart';
@@ -33,6 +34,8 @@ class _ProfilePageState extends State<ProfilePage>
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
+  CancelableOperation? _currentOperation;
+
   @override
   void initState() {
     super.initState();
@@ -51,33 +54,45 @@ class _ProfilePageState extends State<ProfilePage>
     }
   }
 
-  Future _onRefresh() async {
+  Future<Client?> _refreshClientData() async {
     if (client != null) {
       String clientId = client!.id!;
       if (client is Client) {
         client!.resetRequestedPhoto();
       }
-      try {
-        Client newClient = await getClientData(clientId);
+      Client newClient = await getClientData(clientId);
+      _getClientPhoto();
+      return newClient;
+    }
+    return null;
+  }
+
+  Future<void> _onRefresh() async {
+    _currentOperation?.cancel();
+    _currentOperation = CancelableOperation.fromFuture(_refreshClientData());
+
+    await _currentOperation!.value.then((newClient) {
+      if (mounted) {
         setState(() {
           client = newClient;
         });
-        _getClientPhoto();
-      } catch (e) {
-        print(e);
+        childKey.currentState?.updateWidget(client);
+      }
+    }).catchError((e) {
+      if (mounted) {
         showSnackBar(context, "Error refreshing data", "error");
       }
-    }
-    childKey.currentState?.updateWidget(client);
+    });
   }
 
   @override
   void dispose() {
+    super.dispose();
     _passwordController.dispose();
     _newPasswordController.dispose();
     _usernameController.dispose();
     _emailController.dispose();
-    super.dispose();
+    _currentOperation?.cancel();
   }
 
   _getClientPhoto() async {

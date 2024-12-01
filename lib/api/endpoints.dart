@@ -13,6 +13,8 @@ class EndPoints {
   static const String _clientData = "api/clients/client-data/";
   static const String _changeClientPassword =
       "api/clients/change-client-password/";
+  static const String _deleteRequestedPhoto =
+      "api/clients/delete-requested-photo/";
   static const String _clientLatestSubscriptions =
       "api/clients/client-latest-subscriptions/";
 
@@ -31,6 +33,8 @@ class EndPoints {
   static String clientData() => '$_baseUrl$_clientData';
 
   static String changeClientPassword() => '$_baseUrl$_changeClientPassword';
+
+  static String deleteRequestedPhoto() => '$_baseUrl$_deleteRequestedPhoto';
 
   static String clientLatestSubscriptions() =>
       '$_baseUrl$_clientLatestSubscriptions';

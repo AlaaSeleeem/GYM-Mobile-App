@@ -35,6 +35,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/offers/
   fonts:
     - family: "cairo"
       fonts:

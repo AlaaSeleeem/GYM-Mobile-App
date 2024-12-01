@@ -6,9 +6,10 @@ import 'package:gymm/models/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-Future<void> saveClientData(Map<String, dynamic> data) async {
+Future<void> saveClientData(Map<String, dynamic> data,
+    {bool downloadImage = true}) async {
   final prefs = await SharedPreferences.getInstance();
-  await downloadAndSaveImage(data["photo"]);
+  if (downloadImage) await downloadAndSaveImage(data["photo"]);
   final clientJson = Client.fromJson(data).toJson();
   await prefs.setString("client", json.encode(clientJson));
 }

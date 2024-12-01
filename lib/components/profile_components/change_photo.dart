@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gymm/api/actions.dart';
 import 'package:gymm/models/client.dart';
+import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,14 +23,23 @@ class ChangePhoto extends StatefulWidget {
 }
 
 class ChangePhotoState extends State<ChangePhoto> {
+  bool submitting = false;
   Client? client;
 
   File? _image;
+
+  CancelableOperation? _currentOperation;
 
   @override
   void initState() {
     super.initState();
     client = widget.client;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentOperation?.cancel();
   }
 
   void updateWidget(Client? newClient) {
@@ -66,7 +80,99 @@ class ChangePhotoState extends State<ChangePhoto> {
     }
   }
 
-  Future<void> _uploadImage() async {}
+  Future<void> _uploadImage() async {
+    setState(() {
+      submitting = true;
+    });
+
+    _currentOperation?.cancel();
+    if (_image is! File) {
+      showSnackBar(context, "Couldn't upload image", "error");
+      return;
+    }
+
+    _currentOperation = CancelableOperation.fromFuture(
+        uploadRequestedPhoto(client!.customPk.toString(), _image as File));
+
+    await _currentOperation!.value.then((value) async {
+      if (!mounted) return;
+      setState(() {
+        _image = null;
+      });
+      showSnackBar(context, "Your photo has been requested", "info");
+      client!.requestedPhotoUrl =
+          utf8.decode(latin1.encode(value["requested_photo"]));
+      await saveClientData(client!.toJson(), downloadImage: false);
+      updateWidget(client);
+    }).catchError((e) {
+      print(e);
+      if (mounted) showSnackBar(context, "Failed uploading photo", "error");
+    }).whenComplete(() {
+      if (!mounted) return;
+      setState(() {
+        submitting = false;
+      });
+    });
+  }
+
+  Future<void> _cancelRequestedPhoto() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Confirm'),
+          content: const Text(
+              'Are you sure you want to delete the requested photo?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // User cancels
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true), // User confirms
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.red[500],
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (!confirmed!) return;
+    setState(() {
+      submitting = true;
+    });
+
+    _currentOperation?.cancel();
+    _currentOperation = CancelableOperation.fromFuture(
+        deleteRequestedPhoto({"id": client!.id}));
+
+    await _currentOperation!.value.then((_) async {
+      if (!mounted) return;
+      showSnackBar(context, "Canceled requested photo", "info");
+      client!.resetRequestedPhoto();
+      await saveClientData(client!.toJson(), downloadImage: false);
+      updateWidget(client);
+    }).catchError((e) {
+      if (mounted) showSnackBar(context, "Couldn't delete photo", "error");
+    }).whenComplete(() {
+      if (!mounted) return;
+      setState(() {
+        submitting = false;
+      });
+    });
+  }
 
   Widget _buildUploadInstruction() {
     return Column(
@@ -101,11 +207,8 @@ class ChangePhotoState extends State<ChangePhoto> {
             children: [
               _buildNetworkImage(),
               const SizedBox(height: 12),
-              _buildCancelButton("Cancel Request", Colors.red, () {
-                setState(() {
-                  _image = null;
-                });
-              }),
+              _buildActionButton(
+                  "Cancel Request", Colors.red, _cancelRequestedPhoto),
             ],
           ),
         ),
@@ -141,13 +244,13 @@ class ChangePhotoState extends State<ChangePhoto> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildCancelButton("Cancel", Colors.red, () {
+              _buildActionButton("Cancel", Colors.red, () {
                 setState(() {
                   _image = null;
                 });
               }),
               const SizedBox(width: 14),
-              _buildCancelButton("Upload", primaryColor, () async {
+              _buildActionButton("Upload", primaryColor, () async {
                 await _uploadImage();
               }),
             ],
@@ -191,16 +294,36 @@ class ChangePhotoState extends State<ChangePhoto> {
   }
 
 // Build a cancel/upload button with customizable text and action
-  Widget _buildCancelButton(String text, Color color, VoidCallback onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: _buttonStyle(color),
-      child: Text(
-        text,
-        style: const TextStyle(
-            color: blackColor, fontWeight: FontWeight.bold, fontSize: 16),
-      ),
-    );
+  Widget _buildActionButton(String text, Color color, Function onPressed) {
+    return StatefulBuilder(builder: (context, setState) {
+      return ElevatedButton(
+        onPressed: onPressed as VoidCallback,
+        style: _buttonStyle(color),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (submitting)
+              const Row(
+                children: [
+                  SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: blackColor)),
+                  SizedBox(
+                    width: 10,
+                  )
+                ],
+              ),
+            Text(
+              text,
+              style: const TextStyle(
+                  color: blackColor, fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
 // Reusable button style

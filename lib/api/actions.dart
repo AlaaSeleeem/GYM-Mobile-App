@@ -70,10 +70,41 @@ Future _apiRequest(
 }
 
 // change client personal information
-Future<void> updateClientData(String id, Map<String, dynamic> data) async {
+Future<void> updateClientData(String id, Map<String, dynamic> data,
+    {Map<String, String>? headers}) async {
   try {
     await _apiRequest(
-        method: "patch", url: EndPoints.clientDetail(id), data: data);
+        method: "patch",
+        url: EndPoints.clientDetail(id),
+        data: data,
+        headers: headers);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// change client personal information
+Future<Map<String, dynamic>> uploadRequestedPhoto(String id, File photo) async {
+  try {
+    // Create the request
+    var request =
+        http.MultipartRequest('PATCH', Uri.parse(EndPoints.clientDetail(id)));
+
+    // Add the photo file to the request
+    var photoFile =
+        await http.MultipartFile.fromPath('requested_photo', photo.path);
+    request.files.add(photoFile);
+
+    // Send the request
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+
+    // Check the response status
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return json.decode(responseBody);
+    } else {
+      throw Exception("Failed uploading image");
+    }
   } catch (e) {
     return Future.error(e);
   }
@@ -84,6 +115,16 @@ Future<void> changeClientPassword(Map<String, dynamic> data) async {
   try {
     await _apiRequest(
         method: "post", url: EndPoints.changeClientPassword(), data: data);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// delete requested photo
+Future<void> deleteRequestedPhoto(Map<String, dynamic> data) async {
+  try {
+    await _apiRequest(
+        method: "post", url: EndPoints.deleteRequestedPhoto(), data: data);
   } catch (e) {
     return Future.error(e);
   }

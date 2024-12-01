@@ -6,6 +6,7 @@ import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/multiple_subscriptions.dart';
 import 'package:gymm/components/no_active_subscriptions.dart';
+import 'package:gymm/components/no_offers.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/screens/exercises_screen.dart';
@@ -162,47 +163,50 @@ class _HomePageState extends State<HomePage>
               ),
 
               // carousel
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200,
-                    initialPage: _currentPage,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentPage = index;
-                      });
-                    },
-                  ),
-                  items: [
-                    'assets/offer1.jfif',
-                    'assets/offer2.jfif',
-                  ].map((image) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: AssetImage(image),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   child: CarouselSlider(
+              //     options: CarouselOptions(
+              //       height: 200,
+              //       initialPage: _currentPage,
+              //       autoPlay: true,
+              //       autoPlayInterval: Duration(seconds: 3),
+              //       autoPlayAnimationDuration: Duration(milliseconds: 800),
+              //       enlargeCenterPage: true,
+              //       onPageChanged: (index, reason) {
+              //         setState(() {
+              //           _currentPage = index;
+              //         });
+              //       },
+              //     ),
+              //     items: [
+              //       "assets/offers/soon.jpeg"
+              //       // 'assets/offer1.jfif',
+              //       // 'assets/offer2.jfif',
+              //     ].map((image) {
+              //       return Builder(
+              //         builder: (BuildContext context) {
+              //           return Container(
+              //             margin: EdgeInsets.symmetric(horizontal: 8),
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(12),
+              //               image: DecorationImage(
+              //                 image: AssetImage(image),
+              //                 fit: BoxFit.cover,
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //       );
+              //     }).toList(),
+              //   ),
+              // ),
 
-              const SizedBox(height: 40),
+              const NoOffers(),
+
 
               // active subscription
+              const SizedBox(height: 30),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
