@@ -81,7 +81,6 @@ class _PlansPageState extends State<PlansPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         title: const Text('Plans'),
       ),
       body: RefreshIndicator(

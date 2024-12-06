@@ -33,13 +33,13 @@ final ThemeData darkTheme = ThemeData(
     labelStyle: TextStyle(color: blackColor[300], fontSize: 18),
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryColor),
-  appBarTheme: const AppBarTheme(
-      color: blackColor,
+  appBarTheme: AppBarTheme(
+      backgroundColor: blackColor[900],
       centerTitle: true,
-      iconTheme: IconThemeData(color: primaryColor),
+      iconTheme: const IconThemeData(color: primaryColor),
       surfaceTintColor: blackColor,
       elevation: 0,
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
           fontFamily: "cairo",
           fontWeight: FontWeight.bold,
           fontSize: 24,

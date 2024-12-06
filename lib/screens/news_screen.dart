@@ -82,7 +82,6 @@ class _NewsPageState extends State<NewsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         title: const Text(
           'News',
         ),

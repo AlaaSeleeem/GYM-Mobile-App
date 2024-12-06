@@ -12,8 +12,8 @@ class SubscriptionDetailsPage extends StatelessWidget {
       required String value,
       Color color = Colors.white}) {
     return TableRow(children: [
-      SizedBox(
-        height: 40,
+      ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 40),
         child: Row(
           children: [
             Expanded(
@@ -45,7 +45,6 @@ class SubscriptionDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Subscription: ${subscription.id}"),
-        backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -64,7 +63,7 @@ class SubscriptionDetailsPage extends StatelessWidget {
               const SizedBox(height: 12),
               Table(
                 columnWidths: const {
-                  0: FlexColumnWidth(1.3),
+                  0: FlexColumnWidth(2.5),
                   1: FlexColumnWidth(3)
                 },
                 children: [

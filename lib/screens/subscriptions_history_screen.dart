@@ -86,7 +86,6 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         title: const Text(
           'Subscriptions History',
         ),
