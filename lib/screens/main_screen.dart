@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/screens/scan_screen.dart';
-import 'package:gymm/Store.dart';
 import 'package:gymm/screens/profile_screen.dart';
 import 'package:gymm/screens/home_screen.dart';
+import 'package:gymm/screens/store_screen.dart';
 import '../components/navbar.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage>
     const HomePage(),
     const ScanPage(),
     const ProfilePage(),
-    const ProductsPage(),
+    const StorePage(),
   ];
 
   void _changePage(int index) {

@@ -65,9 +65,9 @@ class ChangePhotoState extends State<ChangePhoto> {
       final fileSize = await file.length();
 
       // (1 MB = 1,048,576 bytes)
-      if (fileSize > 1048576) {
+      if (fileSize > 524288) {
         showSnackBar(context,
-            "The selected photo exceeds the size limit of 1 MB", "error");
+            "The selected photo exceeds the size limit of 512 KB", "error");
         return;
       }
       setState(() {
