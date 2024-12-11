@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/models/product.dart';
+import 'package:gymm/screens/product_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 
 class ProductCard extends StatelessWidget {
@@ -18,7 +19,10 @@ class ProductCard extends StatelessWidget {
         isLandscape ? (screenWidth - 40) / 3 : (screenWidth - 38) / 2;
 
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ProductDetailPage(product: product)));
+      },
       child: Container(
         width: cardWidth,
         decoration: BoxDecoration(

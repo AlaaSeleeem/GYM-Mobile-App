@@ -6,7 +6,7 @@ import 'dart:async';
 import 'cartPage.dart';
 import 'package:provider/provider.dart';
 
-import 'components/animated_dialog.dart';
+import 'package:gymm/components/animated_dialog.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -226,14 +226,7 @@ class ZoomableProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailPage(product: product),
-          ),
-        );
-      },
+      onTap: () {},
       child: ProductCard(product: product),
     );
   }

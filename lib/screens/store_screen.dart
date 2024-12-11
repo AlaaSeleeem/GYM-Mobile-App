@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymm/components/store_components/action_buttons.dart';
 import 'package:gymm/components/store_components/categories_tiles.dart';
 import 'package:gymm/components/store_components/products_list.dart';
 import 'package:gymm/components/store_components/products_search_bar.dart';
@@ -27,21 +28,6 @@ class _StorePageState extends State<StorePage> {
       Category(name: "drinks", id: 7),
     ];
 
-    final Product product = Product.fromJson({
-      "id": 2,
-      "discount": 10,
-      "category": "supplements",
-      "name": "Test Product",
-      "description":
-          "To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed.",
-      "sell_price": "1200.00",
-      "cost_price": "1000.00",
-      "stock": 0,
-      "image": "http://10.0.2.2:8000/media/products/product1.jpg",
-      "created_at": "2024-12-02T16:19:51.953150+02:00",
-      "updated_at": "2024-12-10T13:15:13.997178+02:00"
-    });
-
     final TextEditingController searchController = TextEditingController();
 
     void onSearch() {
@@ -50,12 +36,12 @@ class _StorePageState extends State<StorePage> {
     }
 
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {},
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Padding(
+      body: Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: () async {},
+            child: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.only(
                     left: 16, right: 16, top: 50, bottom: 20),
                 child: Column(
@@ -80,14 +66,29 @@ class _StorePageState extends State<StorePage> {
                     ),
                     ProductsList(
                         productList: List.generate(12, (index) {
-                      return product;
+                      return Product.fromJson({
+                        "id": index,
+                        "discount": 10,
+                        "category": "supplements",
+                        "name": "Test Product",
+                        "description":
+                            "To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed.",
+                        "sell_price": "1200.00",
+                        "cost_price": "1000.00",
+                        "stock": 0,
+                        "image":
+                            "http://10.0.2.2:8000/media/products/product1.jpg",
+                        "created_at": "2024-12-02T16:19:51.953150+02:00",
+                        "updated_at": "2024-12-10T13:15:13.997178+02:00"
+                      });
                     }))
                   ],
                 ),
-              )
-            ],
+              ),
+            ),
           ),
-        ),
+          const Positioned(bottom: 16, right: 8, child: ActionButtons()),
+        ],
       ),
     );
   }

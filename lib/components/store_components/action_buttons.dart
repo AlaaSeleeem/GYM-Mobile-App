@@ -15,41 +15,44 @@ class _ActionButtonsState extends State<ActionButtons> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomRight,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16.0, bottom: 16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 45,
-              height: 45,
-              child: FloatingActionButton(
-                onPressed: () {
-                  // Handle edit action
-                },
-                backgroundColor: blackColor[800],
-                child: const Icon(
-                  FontAwesomeIcons.clockRotateLeft,
-                  color: Colors.white,
-                  size: 18,
-                ),
-              ),
-            ),
-            const SizedBox(height: 14), // Space between buttons
-            FloatingActionButton(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 45,
+            height: 45,
+            child: FloatingActionButton(
+              heroTag: 'orders history',
               onPressed: () {
-                // Handle camera action
+                // Handle edit action
               },
-              backgroundColor: primaryColor,
+              backgroundColor: blackColor[800],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: const Icon(
-                Icons.shopping_cart_rounded,
-                color: Colors.black,
+                FontAwesomeIcons.clockRotateLeft,
+                color: Colors.white,
+                size: 18,
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 12), // Space between buttons
+          FloatingActionButton(
+            heroTag: 'cart',
+            onPressed: () {
+              // Handle camera action
+            },
+            backgroundColor: primaryColor[900],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: const Icon(
+              Icons.shopping_cart_rounded,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }

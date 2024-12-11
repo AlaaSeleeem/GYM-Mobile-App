@@ -22,7 +22,9 @@ class ProductsList extends StatelessWidget {
               alignment:
                   isLandscape ? WrapAlignment.spaceEvenly : WrapAlignment.start,
               children: productList.map((item) {
-                return ProductCard(product: item);
+                return ProductCard(
+                  product: item,
+                );
               }).toList()),
         )
       ],

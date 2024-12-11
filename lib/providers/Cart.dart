@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../Store.dart';
+import '../models/product.dart';
 
 class Cart with ChangeNotifier {
   final List<Product> _cartProducts = [];
@@ -51,15 +51,15 @@ class Cart with ChangeNotifier {
   }
 
   void incrementProduct(Product product) {
-    product.quantity += 1;
+    // product.quantity += 1;
     notifyListeners();
   }
 
   void decrementProduct(Product product) {
-    product.quantity -= 1;
-    if (product.quantity < 1) {
-      removeFromCart(product);
-    }
+    // product.quantity -= 1;
+    // if (product.quantity < 1) {
+    //   removeFromCart(product);
+    // }
     notifyListeners();
   }
 
@@ -67,7 +67,7 @@ class Cart with ChangeNotifier {
     double totalPrice = 0.0;
 
     for (Product item in _cartProducts) {
-      totalPrice += item.price * item.quantity;
+      // totalPrice += item.sellPrice * item.quantity;
     }
     return totalPrice;
   }
