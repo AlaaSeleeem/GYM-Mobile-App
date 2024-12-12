@@ -1,5 +1,3 @@
-import 'category.dart';
-
 class Product {
   final int id;
   final String name;
@@ -36,7 +34,7 @@ class Product {
       sellPrice: double.parse(json['sell_price']),
       costPrice: double.parse(json['cost_price']),
       discount: json["discount"] != null
-          ? (json['discount'] as int).toDouble()
+          ? double.parse(json['discount'].toString())
           : null,
       stock: json['stock'],
       image: json['image'],

@@ -103,6 +103,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ),
                         const SizedBox(height: 8),
+                        Text(
+                          widget.product.category,
+                          style: const TextStyle(
+                              color: Colors.white54, fontSize: 18),
+                        ),
+                        const SizedBox(height: 12),
                         Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
@@ -226,7 +232,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     const SizedBox(height: 10),
                     // Add to Cart button
                     Container(
-                      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+                      padding: const EdgeInsets.only(
+                          left: 12, right: 12, bottom: 12),
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {

@@ -85,10 +85,9 @@ class _PlansPageState extends State<PlansPage> {
       ),
       body: RefreshIndicator(
         onRefresh: _refreshPlans,
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            if (scrollNotification is ScrollEndNotification &&
-                scrollNotification.metrics.extentAfter < 100) {
+        child: NotificationListener<ScrollEndNotification>(
+          onNotification: (scrollEndNotification) {
+            if (scrollEndNotification.metrics.extentAfter < 100) {
               _loadMorePlans();
             }
             return false;

@@ -90,6 +90,9 @@ class _NewsPageState extends State<NewsPage> {
         onRefresh: _refreshNews,
         child: NotificationListener<ScrollEndNotification>(
           onNotification: (scrollEndNotification) {
+            if (scrollEndNotification.metrics.extentAfter < 100) {
+              _loadMoreNews();
+            }
             return false;
           },
           child: SingleChildScrollView(

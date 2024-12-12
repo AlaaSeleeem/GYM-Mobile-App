@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/api/exceptions.dart';
+import 'package:gymm/models/category.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/models/news.dart';
+import 'package:gymm/models/product.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/utils/preferences.dart';
@@ -236,6 +238,36 @@ Future<(List<News>, bool)> getNews(int page) async {
         .toList();
     final bool next = response["next"] != null;
     return (news, next);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get products categories
+Future<List<Category>> getCategories() async {
+  try {
+    final response =
+        await _apiRequest(method: "get", url: EndPoints.categories());
+    List<Category> categories = (response as List)
+        .map(((category) => Category.fromJson(category)))
+        .toList();
+    return categories;
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get products
+Future<(List<Product>, bool)> getProducts(
+    int page, String search, String category) async {
+  try {
+    final response = await _apiRequest(
+        method: "get", url: EndPoints.products(page, search, category));
+    List<Product> products = (response["results"] as List)
+        .map(((product) => Product.fromJson(product)))
+        .toList();
+    final bool next = response["next"] != null;
+    return (products, next);
   } catch (e) {
     return Future.error(e);
   }

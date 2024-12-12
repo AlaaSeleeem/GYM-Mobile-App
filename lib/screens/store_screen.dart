@@ -1,9 +1,13 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:gymm/api/actions.dart';
+import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/store_components/action_buttons.dart';
 import 'package:gymm/components/store_components/categories_tiles.dart';
 import 'package:gymm/components/store_components/products_list.dart';
 import 'package:gymm/components/store_components/products_search_bar.dart';
 import 'package:gymm/models/product.dart';
+import 'package:gymm/utils/snack_bar.dart';
 import '../models/category.dart';
 
 class StorePage extends StatefulWidget {
@@ -14,81 +18,183 @@ class StorePage extends StatefulWidget {
 }
 
 class _StorePageState extends State<StorePage> {
+  int currentPage = 1;
+  bool loading = false;
+  bool productsLoading = false;
+  String search = "";
   String _category = "All";
+  bool hasMore = true;
+
+  final List<Category> _categories = [];
+  final List<Product> _products = [];
+  CancelableOperation? _currentOperation;
+
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.text = search;
+    _loadCategories();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentOperation?.cancel();
+  }
+
+  Future<void> _refreshProducts() async {
+    setState(() {
+      _products.clear();
+      currentPage = 1;
+      hasMore = true;
+    });
+    await _loadMoreProducts();
+  }
+
+  Future<void> _loadCategories() async {
+    if (loading) return;
+    setState(() {
+      loading = true;
+    });
+
+    _currentOperation?.cancel();
+    _currentOperation = CancelableOperation.fromFuture(getCategories());
+
+    _currentOperation!.value.then((value) {
+      if (!mounted) return;
+
+      final List<Category> newCategories = value;
+      setState(() {
+        _categories.addAll(newCategories);
+      });
+    }).whenComplete(() {
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+        _loadMoreProducts();
+      }
+    });
+  }
+
+  void searchProducts() {
+    setState(() {
+      search = searchController.text.trim();
+      currentPage = 1;
+      hasMore = true;
+      _products.clear();
+      productsLoading = false;
+    });
+    _loadMoreProducts();
+  }
+
+  Future<void> _loadMoreProducts() async {
+    if (productsLoading || !hasMore) return;
+    setState(() {
+      productsLoading = true;
+    });
+
+    _currentOperation?.cancel();
+    _currentOperation = CancelableOperation.fromFuture(
+        getProducts(currentPage, search, _category.toLowerCase()));
+
+    _currentOperation!.value.then((value) {
+      if (!mounted) return;
+
+      final (List<Product> newProducts, bool next) = value;
+      setState(() {
+        currentPage++;
+        _products.addAll(newProducts);
+        if (!next) {
+          hasMore = false;
+        }
+      });
+    }).catchError((e) {
+      showSnackBar(context, "Failed loading products", "error");
+    }).whenComplete(() {
+      if (mounted) {
+        setState(() {
+          productsLoading = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<Category> categoriesList = [
-      Category(name: "biscuits", id: 1),
-      Category(name: "Supplements", id: 2),
-      Category(name: "supp", id: 3),
-      Category(name: "protein", id: 4),
-      Category(name: "keratin", id: 5),
-      Category(name: "choco bars", id: 6),
-      Category(name: "drinks", id: 7),
-    ];
-
-    final TextEditingController searchController = TextEditingController();
-
-    void onSearch() {
-      final searchQuery = searchController.text.trim();
-      print("Searching for: $searchQuery");
-    }
-
     return Scaffold(
-      body: Stack(
-        children: [
-          RefreshIndicator(
-            onRefresh: () async {},
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 50, bottom: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ProductsSearchBar(
-                        searchController: searchController, onSearch: onSearch),
-                    const SizedBox(
-                      height: 20,
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            RefreshIndicator(
+              onRefresh: _refreshProducts,
+              child: NotificationListener<ScrollEndNotification>(
+                onNotification: (scrollEndNotification) {
+                  if (scrollEndNotification.metrics.extentAfter < 100) {
+                    _loadMoreProducts();
+                  }
+                  return false;
+                },
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16, right: 16, top: 50, bottom: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_categories.isNotEmpty ||
+                            (_products.isNotEmpty)) ...[
+                          ProductsSearchBar(
+                              searchController: searchController,
+                              onSearch: searchProducts),
+                          const SizedBox(
+                            height: 20,
+                          )
+                        ],
+                        if (_categories.isNotEmpty) ...[
+                          CategoriesTiles(
+                            currentCategory: _category,
+                            categoriesList: _categories,
+                            onCategoryChanged: (category) {
+                              setState(() {
+                                _category = category;
+                              });
+                              searchProducts();
+                            },
+                          ),
+                          const SizedBox(
+                            height: 35,
+                          )
+                        ],
+                        ProductsList(productList: _products),
+                        if (_products.isEmpty && !loading && !productsLoading)
+                          const Center(
+                            child: Text(
+                              "No products found",
+                              // "We will provide products soon,\nStay tuned!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 24),
+                            ),
+                          ),
+                        if (loading || productsLoading)
+                          const Center(
+                            child: Loading(
+                              height: 100,
+                            ),
+                          )
+                      ],
                     ),
-                    CategoriesTiles(
-                      currentCategory: _category,
-                      categoriesList: categoriesList,
-                      onCategoryChanged: (category) {
-                        setState(() {
-                          _category = category;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    ProductsList(
-                        productList: List.generate(12, (index) {
-                      return Product.fromJson({
-                        "id": index,
-                        "discount": 10,
-                        "category": "supplements",
-                        "name": "Test Product",
-                        "description":
-                            "To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed. To make the text wrap within its parent container when the width shrinks, you can use a Flexible or Expanded widget around the Text widgets inside the Row. These widgets allow their children to adapt to the available space by wrapping text if needed.",
-                        "sell_price": "1200.00",
-                        "cost_price": "1000.00",
-                        "stock": 0,
-                        "image":
-                            "http://10.0.2.2:8000/media/products/product1.jpg",
-                        "created_at": "2024-12-02T16:19:51.953150+02:00",
-                        "updated_at": "2024-12-10T13:15:13.997178+02:00"
-                      });
-                    }))
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const Positioned(bottom: 16, right: 8, child: ActionButtons()),
-        ],
+            const Positioned(bottom: 16, right: 8, child: ActionButtons()),
+          ],
+        ),
       ),
     );
   }

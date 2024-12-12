@@ -1,9 +1,9 @@
 class EndPoints {
   // production:
-  // static const String _baseUrl = 'https://kaffogym.pythonanywhere.com/';
+  static const String _baseUrl = 'https://kaffogym.pythonanywhere.com/';
 
   // local emulator:
-  static const String _baseUrl = 'http://10.0.2.2:8000/';
+  // static const String _baseUrl = 'http://10.0.2.2:8000/';
 
   // local edge:
   // static const String _baseUrl = 'http://localhost:8000/';
@@ -26,6 +26,10 @@ class EndPoints {
 
   static const String _news = "api/clients/new/";
 
+  static const String _categories = "api/shop/product-category/";
+
+  static const String _products = "api/shop/product-mobile/";
+
   static String login() => '$_baseUrl$_loginUrl';
 
   static String clientDetail(String id) => '$_baseUrl$_clientDetail$id/';
@@ -46,4 +50,9 @@ class EndPoints {
       '$_baseUrl$_subscriptionPlans?page=$page';
 
   static String news(int page) => '$_baseUrl$_news?page=$page';
+
+  static String categories() => '$_baseUrl$_categories?no_pagination=true';
+
+  static String products(int page, String search, String category) =>
+      '$_baseUrl$_products?page=$page&search=$search&category=$category';
 }

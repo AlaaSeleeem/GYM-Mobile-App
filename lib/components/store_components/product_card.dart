@@ -79,10 +79,15 @@ class ProductCard extends StatelessWidget {
                               );
                             },
                           )
-                        : Icon(
-                            FontAwesomeIcons.image,
-                            size: 100,
-                            color: blackColor[400],
+                        : SizedBox(
+                            height: 150,
+                            child: Center(
+                              child: Icon(
+                                FontAwesomeIcons.image,
+                                size: 100,
+                                color: blackColor[400],
+                              ),
+                            ),
                           ),
                   ),
                 ),
@@ -134,11 +139,14 @@ class ProductCard extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        product.description ?? "",
-                        style: const TextStyle(color: Colors.white54),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      SizedBox(
+                        height: 40,
+                        child: Text(
+                          product.description ?? "",
+                          style: const TextStyle(color: Colors.white54),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       SizedBox(
