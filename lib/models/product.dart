@@ -31,8 +31,8 @@ class Product {
       name: json['name'],
       description: json['description'],
       category: json['category'],
-      sellPrice: double.parse(json['sell_price']),
-      costPrice: double.parse(json['cost_price']),
+      sellPrice: double.parse(json['sell_price'].toString()),
+      costPrice: double.parse(json['cost_price'].toString()),
       discount: json["discount"] != null
           ? double.parse(json['discount'].toString())
           : null,

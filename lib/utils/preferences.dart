@@ -21,6 +21,7 @@ Future<void> removeSessionData() async {
   String? prevImage = prefs.getString("profile_image_path");
   await removeClientSavedPhoto(prevImage);
   await prefs.remove("profile_image_path");
+  await prefs.remove("cart_items");
 }
 
 Future<void> removeClientSavedPhoto(String? filaPath) async {

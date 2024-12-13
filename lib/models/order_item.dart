@@ -1,14 +1,14 @@
 import 'product.dart';
 
 class OrderItem {
-  final int id;
-  final int saleId;
+  int? id;
+  int? orderId;
   final Product product;
-  final int amount;
+  int amount;
 
   OrderItem({
-    required this.id,
-    required this.saleId,
+    this.id,
+    this.orderId,
     required this.product,
     required this.amount,
   });
@@ -16,7 +16,7 @@ class OrderItem {
   factory OrderItem.fromJson(Map<String, dynamic> json) {
     return OrderItem(
       id: json['id'],
-      saleId: json['sale'],
+      orderId: json['sale'],
       product: Product.fromJson(json['product']),
       amount: json['amount'],
     );
@@ -25,9 +25,13 @@ class OrderItem {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'sale': saleId,
+      'sale': orderId,
       'product': product.toJson(),
       'amount': amount,
     };
   }
+
+  double get unitPrice => product.discount != null
+      ? (product.discount! / 100) * product.sellPrice
+      : product.sellPrice;
 }

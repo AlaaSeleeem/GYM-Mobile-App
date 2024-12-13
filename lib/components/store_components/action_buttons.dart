@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gymm/screens/cart_screen.dart';
 
 import '../../theme/colors.dart';
 
@@ -42,7 +43,8 @@ class _ActionButtonsState extends State<ActionButtons> {
           FloatingActionButton(
             heroTag: 'cart',
             onPressed: () {
-              // Handle camera action
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const CartPage()));
             },
             backgroundColor: primaryColor[900],
             shape:

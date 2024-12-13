@@ -8,7 +8,7 @@ import 'package:gymm/theme/dark_theme.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -34,6 +34,8 @@ class _MyAppState extends State<MyApp> {
 
   void _initialization() async {
     await _checkLoginState();
+    final cart = Provider.of<Cart>(context, listen: false);
+    await cart.loadCart();
     FlutterNativeSplash.remove();
   }
 

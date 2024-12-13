@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gymm/components/store_components/cart_components/product_image.dart';
 import 'package:gymm/models/product.dart';
+import 'package:gymm/providers/Cart.dart';
 import 'package:gymm/screens/product_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/globals.dart';
+import 'package:provider/provider.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.product});
@@ -11,6 +15,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Cart cart = Provider.of<Cart>(context);
     final double screenWidth = MediaQuery.of(context).size.width;
 
     final bool isLandscape =
@@ -39,57 +44,9 @@ class ProductCard extends StatelessWidget {
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(12)),
                   child: SizedBox(
-                    width: double.infinity,
-                    child: product.image != null
-                        ? Image.network(
-                            product.image!,
-                            fit: BoxFit.cover,
-                            height: 150,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child; // Image loaded successfully
-                              }
-                              return SizedBox(
-                                height: 150,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            (loadingProgress
-                                                    .expectedTotalBytes ??
-                                                1)
-                                        : null,
-                                  ),
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              // Display a placeholder if the image fails to load
-                              return SizedBox(
-                                height: 150,
-                                child: Center(
-                                  child: Icon(
-                                    FontAwesomeIcons.image,
-                                    size: 100,
-                                    color: blackColor[400],
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        : SizedBox(
-                            height: 150,
-                            child: Center(
-                              child: Icon(
-                                FontAwesomeIcons.image,
-                                size: 100,
-                                color: blackColor[400],
-                              ),
-                            ),
-                          ),
-                  ),
+                      width: double.infinity,
+                      height: 150,
+                      child: ProductImage(product: product)),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12),
@@ -152,7 +109,10 @@ class ProductCard extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            cart.addToCart(product: product);
+                            showAddToCartDialog(context);
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor,
                             padding: const EdgeInsets.all(4),

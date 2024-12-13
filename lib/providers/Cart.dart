@@ -1,33 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:gymm/models/order_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/product.dart';
 
 class Cart with ChangeNotifier {
-  final List<Product> _cartProducts = [];
+  final List<OrderItem> _cartItems = [];
 
-  List<Product> get cartProducts => _cartProducts;
+  List<OrderItem> get cartItems => _cartItems;
 
-  void addToCart(Product product) {
-    // loop on current products to find the selected product if exist
-    // Product? existentProduct;
-    //
-    // for (Product item in _cartProducts) {
-    //   if (item.id == product.id) {
-    //     existentProduct = item;
-    //     break;
-    //   }
-    // }
-    //
-    // if (existentProduct != null) {
-    //   incrementProduct(existentProduct);
-    // } else {
-    //   _cartProducts.add(product);
-    // }
-
+  void addToCart({required Product product, int amount = 1}) {
     bool existent;
 
     try {
-      _cartProducts.firstWhere((item) {
-        return (item.id == product.id);
+      _cartItems.firstWhere((item) {
+        return (item.product.id == product.id);
       });
       existent = true;
     } catch (e) {
@@ -35,40 +23,67 @@ class Cart with ChangeNotifier {
     }
 
     if (existent) {
-      Product existentProduct = _cartProducts.firstWhere((item) {
-        return (item.id == product.id);
+      OrderItem existentProduct = _cartItems.firstWhere((item) {
+        return (item.product.id == product.id);
       });
-      incrementProduct(existentProduct);
+      incrementProduct(existentProduct, amount: amount);
     } else {
-      _cartProducts.add(product);
+      final orderItem = OrderItem(product: product, amount: amount);
+      _cartItems.add(orderItem);
     }
+    saveCart();
     notifyListeners(); // Notify all listeners that cart has changed
   }
 
-  void removeFromCart(Product product) {
-    _cartProducts.remove(product);
+  void removeFromCart(OrderItem item) {
+    _cartItems.remove(item);
+    saveCart();
     notifyListeners();
   }
 
-  void incrementProduct(Product product) {
-    // product.quantity += 1;
+  void incrementProduct(OrderItem item, {int amount = 1}) {
+    item.amount += amount;
+    saveCart();
     notifyListeners();
   }
 
-  void decrementProduct(Product product) {
-    // product.quantity -= 1;
-    // if (product.quantity < 1) {
-    //   removeFromCart(product);
-    // }
+  void decrementProduct(OrderItem item) {
+    item.amount -= 1;
+    if (item.amount < 1) {
+      removeFromCart(item);
+    }
+    saveCart();
     notifyListeners();
   }
 
-  double calculateTotalPrice() {
+  void clear() {
+    _cartItems.clear();
+    saveCart();
+    notifyListeners();
+  }
+
+  double get calculateTotalPrice {
     double totalPrice = 0.0;
 
-    for (Product item in _cartProducts) {
-      // totalPrice += item.sellPrice * item.quantity;
+    for (OrderItem item in _cartItems) {
+      totalPrice += item.unitPrice * item.amount;
     }
     return totalPrice;
+  }
+
+  Future<void> saveCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> cartJson =
+        cartItems.map((item) => json.encode(item.toJson())).toList();
+    prefs.setStringList("cart_items", cartJson);
+  }
+
+  Future<void> loadCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedItems = prefs.getStringList("cart_items") ?? [];
+    for (var item in savedItems) {
+      cartItems.add(OrderItem.fromJson(json.decode(item)));
+    }
+    notifyListeners();
   }
 }
