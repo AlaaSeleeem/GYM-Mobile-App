@@ -170,11 +170,11 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
     return GestureDetector(
       onTap: () async {
         DateTime? selectedDate = await showDatePicker(
-          context: context,
-          initialDate: client?.birthDate ?? DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime.now(),
-        );
+            context: context,
+            initialDate: client?.birthDate ?? DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime.now(),
+            initialEntryMode: DatePickerEntryMode.calendarOnly);
         if (selectedDate != null) {
           controller.text = selectedDate.toIso8601String().split('T').first;
         }
@@ -192,10 +192,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
   }
 
   void _saveForm(BuildContext context) {
-    // Cancel any ongoing operation before starting a new one
     _currentOperation?.cancel();
-
-    // Remove focus
     FocusScope.of(context).requestFocus(FocusNode());
 
     if (!_formKey.currentState!.validate()) {
@@ -206,7 +203,6 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
       submitting = true;
     });
 
-    // Perform email validation
     final email = emailController.text;
     if (email.isNotEmpty && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       setState(() {
@@ -233,16 +229,11 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
       fieldErrors = {};
     });
 
-    // Wrap the async operation in a CancelableOperation
     _currentOperation = CancelableOperation.fromFuture(
       updateClientData(client!.customPk.toString(), data),
-      onCancel: () {
-        print("Operation cancelled");
-      },
     );
 
     _currentOperation!.value.then((_) {
-      // Check if the widget is still in the tree before updating the UI
       if (!mounted) return;
 
       showSnackBar(context, "Personal Information Updated", "info");
@@ -391,8 +382,8 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
 
                 // Custom floating action button
                 Positioned(
-                  bottom: 50, // Adjust the bottom offset
-                  right: 40, // Adjust the left offset
+                  bottom: 36, // Adjust the bottom offset
+                  right: 26, // Adjust the left offset
                   child: FloatingActionButton(
                     onPressed: submitting
                         ? null

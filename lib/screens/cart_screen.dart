@@ -67,16 +67,20 @@ class CartPage extends StatelessWidget {
         ),
         actions: [
           if (cart.cartItems.isNotEmpty)
-            IconButton(
-                onPressed: deleteCartDialog,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: const EdgeInsets.all(2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                  onPressed: deleteCartDialog,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.all(2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                   ),
-                ),
-                icon: const Icon(Icons.delete, color: Colors.white, size: 24)),
+                  icon:
+                      const Icon(Icons.delete, color: Colors.white, size: 24)),
+            ),
         ],
       ),
       body: cart.cartItems.isEmpty

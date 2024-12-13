@@ -192,7 +192,7 @@ class _StorePageState extends State<StorePage> {
                 ),
               ),
             ),
-            const Positioned(bottom: 16, right: 8, child: ActionButtons()),
+            const Positioned(bottom: 16, right: 16, child: ActionButtons()),
           ],
         ),
       ),
