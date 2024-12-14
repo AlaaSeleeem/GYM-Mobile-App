@@ -30,6 +30,10 @@ class EndPoints {
 
   static const String _products = "api/shop/product-mobile/";
 
+  static const String _orders = "api/shop/sale/";
+
+  static const String _makeOrder = "api/shop/make-order/";
+
   static String login() => '$_baseUrl$_loginUrl';
 
   static String clientDetail(String id) => '$_baseUrl$_clientDetail$id/';
@@ -55,4 +59,9 @@ class EndPoints {
 
   static String products(int page, String search, String category) =>
       '$_baseUrl$_products?page=$page&search=$search&category=$category';
+
+  static String orders(int page, String clientId) =>
+      '$_baseUrl$_orders?page=$page&client_id=$clientId';
+
+  static String makeOrder() => '$_baseUrl$_makeOrder';
 }

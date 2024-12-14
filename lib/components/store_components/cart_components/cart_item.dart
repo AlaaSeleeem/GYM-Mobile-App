@@ -7,8 +7,9 @@ import '../../../theme/colors.dart';
 
 class CartItemCard extends StatelessWidget {
   final OrderItem item;
+  final bool forCart;
 
-  const CartItemCard({super.key, required this.item});
+  const CartItemCard({super.key, required this.item, this.forCart = true});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,8 @@ class CartItemCard extends StatelessWidget {
     return Container(
       color: Colors.transparent,
       child: Dismissible(
+        direction:
+            forCart ? DismissDirection.horizontal : DismissDirection.none,
         key: Key(item.product.id.toString()),
         onDismissed: (direction) {
           cart.removeFromCart(item);
@@ -61,18 +64,19 @@ class CartItemCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Decrement Button
-              IconButton(
-                icon: const Icon(Icons.remove),
-                onPressed: () {
-                  cart.decrementProduct(item);
-                },
-                style: IconButton.styleFrom(
-                  padding: const EdgeInsets.all(8),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4)),
-                  backgroundColor: blackColor[600],
+              if (forCart)
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () {
+                    cart.decrementProduct(item);
+                  },
+                  style: IconButton.styleFrom(
+                    padding: const EdgeInsets.all(8),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    backgroundColor: blackColor[600],
+                  ),
                 ),
-              ),
               // Quantity Display
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -84,19 +88,22 @@ class CartItemCard extends StatelessWidget {
                           fontWeight: FontWeight.bold)),
                 ),
               ),
+              // right padding when disabling icon buttons
+              if (!forCart) const SizedBox(width: 20),
               // Increment Button
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                  cart.incrementProduct(item);
-                },
-                style: IconButton.styleFrom(
-                  padding: const EdgeInsets.all(8),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4)),
-                  backgroundColor: blackColor[600],
+              if (forCart)
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    cart.incrementProduct(item);
+                  },
+                  style: IconButton.styleFrom(
+                    padding: const EdgeInsets.all(8),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    backgroundColor: blackColor[600],
+                  ),
                 ),
-              ),
             ],
           ),
         ),

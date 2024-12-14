@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/screens/cart_screen.dart';
+import 'package:gymm/screens/orders_screen.dart';
 
 import '../../theme/colors.dart';
 
@@ -27,7 +28,8 @@ class _ActionButtonsState extends State<ActionButtons> {
             child: FloatingActionButton(
               heroTag: 'orders history',
               onPressed: () {
-                // Handle edit action
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const OrdersHistoryPage()));
               },
               backgroundColor: blackColor[800],
               shape: RoundedRectangleBorder(

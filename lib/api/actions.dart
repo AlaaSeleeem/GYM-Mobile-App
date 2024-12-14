@@ -5,6 +5,7 @@ import 'package:gymm/api/exceptions.dart';
 import 'package:gymm/models/category.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/models/news.dart';
+import 'package:gymm/models/order.dart';
 import 'package:gymm/models/product.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
@@ -268,6 +269,21 @@ Future<(List<Product>, bool)> getProducts(
         .toList();
     final bool next = response["next"] != null;
     return (products, next);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get orders history
+Future<(List<Order>, bool)> getOrdersHistory(int page, String clientId) async {
+  try {
+    final response =
+        await _apiRequest(method: "get", url: EndPoints.orders(page, clientId));
+    List<Order> subs = (response["results"] as List)
+        .map(((sub) => Order.fromJson(sub)))
+        .toList();
+    final bool next = response["next"] != null;
+    return (subs, next);
   } catch (e) {
     return Future.error(e);
   }
