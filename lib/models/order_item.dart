@@ -32,6 +32,6 @@ class OrderItem {
   }
 
   double get unitPrice => product.discount != null
-      ? (product.discount! / 100) * product.sellPrice
+      ? product.sellPrice - ((product.discount! / 100) * product.sellPrice)
       : product.sellPrice;
 }

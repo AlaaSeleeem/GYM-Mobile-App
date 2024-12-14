@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
+import 'package:gymm/api/actions.dart';
 import 'package:gymm/models/order_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/product.dart';
@@ -85,5 +85,13 @@ class Cart with ChangeNotifier {
       cartItems.add(OrderItem.fromJson(json.decode(item)));
     }
     notifyListeners();
+  }
+
+  Future<void> placeOrder() async {
+    final orderDetails = [];
+    for (var item in _cartItems) {
+      orderDetails.add({"product_id": item.product.id, "amount": item.amount});
+    }
+    await makeOrder(orderDetails);
   }
 }

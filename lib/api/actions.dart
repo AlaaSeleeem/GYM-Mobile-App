@@ -305,3 +305,16 @@ Future<void> removeOrder(int id) async {
     return Future.error(e);
   }
 }
+
+// change client personal information
+Future<void> makeOrder(
+  List orderDetails,
+) async {
+  try {
+    String clientId = (await getClientSavedData()).id!;
+    final data = {"client_id": clientId, "items": orderDetails};
+    await _apiRequest(method: "post", url: EndPoints.makeOrder(), data: data);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
