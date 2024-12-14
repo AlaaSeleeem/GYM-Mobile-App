@@ -60,6 +60,8 @@ class EndPoints {
   static String products(int page, String search, String category) =>
       '$_baseUrl$_products?page=$page&search=$search&category=$category';
 
+  static String order(int id) => '$_baseUrl$_orders$id/';
+
   static String orders(int page, String clientId) =>
       '$_baseUrl$_orders?page=$page&client_id=$clientId';
 

@@ -59,13 +59,21 @@ Future _apiRequest(
         throw ArgumentError("Unsupported request method");
     }
 
-    final decodedResponse = utf8.decode(latin1.encode(response.body));
+    // decode response to preserve arabic character
+    final decodedResponse = response.body.isNotEmpty
+        ? utf8.decode(latin1.encode(response.body))
+        : null;
+
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return json.decode(decodedResponse);
+      return decodedResponse != null
+          ? json.decode(decodedResponse)
+          : response.body;
     } else {
       throw ClientErrorException(
           statusCode: response.statusCode,
-          responseBody: json.decode(decodedResponse));
+          responseBody: decodedResponse != null
+              ? json.decode(decodedResponse)
+              : response.body);
     }
   } catch (e) {
     return Future.error(e);
@@ -284,6 +292,15 @@ Future<(List<Order>, bool)> getOrdersHistory(int page, String clientId) async {
         .toList();
     final bool next = response["next"] != null;
     return (subs, next);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get orders history
+Future<void> removeOrder(int id) async {
+  try {
+    await _apiRequest(method: "delete", url: EndPoints.order(id));
   } catch (e) {
     return Future.error(e);
   }

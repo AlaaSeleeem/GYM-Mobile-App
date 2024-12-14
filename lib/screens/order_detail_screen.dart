@@ -1,13 +1,53 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/store_components/cart_components/order_details.dart';
 import 'package:gymm/models/order.dart';
 import '../components/store_components/cart_components/cart_item.dart';
 import '../utils/snack_bar.dart';
 
-class OrderDetailPage extends StatelessWidget {
+class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({super.key, required this.order});
 
   final Order order;
+
+  @override
+  State<OrderDetailPage> createState() => _OrderDetailPageState();
+}
+
+class _OrderDetailPageState extends State<OrderDetailPage> {
+  CancelableOperation? _currentOperation;
+  bool _removing = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentOperation?.cancel();
+  }
+
+  Future<void> _removeOrder() async {
+    if (_removing) return;
+
+    setState(() {
+      _removing = true;
+    });
+
+    _currentOperation?.cancel();
+    _currentOperation =
+        CancelableOperation.fromFuture(removeOrder(widget.order.id));
+
+    _currentOperation!.value.then((value) {
+      if (!mounted) return;
+      Navigator.of(context).popUntil(ModalRoute.withName("/"));
+      showSnackBar(context, "Order has been removed", "info");
+    }).catchError((e) {
+      showSnackBar(context, "Failed removing order", "error");
+    }).whenComplete(() {
+      setState(() {
+        _removing = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +81,7 @@ class OrderDetailPage extends StatelessWidget {
                         Navigator.of(context).pop(true);
                       },
                       child: Text(
-                        "Cancel",
+                        "Remove",
                         style: TextStyle(
                             fontSize: 18,
                             color: Colors.red[500],
@@ -51,8 +91,7 @@ class OrderDetailPage extends StatelessWidget {
               ));
 
       if (result == true) {
-        Navigator.of(context).popUntil(ModalRoute.withName("/"));
-        showSnackBar(context, "Order has been removed", "info");
+        _removeOrder();
       }
     }
 
@@ -63,20 +102,28 @@ class OrderDetailPage extends StatelessWidget {
           'Order Detail',
         ),
         actions: [
-          if (order.state == "معلق")
+          if (widget.order.state == "معلق")
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: IconButton(
-                  onPressed: cancelOrderDialog,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    padding: const EdgeInsets.all(2),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                  ),
-                  icon:
-                      const Icon(Icons.delete, color: Colors.white, size: 24)),
+              child: _removing
+                  ? const SizedBox(
+                      width: 27,
+                      height: 27,
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                      ),
+                    )
+                  : IconButton(
+                      onPressed: cancelOrderDialog,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.all(2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      icon: const Icon(Icons.delete,
+                          color: Colors.white, size: 24)),
             ),
         ],
       ),
@@ -84,10 +131,10 @@ class OrderDetailPage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.separated(
-              itemCount: order.items.length,
+              itemCount: widget.order.items.length,
               itemBuilder: (context, index) {
                 return CartItemCard(
-                  item: order.items[index],
+                  item: widget.order.items[index],
                   forCart: false,
                 );
               },
@@ -95,7 +142,7 @@ class OrderDetailPage extends StatelessWidget {
                   const Divider(thickness: 1, color: Colors.grey, height: 1),
             ),
           ),
-          OrderDetails(order: order, forCart: false),
+          OrderDetails(order: widget.order, forCart: false),
         ],
       ),
     );
