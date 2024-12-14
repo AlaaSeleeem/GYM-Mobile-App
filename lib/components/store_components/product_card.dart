@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/components/store_components/cart_components/product_image.dart';
 import 'package:gymm/models/product.dart';
 import 'package:gymm/providers/Cart.dart';
@@ -66,7 +65,7 @@ class ProductCard extends StatelessWidget {
                         children: [
                           if (product.discount != null) ...[
                             Text(
-                              '${product.sellPrice - (product.discount! * product.sellPrice / 100)}',
+                              '${(product.sellPrice - (product.discount! * product.sellPrice / 100)).toInt()}',
                               style: const TextStyle(
                                 fontSize: 26,
                                 color: primaryColor,
@@ -75,7 +74,7 @@ class ProductCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              '${product.sellPrice}',
+                              '${product.sellPrice.toInt()}',
                               softWrap: false,
                               style: const TextStyle(
                                 fontSize: 16,
@@ -85,7 +84,7 @@ class ProductCard extends StatelessWidget {
                             ),
                           ] else ...[
                             Text(
-                              '${product.sellPrice}',
+                              '${product.sellPrice.toInt()}',
                               style: const TextStyle(
                                 fontSize: 26,
                                 color: primaryColor,
@@ -155,7 +154,7 @@ class ProductCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        '${(product.discount)}% OFF',
+                        '${(product.discount!.toInt())}% OFF',
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

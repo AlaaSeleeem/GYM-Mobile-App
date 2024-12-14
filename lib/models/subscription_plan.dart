@@ -12,22 +12,23 @@ class SubscriptionPlan {
   final int validity;
   final bool isDuration;
   final int? classesNo;
+  final double? discount;
 
-  SubscriptionPlan({
-    required this.id,
-    required this.name,
-    required this.price,
-    this.days,
-    required this.subscriptionType,
-    this.description,
-    required this.freezable,
-    this.freezeNo,
-    required this.invitations,
-    required this.forStudents,
-    required this.validity,
-    required this.isDuration,
-    this.classesNo,
-  });
+  SubscriptionPlan(
+      {required this.id,
+      required this.name,
+      required this.price,
+      this.days,
+      required this.subscriptionType,
+      this.description,
+      required this.freezable,
+      this.freezeNo,
+      required this.invitations,
+      required this.forStudents,
+      required this.validity,
+      required this.isDuration,
+      this.classesNo,
+      this.discount});
 
   factory SubscriptionPlan.fromJson(Map<String, dynamic> json) {
     return SubscriptionPlan(
@@ -44,6 +45,9 @@ class SubscriptionPlan {
       validity: json['validity'],
       isDuration: json['is_duration'] ?? true,
       classesNo: json['classes_no'],
+      discount: json["discount"] != null
+          ? double.parse(json['discount'].toString())
+          : null,
     );
   }
 
@@ -62,6 +66,7 @@ class SubscriptionPlan {
       'validity': validity,
       'is_duration': isDuration,
       'classes_no': classesNo,
+      'discount': discount
     };
   }
 }

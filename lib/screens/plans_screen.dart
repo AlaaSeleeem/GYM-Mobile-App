@@ -144,64 +144,125 @@ class _PlansPageState extends State<PlansPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Row(
+        child: Stack(
           children: [
-            // Left section: Subscription details
-            Expanded(
-              flex: 5,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: blackColor[900],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
-                  ),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      plan.name,
-                      textDirection: TextDirection.rtl,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19,
-                        overflow: TextOverflow.ellipsis,
+            Row(
+              children: [
+                // Left section: Subscription details
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: blackColor[900],
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Right section: Price
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Text(
-                    "${plan.price}\nL.E",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: blackColor[900],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          plan.name,
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 19,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
+
+                // Right section: Price
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: (plan.discount != null)
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                                Text(
+                                  plan.price.toInt().toString(),
+                                  softWrap: false,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${(plan.price - (plan.discount! * plan.price / 100)).toInt()}',
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: blackColor,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const Text(
+                                  "L.E",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: blackColor,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ])
+                        : Center(
+                            child: Text(
+                              "${(plan.price.toInt())}\nL.E",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: blackColor,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                  ),
+                ),
+              ],
             ),
+            if (plan.discount != null)
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${(plan.discount!.toInt())}% OFF',
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

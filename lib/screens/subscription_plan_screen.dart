@@ -106,14 +106,38 @@ class SubscriptionPlanPage extends StatelessWidget {
                                 color: primaryColor,
                               ),
                               const SizedBox(height: 8.0),
-                              Text(
-                                detail["value"].toString(),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
+                              if (detail['label'] == "Price" &&
+                                  subscriptionPlan.discount != null) ...[
+                                Text(
+                                  detail["value"].toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0,
+                                      color: Colors.red,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationColor: Colors.white,
+                                      decorationStyle:
+                                          TextDecorationStyle.solid,
+                                      decorationThickness: 1.3),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
+                                Text(
+                                  detail["value"].toString(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ] else
+                                Text(
+                                  detail["value"].toString(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               const SizedBox(height: 4.0),
                               Text(
                                 detail["label"] as String,
