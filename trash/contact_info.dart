@@ -15,9 +15,9 @@ class _ContactInfoState extends State<ContactInfo> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 34, 34, 34),
+        color: const Color.fromARGB(255, 34, 34, 34),
         borderRadius: BorderRadius.circular(12),
       ),
       child: SingleChildScrollView(
@@ -33,7 +33,7 @@ class _ContactInfoState extends State<ContactInfo> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       Icon(Icons.help, color: Colors.yellow),
                       SizedBox(width: 8),
@@ -47,15 +47,15 @@ class _ContactInfoState extends State<ContactInfo> {
               ),
             ),
             if (isHelpExpanded) ...[
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Gym Information
-              ExpansionTile(
+              const ExpansionTile(
                 title: Text('Gym Information',
                     style: TextStyle(color: Colors.white)),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Founded in 2020, our gym aims to provide an ideal sporting environment.',
                       style: TextStyle(color: Colors.white),
@@ -65,12 +65,12 @@ class _ContactInfoState extends State<ContactInfo> {
               ),
 
               // Frequently Asked Questions
-              ExpansionTile(
+              const ExpansionTile(
                 title: Text('Frequently Asked Questions',
                     style: TextStyle(color: Colors.white)),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       '1. What are the operating hours?\n2. Are there group classes?\n3. How can I register?',
                       style: TextStyle(color: Colors.white),
@@ -81,7 +81,7 @@ class _ContactInfoState extends State<ContactInfo> {
 
               // Contact Information
               ExpansionTile(
-                title: Text('Contact Information',
+                title: const Text('Contact Information',
                     style: TextStyle(color: Colors.white)),
                 children: [
                   Padding(
@@ -89,7 +89,7 @@ class _ContactInfoState extends State<ContactInfo> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        const Row(
                           children: [
                             Icon(Icons.email, color: Colors.yellow),
                             SizedBox(width: 8),
@@ -99,8 +99,8 @@ class _ContactInfoState extends State<ContactInfo> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        Row(
+                        const SizedBox(height: 10),
+                        const Row(
                           children: [
                             Icon(Icons.phone, color: Colors.yellow),
                             SizedBox(width: 8),
@@ -110,8 +110,8 @@ class _ContactInfoState extends State<ContactInfo> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        Row(
+                        const SizedBox(height: 10),
+                        const Row(
                           children: [
                             Icon(Icons.location_on, color: Colors.yellow),
                             SizedBox(width: 8),
@@ -121,15 +121,15 @@ class _ContactInfoState extends State<ContactInfo> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         TextButton(
                           onPressed: () {
                             // Open Google Maps
                           },
-                          child: Text('View on Google Maps',
+                          child: const Text('View on Google Maps',
                               style: TextStyle(color: Colors.yellow)),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Wrap(
                           spacing: 20, // المسافة بين الأيقونات
                           children: [
@@ -137,27 +137,27 @@ class _ContactInfoState extends State<ContactInfo> {
                               onPressed: () {
                                 // اضف الرابط الخاص بفيسبوك
                               },
-                              icon: Icon(FontAwesomeIcons.facebook,
+                              icon: const Icon(FontAwesomeIcons.facebook,
                                   color: Colors.yellow),
-                              label: Text('Facebook',
+                              label: const Text('Facebook',
                                   style: TextStyle(color: Colors.white)),
                             ),
                             TextButton.icon(
                               onPressed: () {
                                 // اضف الرابط الخاص بانستغرام
                               },
-                              icon: Icon(FontAwesomeIcons.instagram,
+                              icon: const Icon(FontAwesomeIcons.instagram,
                                   color: Colors.yellow),
-                              label: Text('Instagram',
+                              label: const Text('Instagram',
                                   style: TextStyle(color: Colors.white)),
                             ),
                             TextButton.icon(
                               onPressed: () {
                                 // اضف الرابط الخاص بتويتر
                               },
-                              icon: Icon(FontAwesomeIcons.twitter,
+                              icon: const Icon(FontAwesomeIcons.twitter,
                                   color: Colors.yellow),
-                              label: Text('Twitter',
+                              label: const Text('Twitter',
                                   style: TextStyle(color: Colors.white)),
                             ),
                           ],

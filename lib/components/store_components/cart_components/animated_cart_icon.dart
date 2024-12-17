@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AnimatedCartIcon extends StatefulWidget {
+  const AnimatedCartIcon({super.key});
+
   @override
   _AnimatedCartIconState createState() => _AnimatedCartIconState();
 }
@@ -25,7 +27,7 @@ class _AnimatedCartIconState extends State<AnimatedCartIcon>
       builder: (context, child) {
         return Transform.translate(
           offset: Offset(0, _controller.value * 30),
-          child: Opacity(
+          child: const Opacity(
             opacity: 0.5,
             child: Icon(
               Icons.shopping_cart,

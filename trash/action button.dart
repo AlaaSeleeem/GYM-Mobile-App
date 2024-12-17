@@ -24,7 +24,7 @@ class ActionButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: action,
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(buttonColor ?? Color.fromARGB(1000, 63, 65, 78)),
+          backgroundColor: WidgetStateProperty.all(buttonColor ?? const Color.fromARGB(1000, 63, 65, 78)),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100),
@@ -57,7 +57,7 @@ class ActionButtonWithIcon extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: action,
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(buttonColor ?? Color.fromARGB(1000, 63, 65, 78)),
+        backgroundColor: WidgetStateProperty.all(buttonColor ?? const Color.fromARGB(1000, 63, 65, 78)),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),

@@ -16,7 +16,7 @@ void _showSurveyDialog(BuildContext context) {
         builder: (context, setState) {
           return AlertDialog(
             backgroundColor: Colors.black,
-            title: Text(
+            title: const Text(
               'Rate Our Service',
               style: TextStyle(color: Colors.white),
             ),
@@ -57,14 +57,14 @@ void _showSurveyDialog(BuildContext context) {
                     onChanged: (text) {
                       _feedbackNotes = text;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Additional Notes',
                       labelStyle: TextStyle(color: Colors.white),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     maxLines: 4,
                   ),
                 ],
@@ -83,7 +83,7 @@ void _showSurveyDialog(BuildContext context) {
 
                   Navigator.of(context).pop();
                 },
-                child: Text(
+                child: const Text(
                   'Submit',
                   style: TextStyle(color: Colors.yellow),
                 ),
@@ -103,7 +103,7 @@ Widget _buildRatingQuestion(
     children: [
       Text(
         question,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
       Row(
         children: List.generate(5, (index) {
