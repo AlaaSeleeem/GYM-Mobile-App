@@ -4,6 +4,7 @@ import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/api/exceptions.dart';
 import 'package:gymm/models/category.dart';
 import 'package:gymm/models/client.dart';
+import 'package:gymm/models/invitation.dart';
 import 'package:gymm/models/news.dart';
 import 'package:gymm/models/order.dart';
 import 'package:gymm/models/product.dart';
@@ -201,6 +202,23 @@ Future<List<Subscription>> getLatestSubscriptions(int id) async {
         (response as List).map(((sub) => Subscription.fromJson(sub))).toList();
     saveClientSubscriptions(subs);
     return subs;
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// get subscription invitations
+Future<List<Invitation>> getSubscriptionInvitations(int subId) async {
+  try {
+    final response = await _apiRequest(
+      method: "post",
+      url: EndPoints.subscriptionInvitations(),
+      data: {"sub_id": subId},
+    );
+    List<Invitation> invitations = (response["invitations"] as List)
+        .map(((inv) => Invitation.fromJson(inv)))
+        .toList();
+    return invitations;
   } catch (e) {
     return Future.error(e);
   }

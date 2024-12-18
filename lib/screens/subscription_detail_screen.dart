@@ -172,7 +172,10 @@ class SubscriptionDetailsPage extends StatelessWidget {
                             horizontal: 16, vertical: 12),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    icon: const Icon(FontAwesomeIcons.solidEnvelope, size: 26,),
+                    icon: const Icon(
+                      FontAwesomeIcons.solidEnvelope,
+                      size: 26,
+                    ),
                     label: const Text(
                       "Manage Invitations",
                       style: TextStyle(
@@ -182,7 +185,9 @@ class SubscriptionDetailsPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => InvitationsPage()));
+                          builder: (context) => InvitationsPage(
+                                subId: subscription.id,
+                              )));
                     },
                   ),
                 )

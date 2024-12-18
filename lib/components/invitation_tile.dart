@@ -1,6 +1,10 @@
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/models/invitation.dart';
+import 'package:gymm/utils/snack_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../theme/colors.dart';
 import 'error_widget.dart';
 
@@ -15,10 +19,10 @@ class InvitationTile extends StatelessWidget {
       color: Colors.transparent,
       child: ListTile(
         tileColor: const Color(0xFF373739),
-        contentPadding: const EdgeInsets.all(4),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         leading: SizedBox(
           width: 70,
-          height: 65,
+          height: 70,
           child: BarcodeWidget(
             data: invitation.code,
             barcode: Barcode.code128(),
@@ -36,16 +40,37 @@ class InvitationTile extends StatelessWidget {
             style: TextStyle(
                 color: invitation.isUsed ? Colors.red : Colors.green,
                 fontSize: 16)),
-        trailing: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.copy, size: 30),
-            SizedBox(width: 15),
-            Icon(Icons.remove_red_eye, color: primaryColor, size: 30),
-            SizedBox(width: 15),
-            Icon(Icons.delete, color: Colors.red, size: 30),
-          ],
-        ),
+        trailing: !invitation.isUsed
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      await Clipboard.setData(ClipboardData(
+                          text:
+                              '${EndPoints.frontedBaseUrl}invitation-receipt/${invitation.key}'));
+                      showSnackBar(context,
+                          "Invitation link copied to clipboard", "info");
+                    },
+                    icon: const Icon(Icons.copy, size: 30),
+                  ),
+                  const SizedBox(width: 15),
+                  IconButton(
+                      onPressed: () async {
+                        final Uri url = Uri.parse(
+                            '${EndPoints.frontedBaseUrl}invitation-receipt/${invitation.key}');
+                        await launchUrl(url);
+                      },
+                      icon: const Icon(Icons.remove_red_eye,
+                          color: primaryColor, size: 30)),
+                  const SizedBox(width: 15),
+                  IconButton(
+                      onPressed: () {},
+                      icon:
+                          const Icon(Icons.delete, color: Colors.red, size: 30))
+                ],
+              )
+            : null,
       ),
     );
   }
