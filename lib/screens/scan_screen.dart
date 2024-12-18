@@ -6,6 +6,8 @@ import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../components/error_widget.dart';
+
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
 
@@ -216,15 +218,3 @@ class _ScanPageState extends State<ScanPage> {
     );
   }
 }
-
-Widget errorWidget = SizedBox(
-  width: 240,
-  height: 240,
-  child: Center(
-    child: Text(
-      "Oops! Error Happened",
-      style: TextStyle(
-          color: Colors.red[600], fontSize: 20, fontWeight: FontWeight.bold),
-    ),
-  ),
-);

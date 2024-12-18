@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gymm/screens/invitations_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import '../models/subscription.dart';
 
@@ -63,7 +65,7 @@ class SubscriptionDetailsPage extends StatelessWidget {
               const SizedBox(height: 12),
               Table(
                 columnWidths: const {
-                  0: FlexColumnWidth(2.5),
+                  0: FlexColumnWidth(2.7),
                   1: FlexColumnWidth(3)
                 },
                 children: [
@@ -156,6 +158,33 @@ class SubscriptionDetailsPage extends StatelessWidget {
                           const TextStyle(fontSize: 16, color: Colors.white70),
                     ),
                   ],
+                ),
+              const SizedBox(height: 40),
+              if (!subscription.isExpired &&
+                  subscription.plan.invitations > 0 &&
+                  !subscription.startDate.isAfter(DateTime.now()) &&
+                  !subscription.isFrozen)
+                Center(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: blackColor[800],
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    icon: const Icon(FontAwesomeIcons.solidEnvelope, size: 26,),
+                    label: const Text(
+                      "Manage Invitations",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => InvitationsPage()));
+                    },
+                  ),
                 )
             ],
           ),
