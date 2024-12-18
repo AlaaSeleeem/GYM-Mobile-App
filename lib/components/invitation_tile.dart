@@ -1,6 +1,8 @@
+import 'package:async/async.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gymm/api/actions.dart';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/models/invitation.dart';
 import 'package:gymm/utils/snack_bar.dart';
@@ -8,10 +10,98 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../theme/colors.dart';
 import 'error_widget.dart';
 
-class InvitationTile extends StatelessWidget {
+class InvitationTile extends StatefulWidget {
   final Invitation invitation;
+  final Future<void> Function()? callback;
 
-  const InvitationTile({super.key, required this.invitation});
+  const InvitationTile({super.key, required this.invitation, this.callback});
+
+  @override
+  State<InvitationTile> createState() => _InvitationTileState();
+}
+
+class _InvitationTileState extends State<InvitationTile> {
+  bool _deleting = false;
+  bool submitting = false;
+
+  CancelableOperation? _currentOperation;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentOperation?.cancel();
+  }
+
+  Future<void> _deleteInvitation() async {
+    if (_deleting) return;
+    setState(() {
+      _deleting = true;
+    });
+
+    _currentOperation?.cancel();
+    _currentOperation =
+        CancelableOperation.fromFuture(deleteInvitation(widget.invitation.id));
+
+    _currentOperation!.value.then((value) {
+      if (!mounted) return;
+      showSnackBar(context, "Invitation deleted successfully", "info");
+      if (widget.callback != null) {
+        widget.callback!();
+      }
+    }).catchError((e) {
+      showSnackBar(context, "Failed deleting invitation", "error");
+    }).whenComplete(() {
+      if (mounted) {
+        setState(() {
+          _deleting = false;
+        });
+      }
+    });
+  }
+
+  void _deleteInvitationDialog() async {
+    final bool? result = await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  "Delete Invitation ${widget.invitation.code}?",
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: 44,
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    )),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop(true);
+                    },
+                    child: Text(
+                      "Delete",
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.red[500],
+                          fontWeight: FontWeight.bold),
+                    ))
+              ],
+            ));
+
+    if (result == true) {
+      await _deleteInvitation();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +114,7 @@ class InvitationTile extends StatelessWidget {
           width: 70,
           height: 70,
           child: BarcodeWidget(
-            data: invitation.code,
+            data: widget.invitation.code,
             barcode: Barcode.code128(),
             width: 190,
             height: 160,
@@ -33,14 +123,14 @@ class InvitationTile extends StatelessWidget {
             errorBuilder: (context, str) => errorWidget,
           ),
         ),
-        title: Text(invitation.code,
+        title: Text(widget.invitation.code,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.white, fontSize: 20)),
-        subtitle: Text(invitation.isUsed ? 'Used' : 'Valid',
+        subtitle: Text(widget.invitation.isValid ? 'Valid' : 'Used',
             style: TextStyle(
-                color: invitation.isUsed ? Colors.red : Colors.green,
+                color: widget.invitation.isValid ? Colors.green : Colors.red,
                 fontSize: 16)),
-        trailing: !invitation.isUsed
+        trailing: widget.invitation.isValid || !_deleting
             ? Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -48,7 +138,7 @@ class InvitationTile extends StatelessWidget {
                     onPressed: () async {
                       await Clipboard.setData(ClipboardData(
                           text:
-                              '${EndPoints.frontedBaseUrl}invitation-receipt/${invitation.key}'));
+                              '${EndPoints.frontedBaseUrl}invitation-receipt/${widget.invitation.key}'));
                       showSnackBar(context,
                           "Invitation link copied to clipboard", "info");
                     },
@@ -58,14 +148,16 @@ class InvitationTile extends StatelessWidget {
                   IconButton(
                       onPressed: () async {
                         final Uri url = Uri.parse(
-                            '${EndPoints.frontedBaseUrl}invitation-receipt/${invitation.key}');
+                            '${EndPoints.frontedBaseUrl}invitation-receipt/${widget.invitation.key}');
                         await launchUrl(url);
                       },
                       icon: const Icon(Icons.remove_red_eye,
                           color: primaryColor, size: 30)),
                   const SizedBox(width: 15),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _deleteInvitationDialog();
+                      },
                       icon:
                           const Icon(Icons.delete, color: Colors.red, size: 30))
                 ],

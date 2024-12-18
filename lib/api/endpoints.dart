@@ -1,11 +1,11 @@
 class EndPoints {
   // production:
-  // static const String _baseUrl = 'https://kaffogym.pythonanywhere.com/';
-  // static const String frontedBaseUrl = 'https://kaffogym.vercel.app/';
+  static const String _baseUrl = 'https://progym.pythonanywhere.com/';
+  static const String frontedBaseUrl = 'https://progym.vercel.app/';
 
   // local emulator:
-  static const String _baseUrl = 'http://10.0.2.2:8000/';
-  static const String frontedBaseUrl = 'http://10.0.2.2:5173/';
+  // static const String _baseUrl = 'http://10.0.2.2:8000/';
+  // static const String frontedBaseUrl = 'http://10.0.2.2:5173/';
 
   // local edge:
   // static const String _baseUrl = 'http://localhost:8000/';
@@ -29,8 +29,13 @@ class EndPoints {
   static const String _clientSubscriptionsHistory =
       "api/subscriptions/subscription/";
 
-  static const String _invitations =
+  static const String _invitations = "api/subscriptions/invitation/";
+
+  static const String _subscriptionInvitations =
       "api/subscriptions/subscription-invitations/";
+
+  static const String _createInvitation =
+      "api/subscriptions/create-invitation/";
 
   static const String _subscriptionPlans =
       "api/subscriptions/subscription-plan/";
@@ -61,7 +66,12 @@ class EndPoints {
   static String clientSubscriptionsHistory(int id, int page) =>
       "$_baseUrl$_clientSubscriptionsHistory?client_id=$id&page=$page";
 
-  static String subscriptionInvitations() => "$_baseUrl$_invitations";
+  static String invitation(int id) => '$_baseUrl$_invitations$id/';
+
+  static String subscriptionInvitations() =>
+      "$_baseUrl$_subscriptionInvitations";
+
+  static String createInvitation() => '$_baseUrl$_createInvitation';
 
   static String subscriptionPlans(int page) =>
       '$_baseUrl$_subscriptionPlans?page=$page';

@@ -224,6 +224,26 @@ Future<List<Invitation>> getSubscriptionInvitations(int subId) async {
   }
 }
 
+// delete invitation
+Future<void> deleteInvitation(int id) async {
+  try {
+    await _apiRequest(method: "delete", url: EndPoints.invitation(id));
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
+// create new invitation
+Future<void> createInvitation(int subId) async {
+  try {
+    final data = {"sub_id": subId};
+    await _apiRequest(
+        method: "post", url: EndPoints.createInvitation(), data: data);
+  } catch (e) {
+    return Future.error(e);
+  }
+}
+
 // get subscription plans
 Future<(List<SubscriptionPlan>, bool)> getSubscriptionPlans(int page) async {
   try {
@@ -239,7 +259,7 @@ Future<(List<SubscriptionPlan>, bool)> getSubscriptionPlans(int page) async {
   }
 }
 
-// get subscription plans
+// get subscription history
 Future<(List<Subscription>, bool)> getClientSubscriptionsHistory(
     int id, int page) async {
   try {
@@ -315,7 +335,7 @@ Future<(List<Order>, bool)> getOrdersHistory(int page, String clientId) async {
   }
 }
 
-// get orders history
+// remove order
 Future<void> removeOrder(int id) async {
   try {
     await _apiRequest(method: "delete", url: EndPoints.order(id));
