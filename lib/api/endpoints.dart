@@ -1,7 +1,7 @@
 class EndPoints {
   // production:
-  static const String _baseUrl = 'https://progym.pythonanywhere.com/';
-  static const String frontedBaseUrl = 'https://progym.vercel.app/';
+  static const String _baseUrl = 'https://kaffogym.pythonanywhere.com/';
+  static const String frontedBaseUrl = 'https://nx-gym.vercel.app/';
 
   // local emulator:
   // static const String _baseUrl = 'http://10.0.2.2:8000/';

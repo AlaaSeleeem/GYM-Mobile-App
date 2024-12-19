@@ -138,27 +138,6 @@ class SubscriptionDetailsPage extends StatelessWidget {
                       value: "${subscription.plan.invitations}"),
                 ],
               ),
-              if (subscription.plan.description != null &&
-                  subscription.plan.description!.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 26),
-                    const Text(
-                      'Description:',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      subscription.plan.description!,
-                      style:
-                          const TextStyle(fontSize: 16, color: Colors.white70),
-                    ),
-                  ],
-                ),
               const SizedBox(height: 40),
               if (!subscription.isExpired &&
                   subscription.plan.invitations > 0 &&
@@ -190,7 +169,28 @@ class SubscriptionDetailsPage extends StatelessWidget {
                               )));
                     },
                   ),
-                )
+                ),
+              if (subscription.plan.description != null &&
+                  subscription.plan.description!.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 26),
+                    const Text(
+                      'Description:',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      subscription.plan.description!,
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white70),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
