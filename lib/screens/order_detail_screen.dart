@@ -5,6 +5,7 @@ import 'package:gymm/components/store_components/cart_components/order_details.d
 import 'package:gymm/models/order.dart';
 import '../components/store_components/cart_components/cart_item.dart';
 import '../utils/snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({super.key, required this.order});
@@ -39,9 +40,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     _currentOperation!.value.then((value) {
       if (!mounted) return;
       Navigator.of(context).popUntil(ModalRoute.withName("/"));
-      showSnackBar(context, "Order has been removed", "info");
+      showSnackBar(context, AppLocalizations.of(context)!.orderRemoved, "info");
     }).catchError((e) {
-      showSnackBar(context, "Failed removing order", "error");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.failedRemovingOrder, "error");
     }).whenComplete(() {
       setState(() {
         _removing = false;
@@ -55,11 +57,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       final bool? result = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                content: const Padding(
-                  padding: EdgeInsets.all(12),
+                content: Padding(
+                  padding: const EdgeInsets.all(12),
                   child: Text(
-                    "Are you sure you want cancel this order?",
-                    style: TextStyle(fontSize: 24),
+                    AppLocalizations.of(context)!.confirmCancelOrder,
+                    style: const TextStyle(fontSize: 24),
                   ),
                 ),
                 icon: const Icon(
@@ -72,16 +74,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       onPressed: () {
                         Navigator.of(context).pop(false);
                       },
-                      child: const Text(
-                        "Cancel",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      child: Text(
+                        AppLocalizations.of(context)!.cancel,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       )),
                   TextButton(
                       onPressed: () async {
                         Navigator.of(context).pop(true);
                       },
                       child: Text(
-                        "Remove",
+                        AppLocalizations.of(context)!.remove,
                         style: TextStyle(
                             fontSize: 18,
                             color: Colors.red[500],
@@ -98,8 +101,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text(
-          'Order Detail',
+        title: Text(
+          AppLocalizations.of(context)!.orderDetail,
         ),
         actions: [
           if (widget.order.state == "معلق")

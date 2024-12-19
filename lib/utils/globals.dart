@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 bool firstInitialization = true;
 
@@ -21,4 +22,13 @@ void showAddToCartDialog(BuildContext context) {
       ));
 
   dialog.show();
+}
+
+// localization methods
+bool isArabic(BuildContext context) {
+  AppLocalizations? appLocalizations = AppLocalizations.of(context);
+  if (appLocalizations == null) {
+    return false;
+  }
+  return appLocalizations.localeName == "ar";
 }

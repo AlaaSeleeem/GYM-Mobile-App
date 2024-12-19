@@ -5,7 +5,7 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../components/error_widget.dart';
 
 class ScanPage extends StatefulWidget {
@@ -55,7 +55,9 @@ class _ScanPageState extends State<ScanPage> {
                       Image.asset('assets/logo1.jpeg', height: 150),
                     const SizedBox(height: 20),
                     Text(
-                      code,
+                      code == "Barcode"
+                          ? AppLocalizations.of(context)!.barcode
+                          : AppLocalizations.of(context)!.qrcode,
                       style: const TextStyle(
                         color: primaryColor,
                         fontSize: 28,

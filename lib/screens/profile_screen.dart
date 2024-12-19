@@ -13,6 +13,7 @@ import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -51,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage>
     try {
       _getClientPhoto();
     } catch (e) {
-      showSnackBar(context, "Error loading data", "error");
+      showSnackBar(context, AppLocalizations.of(context)!.loadError, "error");
     }
   }
 
@@ -81,7 +82,8 @@ class _ProfilePageState extends State<ProfilePage>
       }
     }).catchError((e) {
       if (mounted) {
-        showSnackBar(context, "Error refreshing data", "error");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.refreshError, "error");
       }
     });
   }

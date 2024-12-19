@@ -2,7 +2,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:gymm/components/news_card.dart';
 import 'package:gymm/screens/news_detail_screen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../api/actions.dart';
 import '../components/loading.dart';
 import '../models/news.dart';
@@ -82,8 +82,8 @@ class _NewsPageState extends State<NewsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'News',
+        title: Text(
+          AppLocalizations.of(context)!.news,
         ),
       ),
       body: RefreshIndicator(
@@ -123,11 +123,11 @@ class _NewsPageState extends State<NewsPage> {
                       height: 100,
                     ),
                   if (!loading && news.isEmpty)
-                    const Center(
+                    Center(
                       child: Text(
-                        "We will publish news soon,\nStay tuned!",
+                        AppLocalizations.of(context)!.noNews,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 24),
+                        style: const TextStyle(fontSize: 24),
                       ),
                     )
                 ],

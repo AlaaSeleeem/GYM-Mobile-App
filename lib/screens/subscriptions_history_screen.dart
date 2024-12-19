@@ -6,6 +6,7 @@ import 'package:gymm/screens/subscription_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:async/async.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SubscriptionsHistoryPage extends StatefulWidget {
   const SubscriptionsHistoryPage({super.key, required this.id});
@@ -47,9 +48,8 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
     });
 
     _currentOperation = CancelableOperation.fromFuture(
-        getClientSubscriptionsHistory(widget.id, currentPage), onCancel: () {
-      print("operation canceled");
-    });
+        getClientSubscriptionsHistory(widget.id, currentPage),
+        onCancel: () {});
 
     _currentOperation!.value.then((value) {
       if (!mounted) return;
@@ -64,7 +64,8 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
       });
     }).catchError((e) {
       if (!mounted) return;
-      showSnackBar(context, "Failed loading subscriptions history", "error");
+      showSnackBar(context,
+          AppLocalizations.of(context)!.failedLoadSubscriptionHistory, "error");
     }).whenComplete(() {
       if (!mounted) return;
       setState(() {
@@ -86,8 +87,8 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Subscriptions History',
+        title: Text(
+          AppLocalizations.of(context)!.subscriptionsHistory,
         ),
       ),
       body: RefreshIndicator(
@@ -126,10 +127,10 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
                       height: 100,
                     ),
                   if (!loading && subscriptions.isEmpty)
-                    const Center(
+                    Center(
                       child: Text(
-                        "No History",
-                        style: TextStyle(fontSize: 24),
+                        AppLocalizations.of(context)!.noHistory,
+                        style: const TextStyle(fontSize: 24),
                       ),
                     )
                 ],

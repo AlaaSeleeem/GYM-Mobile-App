@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/screens/invitations_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import '../models/subscription.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SubscriptionDetailsPage extends StatelessWidget {
   final Subscription subscription;
@@ -46,7 +47,8 @@ class SubscriptionDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Subscription: ${subscription.id}"),
+        title: Text(
+            "${AppLocalizations.of(context)!.subscription}: ${subscription.id}"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -70,18 +72,20 @@ class SubscriptionDetailsPage extends StatelessWidget {
                 },
                 children: [
                   // Code
-                  _buildRow(title: "Code", value: subscription.id.toString()),
+                  _buildRow(
+                      title: AppLocalizations.of(context)!.code,
+                      value: subscription.id.toString()),
 
                   // Status
                   _buildRow(
-                      title: "Status",
+                      title: AppLocalizations.of(context)!.status,
                       value: subscription.isExpired
-                          ? "Expired"
+                          ? AppLocalizations.of(context)!.expired
                           : subscription.startDate.isAfter(DateTime.now())
-                              ? "Waiting"
+                              ? AppLocalizations.of(context)!.waiting
                               : subscription.isFrozen
-                                  ? "Frozen"
-                                  : "Active",
+                                  ? AppLocalizations.of(context)!.frozen
+                                  : AppLocalizations.of(context)!.active,
                       color: subscription.isExpired
                           ? Colors.red
                           : subscription.startDate.isAfter(DateTime.now())
@@ -92,49 +96,53 @@ class SubscriptionDetailsPage extends StatelessWidget {
 
                   // Start date
                   _buildRow(
-                      title: "Start Date",
+                      title: AppLocalizations.of(context)!.startDate,
                       value: "${subscription.startDate.day}"
                           "-${subscription.startDate.month}"
                           "-${subscription.startDate.year}"),
 
                   // End date
                   _buildRow(
-                      title: "End Date",
+                      title: AppLocalizations.of(context)!.endDate,
                       value: "${subscription.endDate?.day}"
                           "-${subscription.endDate?.month}"
                           "-${subscription.endDate?.year}"),
 
                   // Attendance
                   _buildRow(
-                      title: "Attendance",
+                      title: AppLocalizations.of(context)!.attendance,
                       value:
-                          "${subscription.attendanceDays} ${subscription.plan.isDuration ? "Days" : "Classes"}"),
+                          "${subscription.attendanceDays} ${subscription.plan.isDuration ? AppLocalizations.of(context)!.days : AppLocalizations.of(context)!.classes}"),
 
                   // Remaining
                   _buildRow(
-                      title: "Remaining",
+                      title: AppLocalizations.of(context)!.remaining,
                       value: subscription.remaining(prefix: false)),
 
                   // Remaining
                   _buildRow(
-                      title: "Freezable",
-                      value: subscription.plan.freezable ? "Yes" : "No"),
+                      title: AppLocalizations.of(context)!.freezable,
+                      value: subscription.plan.freezable
+                          ? AppLocalizations.of(context)!.yes
+                          : AppLocalizations.of(context)!.no),
 
                   // Max freeze days
                   if (subscription.plan.freezable)
                     _buildRow(
-                        title: "Max Freeze Days",
-                        value: "${subscription.plan.freezeNo} Days"),
+                        title: AppLocalizations.of(context)!.maxFreezeDays,
+                        value:
+                            "${subscription.plan.freezeNo} ${AppLocalizations.of(context)!.days}"),
 
                   // Freeze days used
                   if (subscription.plan.freezable)
                     _buildRow(
-                        title: "Freeze Days Used",
-                        value: "${subscription.freezeDaysUsed} Days"),
+                        title: AppLocalizations.of(context)!.freezeDaysUsed,
+                        value:
+                            "${subscription.freezeDaysUsed} ${AppLocalizations.of(context)!.days}"),
 
                   // Invitations
                   _buildRow(
-                      title: "Invitations",
+                      title: AppLocalizations.of(context)!.invitations,
                       value: "${subscription.plan.invitations}"),
                 ],
               ),
@@ -155,9 +163,9 @@ class SubscriptionDetailsPage extends StatelessWidget {
                       FontAwesomeIcons.solidEnvelope,
                       size: 26,
                     ),
-                    label: const Text(
-                      "Manage Invitations",
-                      style: TextStyle(
+                    label: Text(
+                      AppLocalizations.of(context)!.manageInvitations,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold),
@@ -176,9 +184,9 @@ class SubscriptionDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 26),
-                    const Text(
-                      'Description:',
-                      style: TextStyle(
+                    Text(
+                      '${AppLocalizations.of(context)!.descriptions}:',
+                      style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),

@@ -7,6 +7,7 @@ import 'package:gymm/models/client.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:async/async.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditPersonalInfoPage extends StatefulWidget {
   const EditPersonalInfoPage({
@@ -91,7 +92,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
     return TextFormField(
       validator: (value) {
         if (isRequired && (value == null || value.isEmpty)) {
-          return "$label can't be empty";
+          return "$label ${AppLocalizations.of(context)!.noEmpty}";
         }
         return null;
       },
@@ -118,9 +119,9 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Gender",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        Text(
+          AppLocalizations.of(context)!.gander,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
         ),
         Row(
           children: [
@@ -133,8 +134,8 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                     selectedGender = value;
                   });
                 },
-                title:
-                    const Text("Male", style: TextStyle(color: Colors.white)),
+                title: Text(AppLocalizations.of(context)!.male,
+                    style: const TextStyle(color: Colors.white)),
               ),
             ),
             Expanded(
@@ -146,8 +147,8 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                     selectedGender = value;
                   });
                 },
-                title:
-                    const Text("Female", style: TextStyle(color: Colors.white)),
+                title: Text(AppLocalizations.of(context)!.female,
+                    style: const TextStyle(color: Colors.white)),
               ),
             ),
           ],
@@ -183,7 +184,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
         child: _buildTextField(
           controller: controller,
           label: label,
-          hint: "YYYY-MM-DD",
+          hint: AppLocalizations.of(context)!.yearHint,
           isRequired: isRequired,
           error: error,
         ),
@@ -206,7 +207,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
     final email = emailController.text;
     if (email.isNotEmpty && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       setState(() {
-        fieldErrors["email"] = "Invalid email address";
+        fieldErrors["email"] = AppLocalizations.of(context)!.invalidEmail;
       });
       return;
     }
@@ -236,7 +237,8 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
     _currentOperation!.value.then((_) {
       if (!mounted) return;
 
-      showSnackBar(context, "Personal Information Updated", "info");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.personalInfoUpdated, "info");
       Navigator.of(context).pop();
     }).catchError((error) {
       if (!mounted) return;
@@ -246,12 +248,13 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
           setState(() {
             (error).responseBody.forEach((k, v) {
               fieldErrors[k] = v.toString().contains("exist")
-                  ? "Phone number exists"
-                  : "Invalid Value";
+                  ? AppLocalizations.of(context)!.phoneExists
+                  : AppLocalizations.of(context)!.invalid;
             });
           });
         } else {
-          showSnackBar(context, "Error Saving data", "error");
+          showSnackBar(
+              context, AppLocalizations.of(context)!.saveError, "error");
         }
       });
     }).whenComplete(() {
@@ -267,7 +270,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Info"),
+        title: Text(AppLocalizations.of(context)!.editInfo),
       ),
       body: loading
           ? const Center(
@@ -293,14 +296,14 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                               children: [
                                 _buildTextField(
                                   controller: nameController,
-                                  label: "Name",
+                                  label: AppLocalizations.of(context)!.name,
                                   isRequired: true,
                                   error: fieldErrors["name"],
                                 ),
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: phoneController,
-                                  label: "Phone",
+                                  label: AppLocalizations.of(context)!.phone,
                                   keyboardType: TextInputType.phone,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly
@@ -311,7 +314,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: phone2Controller,
-                                  label: "Phone 2",
+                                  label: AppLocalizations.of(context)!.phone2,
                                   keyboardType: TextInputType.phone,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly
@@ -321,7 +324,8 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: nationalIdController,
-                                  label: "National ID",
+                                  label:
+                                      AppLocalizations.of(context)!.nationalId,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly
@@ -333,28 +337,29 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                                 const SizedBox(height: 16),
                                 _buildDateField(
                                   controller: birthdateController,
-                                  label: "Birthdate",
+                                  label:
+                                      AppLocalizations.of(context)!.birthdate,
                                   isRequired: true,
                                   error: fieldErrors["birthdate"],
                                 ),
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: emailController,
-                                  label: "Email",
+                                  label: AppLocalizations.of(context)!.email,
                                   keyboardType: TextInputType.emailAddress,
                                   error: fieldErrors["email"],
                                 ),
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: addressController,
-                                  label: "Address",
+                                  label: AppLocalizations.of(context)!.address,
                                   keyboardType: TextInputType.streetAddress,
                                   error: fieldErrors["address"],
                                 ),
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: weightController,
-                                  label: "Weight",
+                                  label: AppLocalizations.of(context)!.weight,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly
@@ -364,7 +369,7 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                                 const SizedBox(height: 16),
                                 _buildTextField(
                                   controller: heightController,
-                                  label: "Height",
+                                  label: AppLocalizations.of(context)!.height,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly

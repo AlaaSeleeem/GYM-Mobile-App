@@ -6,6 +6,7 @@ import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/screens/subscription_plan_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlansPage extends StatefulWidget {
   const PlansPage({super.key});
@@ -118,10 +119,10 @@ class _PlansPageState extends State<PlansPage> {
                       height: 100,
                     ),
                   if (!loading && plans.isEmpty)
-                    const Center(
+                    Center(
                       child: Text(
-                        "No current Plans",
-                        style: TextStyle(fontSize: 24),
+                        AppLocalizations.of(context)!.noPlans,
+                        style: const TextStyle(fontSize: 24),
                       ),
                     )
                 ],
@@ -216,10 +217,10 @@ class _PlansPageState extends State<PlansPage> {
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                const Text(
-                                  "L.E",
+                                Text(
+                                  AppLocalizations.of(context)!.pound,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: blackColor,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 20,
@@ -228,7 +229,7 @@ class _PlansPageState extends State<PlansPage> {
                               ])
                         : Center(
                             child: Text(
-                              "${(plan.price.toInt())}\nL.E",
+                              "${(plan.price.toInt())}\n${AppLocalizations.of(context)!.pound}",
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: blackColor,
@@ -255,7 +256,7 @@ class _PlansPageState extends State<PlansPage> {
                   child: Row(
                     children: [
                       Text(
-                        '${(plan.discount!.toInt())}% OFF',
+                        '${(plan.discount!.toInt())}% ${AppLocalizations.of(context)!.off}',
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

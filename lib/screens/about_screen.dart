@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../theme/colors.dart';
 
@@ -16,7 +17,7 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("About Pro Gym"),
+        title: Text(AppLocalizations.of(context)!.aboutProGym),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,43 +37,38 @@ class AboutPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Gym Terms Section
-              _buildSectionHeader(
-                  "Terms & Conditions", FontAwesomeIcons.fileContract),
+              _buildSectionHeader(AppLocalizations.of(context)!.termsTitle,
+                  FontAwesomeIcons.fileContract),
               const SizedBox(height: 10),
-              const Text(
-                "1. Membership fees are non-refundable.\n"
-                "2. All equipment should be used responsibly.\n"
-                "3. Gym members must wear proper attire.\n"
-                "4. Personal belongings should be stored in lockers.\n"
-                "5. Report any injuries or issues to the staff immediately.",
-                style: TextStyle(fontSize: 16),
+              Text(
+                AppLocalizations.of(context)!.terms,
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 30),
               // Conditions of Use
-              _buildSectionHeader(
-                  "Conditions of Use", FontAwesomeIcons.scaleBalanced),
+              _buildSectionHeader(AppLocalizations.of(context)!.conditionsTitle,
+                  FontAwesomeIcons.scaleBalanced),
               const SizedBox(height: 10),
-              const Text(
-                "By accessing the gym facilities, you agree to:\n"
-                "- Follow all safety guidelines.\n"
-                "- Respect staff and fellow members.\n"
-                "- Avoid misuse of equipment.\n"
-                "- Comply with gym timings and policies.",
-                style: TextStyle(fontSize: 16),
+              Text(
+                AppLocalizations.of(context)!.conditions,
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 30),
               // Contact Info Section
-              _buildSectionHeader(
-                  "Contact Information", FontAwesomeIcons.addressCard),
+              _buildSectionHeader(AppLocalizations.of(context)!.contact,
+                  FontAwesomeIcons.addressCard),
               const SizedBox(height: 10),
-              _buildContactItem("Phone", FontAwesomeIcons.phone, "01020202030"),
-              _buildContactItem("Facebook", FontAwesomeIcons.facebook,
-                  "https://facebook.com/ProGym"),
-              _buildContactItem("Instagram", FontAwesomeIcons.instagram,
-                  "https://instagram.com/ProGym"),
-              _buildContactItem("TikTok", FontAwesomeIcons.tiktok,
-                  "https://tiktok.com/@ProGym"),
-              _buildContactItem("Address", FontAwesomeIcons.locationDot,
+              _buildContactItem(AppLocalizations.of(context)!.phone,
+                  FontAwesomeIcons.phone, "01020202030"),
+              _buildContactItem(AppLocalizations.of(context)!.facebook,
+                  FontAwesomeIcons.facebook, "https://facebook.com/ProGym"),
+              _buildContactItem(AppLocalizations.of(context)!.instagram,
+                  FontAwesomeIcons.instagram, "https://instagram.com/ProGym"),
+              _buildContactItem(AppLocalizations.of(context)!.tiktok,
+                  FontAwesomeIcons.tiktok, "https://tiktok.com/@ProGym"),
+              _buildContactItem(
+                  AppLocalizations.of(context)!.address,
+                  FontAwesomeIcons.locationDot,
                   "123 Paris Street, Shebin, Menofia"),
               const SizedBox(height: 20),
               // Location Button
@@ -87,9 +83,9 @@ class AboutPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                 icon: const Icon(FontAwesomeIcons.map, color: Colors.black),
-                label: const Text(
-                  "Open Location in Maps",
-                  style: TextStyle(
+                label: Text(
+                  AppLocalizations.of(context)!.viewLocation,
+                  style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
@@ -132,7 +128,7 @@ class AboutPage extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              _buildDeveloperSection(),
+              _buildDeveloperSection(context),
             ],
           ),
         ),
@@ -170,27 +166,27 @@ class AboutPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDeveloperSection() {
+  Widget _buildDeveloperSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Divider(thickness: 1, color: Colors.grey),
         const SizedBox(height: 20),
         // Developer Logo
-        const Center(
+        Center(
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage(
                   "assets/kaffo.jpeg", // Replace with the path to your logo
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                "App Developed by Kaffo",
-                style: TextStyle(
+                AppLocalizations.of(context)!.developedBy,
+                style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: primaryColor),
@@ -200,21 +196,20 @@ class AboutPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         // Developer Description
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "Kaffo is a leading app development company specializing in innovative, "
-            "user-friendly solutions tailored to meet the needs of businesses and users alike.",
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            AppLocalizations.of(context)!.aboutKaffo,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
           ),
         ),
         const SizedBox(height: 20),
         // Contact Information
         ListTile(
           leading: const Icon(Icons.phone, color: primaryColor),
-          title: const Text(
-            "Phone",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            AppLocalizations.of(context)!.phone,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: const Text("+123-456-7890"),
           onTap: () {
@@ -223,9 +218,9 @@ class AboutPage extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.email, color: primaryColor),
-          title: const Text(
-            "Email",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            AppLocalizations.of(context)!.email,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: const Text("support@kaffo.co"),
           onTap: () {
@@ -234,9 +229,9 @@ class AboutPage extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.web, color: primaryColor),
-          title: const Text(
-            "Website",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            AppLocalizations.of(context)!.website,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: const Text("https://kaffo.co"),
           onTap: () {
@@ -245,10 +240,10 @@ class AboutPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         // Copyright and Footer
-        const Center(
+        Center(
           child: Text(
-            "© 2024 Kaffo. All rights reserved.",
-            style: TextStyle(fontSize: 14, color: Colors.grey),
+            AppLocalizations.of(context)!.rights,
+            style: const TextStyle(fontSize: 14, color: Colors.grey),
           ),
         ),
         const SizedBox(height: 20),

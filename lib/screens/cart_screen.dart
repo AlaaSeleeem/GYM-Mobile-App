@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:gymm/providers/Cart.dart';
 import '../components/store_components/cart_components/cart_item.dart';
 import '../components/store_components/cart_components/empty_cart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -62,8 +63,8 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text(
-          'Cart',
+        title: Text(
+          AppLocalizations.of(context)!.cart,
         ),
         actions: [
           if (cart.cartItems.isNotEmpty)
