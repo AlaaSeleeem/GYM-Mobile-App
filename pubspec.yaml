@@ -25,6 +25,9 @@ dependencies:
   barcode_widget: ^2.0.4
   path_provider: ^2.1.5
   async: ^2.11.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +44,7 @@ flutter:
       fonts:
         - asset: "assets/fonts/cairo/cairo-variable.ttf"
   uses-material-design: true
+  generate: true
 
 
 
