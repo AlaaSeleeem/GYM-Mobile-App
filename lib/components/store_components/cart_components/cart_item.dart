@@ -4,6 +4,7 @@ import 'package:gymm/models/order_item.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/Cart.dart';
 import '../../../theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartItemCard extends StatelessWidget {
   final OrderItem item;
@@ -58,7 +59,8 @@ class CartItemCard extends StatelessWidget {
           title: Text(item.product.name,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: Colors.white, fontSize: 20)),
-          subtitle: Text('${item.unitPrice} L.E',
+          subtitle: Text(
+              '${item.unitPrice} ${AppLocalizations.of(context)!.pound}',
               style: const TextStyle(color: Colors.white54, fontSize: 16)),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,

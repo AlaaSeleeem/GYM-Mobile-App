@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -102,7 +103,7 @@ class _ScanPageState extends State<ScanPage> {
                                                     right: 10),
                                                 drawText: true,
                                                 errorBuilder: (context, str) =>
-                                                    errorWidget,
+                                                    errorWidget(context),
                                               )
                                             : QrImageView(
                                                 data: id!,
@@ -110,7 +111,7 @@ class _ScanPageState extends State<ScanPage> {
                                                 size: 240,
                                                 errorStateBuilder:
                                                     (context, err) =>
-                                                        errorWidget,
+                                                        errorWidget(context),
                                                 embeddedImageEmitsError: true,
                                               ),
                                       )
@@ -146,7 +147,16 @@ class _ScanPageState extends State<ScanPage> {
                             AnimatedPositioned(
                               duration: const Duration(milliseconds: 120),
                               curve: Curves.easeInOut,
-                              left: code == "Barcode" ? 4 : 74,
+                              left: isArabic(context)
+                                  ? null
+                                  : code == "Barcode"
+                                      ? 4
+                                      : 74,
+                              right: !isArabic(context)
+                                  ? null
+                                  : code == "Barcode"
+                                      ? 4
+                                      : 74,
                               child: Container(
                                 width: 60,
                                 height: 40,

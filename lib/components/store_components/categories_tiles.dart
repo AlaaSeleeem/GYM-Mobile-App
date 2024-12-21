@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/models/category.dart';
 import '../../theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoriesTiles extends StatefulWidget {
   const CategoriesTiles(
@@ -31,9 +32,9 @@ class _CategoriesTilesState extends State<CategoriesTiles> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Categories",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+        Text(
+          AppLocalizations.of(context)!.categories,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
         const SizedBox(height: 12),
         Wrap(
@@ -55,9 +56,9 @@ class _CategoriesTilesState extends State<CategoriesTiles> {
                   border: Border.all(color: primaryColor),
                   color: _category == "All" ? primaryColor[500] : null,
                 ),
-                child: const Text(
-                  "All",
-                  style: TextStyle(
+                child: Text(
+                  AppLocalizations.of(context)!.all,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),

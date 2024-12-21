@@ -117,9 +117,10 @@ class SubscriptionDetailsPage extends StatelessWidget {
                   // Remaining
                   _buildRow(
                       title: AppLocalizations.of(context)!.remaining,
-                      value: subscription.remaining(prefix: false)),
+                      value: subscription.remaining(
+                          prefix: false, context: context)),
 
-                  // Remaining
+                  // Freezable
                   _buildRow(
                       title: AppLocalizations.of(context)!.freezable,
                       value: subscription.plan.freezable

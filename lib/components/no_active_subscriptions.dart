@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoActiveSubscription extends StatelessWidget {
   final VoidCallback? onActionPressed;
@@ -21,7 +22,7 @@ class NoActiveSubscription extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              "No Active Subscriptions",
+              AppLocalizations.of(context)!.noActiveSubscriptions,
               style: TextStyle(
                 color: Colors.grey[700],
                 fontSize: 22,
@@ -31,7 +32,7 @@ class NoActiveSubscription extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "No currently active subscriptions.\nGet started by choosing a plan.",
+              AppLocalizations.of(context)!.noActiveSubscriptionsDesc,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -50,9 +51,9 @@ class NoActiveSubscription extends StatelessWidget {
                   ),
                   backgroundColor: Theme.of(context).primaryColor,
                 ),
-                child: const Text(
-                  "Explore Plans",
-                  style: TextStyle(fontSize: 16),
+                child: Text(
+                  AppLocalizations.of(context)!.discover,
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
           ],

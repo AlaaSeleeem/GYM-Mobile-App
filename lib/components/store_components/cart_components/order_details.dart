@@ -6,6 +6,7 @@ import 'package:gymm/screens/orders_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../theme/colors.dart';
 import '../../../utils/snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrderDetails extends StatefulWidget {
   final bool forCart;
@@ -42,12 +43,14 @@ class _OrderDetailsState extends State<OrderDetails> {
 
       _currentOperation!.value.then((value) {
         if (!mounted) return;
-        showSnackBar(context, "Your order has been submitted", "info");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.orderSubmitted, "info");
         cart.clear();
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const OrdersHistoryPage()));
       }).catchError((e) {
-        showSnackBar(context, "Failed submitting your order", "error");
+        showSnackBar(context,
+            AppLocalizations.of(context)!.orderSubmittingError, "error");
       }).whenComplete(() {
         if (mounted) {
           setState(() {
@@ -69,10 +72,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Center(
+                Center(
                   child: Text(
-                    "Order Summary",
-                    style: TextStyle(fontSize: 24),
+                    AppLocalizations.of(context)!.orderSummary,
+                    style: const TextStyle(fontSize: 24),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -83,9 +86,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Order Number',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.orderNumber,
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                         ),
@@ -106,15 +109,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'State',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.state,
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        widget.order!.state == "معلق" ? "Pending" : "Confirmed",
+                        widget.order!.state == "معلق"
+                            ? AppLocalizations.of(context)!.pending
+                            : AppLocalizations.of(context)!.confirmed,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -131,9 +136,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Created at',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.createdAt,
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                         ),
@@ -155,9 +160,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Confirmed at',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.confirmedAt,
+                          style: const TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                           ),
@@ -180,9 +185,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total Items',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.totalItems,
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
@@ -214,15 +219,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total Price',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.totalPrice,
+                      style: const TextStyle(
                         fontSize: 24,
                       ),
                     ),
                     Text(
                       widget.forCart
-                          ? '${cart.calculateTotalPrice.toStringAsFixed(2)} L.E'
+                          ? '${cart.calculateTotalPrice.toStringAsFixed(2)} ${AppLocalizations.of(context)!.pound}'
                           : widget.order!.afterDiscount.toString(),
                       style: const TextStyle(
                         fontSize: 26,
@@ -270,9 +275,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                     const Icon(Icons.library_add_check_outlined,
                         color: Colors.black, size: 26),
                     const SizedBox(width: 6),
-                    const Text(
-                      'Place Order',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.placeOrder,
+                      style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,

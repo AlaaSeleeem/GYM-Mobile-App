@@ -6,6 +6,7 @@ import 'package:gymm/screens/product_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/globals.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.product});
@@ -119,15 +120,15 @@ class ProductCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.add_shopping_cart,
+                              const Icon(Icons.add_shopping_cart,
                                   color: Colors.black, size: 23),
-                              SizedBox(width: 6),
-                              Text('Add to Cart',
-                                  style: TextStyle(
+                              const SizedBox(width: 6),
+                              Text(AppLocalizations.of(context)!.addToCart,
+                                  style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 17)),
@@ -154,7 +155,7 @@ class ProductCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        '${(product.discount!.toInt())}% OFF',
+                        '${(product.discount!.toInt())}% ${AppLocalizations.of(context)!.off}',
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

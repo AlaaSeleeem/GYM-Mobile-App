@@ -6,6 +6,7 @@ import 'package:gymm/providers/Cart.dart';
 import '../components/store_components/cart_components/cart_item.dart';
 import '../components/store_components/cart_components/empty_cart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../utils/globals.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -69,7 +70,9 @@ class CartPage extends StatelessWidget {
         actions: [
           if (cart.cartItems.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(
+                  right: isArabic(context) ? 0 : 8.0,
+                  left: isArabic(context) ? 8.0 : 0),
               child: IconButton(
                   onPressed: deleteCartDialog,
                   style: ElevatedButton.styleFrom(

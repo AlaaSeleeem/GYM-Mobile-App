@@ -7,6 +7,7 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/models/invitation.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gymm/utils/globals.dart';
 import '../utils/snack_bar.dart';
 
 class InvitationsPage extends StatefulWidget {
@@ -106,7 +107,9 @@ class _InvitationsPageState extends State<InvitationsPage> {
         title: Text(AppLocalizations.of(context)!.invitations),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(
+                right: isArabic(context) ? 0 : 8.0,
+                left: isArabic(context) ? 8.0 : 0),
             child: IconButton(
                 onPressed: submitting
                     ? null

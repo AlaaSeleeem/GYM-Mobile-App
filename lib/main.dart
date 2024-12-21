@@ -37,7 +37,7 @@ class MyAppState extends State<MyApp> {
 
   void setLocale(Locale local) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language_code', locale.languageCode);
+    await prefs.setString('language_code', local.languageCode);
     setState(() {
       locale = local;
     });

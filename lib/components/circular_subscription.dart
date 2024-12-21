@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/screens/subscription_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CircularSubscription extends StatefulWidget {
   const CircularSubscription({super.key, required this.subscription});
@@ -59,8 +60,8 @@ class _CircularSubscriptionState extends State<CircularSubscription>
       // start|end dates
       Text(
         sub.startDate.isAfter(DateTime.now())
-            ? "Starts: ${sub.startDate.day}-${sub.startDate.month}-${sub.startDate.year}"
-            : "Expires: ${sub.endDate?.day}-${sub.endDate?.month}-${sub.endDate?.year}",
+            ? "${AppLocalizations.of(context)!.starts}: ${sub.startDate.day}-${sub.startDate.month}-${sub.startDate.year}"
+            : "${AppLocalizations.of(context)!.expires}: ${sub.endDate?.day}-${sub.endDate?.month}-${sub.endDate?.year}",
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
@@ -68,9 +69,9 @@ class _CircularSubscriptionState extends State<CircularSubscription>
       ),
       const SizedBox(height: 8),
       if (sub.startDate.isAfter(DateTime.now()))
-        const Text(
-          "Waiting",
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.waiting,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.purpleAccent,
             fontSize: 16,
@@ -78,7 +79,7 @@ class _CircularSubscriptionState extends State<CircularSubscription>
         ),
       if (!sub.isExpired && sub.startDate.isBefore(DateTime.now()))
         Text(
-          sub.remaining(),
+          sub.remaining(context: context),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: sub.daysLeft() <= 1 ? Colors.red : primaryColor,
@@ -86,22 +87,22 @@ class _CircularSubscriptionState extends State<CircularSubscription>
           ),
         ),
       if (sub.isExpired)
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.add_alert,
                   color: Colors.red,
                   size: 24,
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
-                  'Expired',
-                  style: TextStyle(color: Colors.red),
+                  AppLocalizations.of(context)!.expired,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ],
             ),

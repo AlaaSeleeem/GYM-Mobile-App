@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductsSearchBar extends StatelessWidget {
   final TextEditingController searchController;
@@ -20,7 +21,7 @@ class ProductsSearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             spreadRadius: 2,
             offset: const Offset(0, 2),
@@ -35,7 +36,7 @@ class ProductsSearchBar extends StatelessWidget {
               controller: searchController,
               decoration: InputDecoration(
                   focusedBorder: InputBorder.none,
-                  hintText: 'Search products...',
+                  hintText: AppLocalizations.of(context)!.searchProducts,
                   hintStyle: TextStyle(
                     color: Colors.grey.shade600,
                   ),

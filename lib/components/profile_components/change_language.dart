@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../main.dart';
 
 class ChangeLanguage extends StatefulWidget {
@@ -30,14 +30,14 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
         ),
         child: ExpansionTile(
           shape: Border.all(color: Colors.transparent),
-          title: const Row(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(Icons.language, color: primaryColor),
-              SizedBox(width: 10),
+              const Icon(Icons.language, color: primaryColor),
+              const SizedBox(width: 10),
               Text(
-                "Change Language",
-                style: TextStyle(
+                AppLocalizations.of(context)!.changeLang,
+                style: const TextStyle(
                     color: Colors.white,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),

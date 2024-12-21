@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AnimatedDialog extends StatefulWidget {
   final String productName;
@@ -41,17 +42,19 @@ class AnimatedDialogState extends State<AnimatedDialog>
       opacity: _animation,
       child: AlertDialog(
         backgroundColor: Colors.grey[900],
-        title: const Column(
+        title: Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.center,
               child: Icon(Icons.check_circle, color: Colors.yellow, size: 40),
             ),
-            SizedBox(height: 8),
-            Text('Product Added', style: TextStyle(color: Colors.yellow)),
+            const SizedBox(height: 8),
+            Text(AppLocalizations.of(context)!.productAdded,
+                style: const TextStyle(color: Colors.yellow)),
           ],
         ),
-        content: Text('${widget.productName} has been added to your cart.',
+        content: Text(
+            '${widget.productName} ${AppLocalizations.of(context)!.addedToCart}.',
             style: const TextStyle(color: Colors.white),
             textAlign: TextAlign.center),
       ),
