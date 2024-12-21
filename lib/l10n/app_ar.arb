@@ -129,6 +129,7 @@
   "noActiveSubscriptions": "لا توجد اشتراكات نشطة",
   "noActiveSubscriptionsDesc": "لا توجد اشتراكات نشطة حاليًا.\nابدأ باختيار خطة.",
   "changeLang": "تغيير اللغة",
+  "password": "كلمة المرور",
   "shortPassword": "كلمة المرور قصيرة جدًا",
   "notMatch": "كلمة المرور غير متطابقة",
   "passwordChanged": "تم تغيير كلمة المرور",
@@ -171,5 +172,13 @@
   "confirmedAt": "تم الشراء في",
   "totalItems": "الكمية الكلية",
   "totalPrice": "السعر الإجمالي",
-  "placeOrder": "حجز الطلب"
+  "placeOrder": "حجز الطلب",
+  "authFailed": "فشل في تسجيل الدخول",
+  "incorrectPassword": "كلمة مرور غير صحيحة",
+  "idNotFound": "كود غير موجود",
+  "numberOnBarcodeCard": "الرقم الموجود على بطاقة الباركود",
+  "passwordDefaultHint": "الافتراضي: رقم الهاتف",
+  "login": "تسجيل الدخول",
+  "noAccount": "ليس لديك حساب؟",
+  "contactProGym": "تواصل مع PRO GYM"
 }

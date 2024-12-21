@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymm/main.dart';
 import 'package:gymm/screens/main_screen.dart';
 import 'package:gymm/api/endpoints.dart';
 import 'package:gymm/theme/colors.dart';
@@ -7,6 +8,7 @@ import 'package:gymm/utils/preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -62,13 +64,21 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const MainPage()));
       } else {
+        var error = json.decode(response.body)["error"];
+
         setState(() {
-          errorMessage = json.decode(response.body)["error"];
+          if (error == "incorrect password") {
+            errorMessage = AppLocalizations.of(context)!.incorrectPassword;
+          } else if (error == "ID is not found!") {
+            errorMessage = AppLocalizations.of(context)!.idNotFound;
+          } else {
+            throw Exception("Unexpected Error");
+          }
         });
       }
     } catch (e) {
       setState(() {
-        errorMessage = "Authentication Failed";
+        errorMessage = AppLocalizations.of(context)!.authFailed;
       });
     } finally {
       setState(() {
@@ -93,197 +103,238 @@ class _LoginScreenState extends State<LoginScreen> {
               return SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            // constraints: BoxConstraints(maxWidth: 600),
-                            // width: double.infinity,
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/logo1.jpeg',
-                                    width: 250,
-                                  ),
-                                  Row(
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                // constraints: BoxConstraints(maxWidth: 600),
+                                // width: double.infinity,
+                                child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      Image.asset(
+                                        'assets/logo1.jpeg',
+                                        width: 250,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "PRO GYM",
+                                            style: TextStyle(
+                                                color: primaryColor[300],
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+
+                                      TextFormField(
+                                        validator: (value) {
+                                          if ((value == null ||
+                                              value.isEmpty)) {
+                                            return AppLocalizations.of(context)!
+                                                .noEmpty;
+                                          }
+                                          return null;
+                                        },
+                                        onFieldSubmitted: (value) {
+                                          passwordNode.requestFocus();
+                                        },
+                                        controller: id,
+                                        keyboardType: TextInputType.number,
+                                        cursorErrorColor: Colors.red,
+                                        cursorHeight: 30,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            height: 2,
+                                            fontWeight: FontWeight.normal),
+                                        decoration: InputDecoration(
+                                            label: Text(
+                                              AppLocalizations.of(context)!.id,
+                                            ),
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .numberOnBarcodeCard),
+                                      ),
+
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+
+                                      // password text field
+                                      TextFormField(
+                                        validator: (value) {
+                                          if ((value == null ||
+                                              value.isEmpty)) {
+                                            return AppLocalizations.of(context)!
+                                                .noEmpty;
+                                          }
+                                          return null;
+                                        },
+                                        onFieldSubmitted: (value) {
+                                          _login();
+                                        },
+                                        focusNode: passwordNode,
+                                        controller: password,
+                                        obscureText: isHidden,
+                                        keyboardType:
+                                            TextInputType.visiblePassword,
+                                        cursorHeight: 30,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            height: 2,
+                                            fontWeight: FontWeight.normal),
+                                        decoration: InputDecoration(
+                                            suffixIcon: IconButton(
+                                              icon: isHidden == true
+                                                  ? Icon(
+                                                      Icons.lock,
+                                                      color: blackColor[300],
+                                                    )
+                                                  : Icon(
+                                                      Icons.lock_open,
+                                                      color: blackColor[300],
+                                                    ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  isHidden = !isHidden;
+                                                });
+                                              },
+                                            ),
+                                            label: Text(
+                                              AppLocalizations.of(context)!
+                                                  .password,
+                                            ),
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .passwordDefaultHint),
+                                      ),
+
+                                      const SizedBox(
+                                        height: 45,
+                                      ),
+
+                                      //========================================================================
                                       Text(
-                                        "PRO GYM",
+                                        errorMessage ?? "",
                                         style: TextStyle(
-                                            color: primaryColor[300],
-                                            fontSize: 28,
+                                            color: Colors.red[400],
+                                            fontSize: 20,
                                             fontWeight: FontWeight.w700),
                                       ),
-                                    ],
-                                  ),
-
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-
-                                  TextFormField(
-                                    validator: (value) {
-                                      if ((value == null || value.isEmpty)) {
-                                        return "ID can't be empty";
-                                      }
-                                      return null;
-                                    },
-                                    onFieldSubmitted: (value) {
-                                      passwordNode.requestFocus();
-                                    },
-                                    controller: id,
-                                    keyboardType: TextInputType.number,
-                                    cursorErrorColor: Colors.red,
-                                    cursorHeight: 30,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        height: 2,
-                                        fontWeight: FontWeight.normal),
-                                    decoration: const InputDecoration(
-                                        label: Text(
-                                          'ID',
-                                        ),
-                                        hintText: "Number on barcode card"),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-
-                                  // password text field
-                                  TextFormField(
-                                    validator: (value) {
-                                      if ((value == null || value.isEmpty)) {
-                                        return "Password can't be empty";
-                                      }
-                                      return null;
-                                    },
-                                    onFieldSubmitted: (value) {
-                                      _login();
-                                    },
-                                    focusNode: passwordNode,
-                                    controller: password,
-                                    obscureText: isHidden,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    cursorHeight: 30,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        height: 2,
-                                        fontWeight: FontWeight.normal),
-                                    decoration: InputDecoration(
-                                        suffixIcon: IconButton(
-                                          icon: isHidden == true
-                                              ? Icon(
-                                                  Icons.lock,
-                                                  color: blackColor[300],
-                                                )
-                                              : Icon(
-                                                  Icons.lock_open,
-                                                  color: blackColor[300],
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      isLoading
+                                          ? const CircularProgressIndicator()
+                                          : SizedBox(
+                                              width: double.infinity,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  _login();
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStateProperty.all(
+                                                          primaryColor[400]),
+                                                  shape:
+                                                      WidgetStateProperty.all(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              14),
+                                                    ),
+                                                  ),
                                                 ),
-                                          onPressed: () {
-                                            setState(() {
-                                              isHidden = !isHidden;
-                                            });
-                                          },
-                                        ),
-                                        label: const Text(
-                                          'Password',
-                                        ),
-                                        hintText: "Default: phone number"),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 45,
-                                  ),
-
-                                  //========================================================================
-                                  Text(
-                                    errorMessage ?? "",
-                                    style: TextStyle(
-                                        color: Colors.red[400],
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  isLoading
-                                      ? const CircularProgressIndicator()
-                                      : SizedBox(
-                                          width: double.infinity,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              _login();
-                                            },
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  WidgetStateProperty.all(
-                                                      primaryColor[400]),
-                                              shape: WidgetStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(14),
-                                                ),
+                                                child: Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .login,
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                      height: 3.25,
+                                                    )),
                                               ),
                                             ),
-                                            child: const Text('LOG IN',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 20,
-                                                  height: 3.25,
-                                                )),
-                                          ),
-                                        ),
-                                  const SizedBox(
-                                    height: 50,
-                                  ),
+                                      const SizedBox(
+                                        height: 50,
+                                      ),
 
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Wrap(
-                                        alignment: WrapAlignment.center,
-                                        spacing: 8,
-                                        runSpacing: 4,
-                                        runAlignment: WrapAlignment.center,
-                                        children: [
-                                          Text('DON\'T HAVE AN ACCOUNT?',
-                                              style: TextStyle(
-                                                  color: blackColor[300],
-                                                  fontSize: 16)),
-                                          TextButton(
-                                            onPressed: () {
-                                              _openWhatsApp();
-                                            },
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              alignment: Alignment.center,
-                                              minimumSize: const Size(0, 0),
-                                              tapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                            ),
-                                            child: const Text('Contact PRO GYM',
-                                                style: TextStyle(
-                                                    color: Colors.yellow,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 17)),
-                                          ),
-                                        ]),
-                                  ),
-                                ]),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Wrap(
+                                            alignment: WrapAlignment.center,
+                                            spacing: 8,
+                                            runSpacing: 4,
+                                            runAlignment: WrapAlignment.center,
+                                            children: [
+                                              Text(
+                                                  AppLocalizations.of(context)!
+                                                      .noAccount,
+                                                  style: TextStyle(
+                                                      color: blackColor[300],
+                                                      fontSize: 16)),
+                                              TextButton(
+                                                onPressed: () {
+                                                  _openWhatsApp();
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  alignment: Alignment.center,
+                                                  minimumSize: const Size(0, 0),
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                child: Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .contactProGym,
+                                                    style: const TextStyle(
+                                                        color: Colors.yellow,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 17)),
+                                              ),
+                                            ]),
+                                      ),
+                                    ]),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Positioned(
+                          top: 20,
+                          right: 15,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              MyApp.of(context)?.setLocale(
+                                  Locale(isArabic(context) ? "en" : "ar"));
+                            },
+                            child: Text(
+                              isArabic(context) ? "English" : "العربية",
+                              style: const TextStyle(
+                                  color: primaryColor, fontSize: 18),
+                            ),
+                          ))
+                    ],
                   ),
                 ),
               );

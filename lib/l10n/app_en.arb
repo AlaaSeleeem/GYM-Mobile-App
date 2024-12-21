@@ -129,6 +129,7 @@
   "noActiveSubscriptions": "No Active Subscriptions",
   "noActiveSubscriptionsDesc": "No currently active subscriptions.\\nGet started by choosing a plan.",
   "changeLang": "Change Language",
+  "password": "Password",
   "shortPassword": "Password is very short",
   "notMatch": "Password doesn't match",
   "passwordChanged": "Password has been changed",
@@ -171,5 +172,13 @@
   "confirmedAt": "Confirmed at",
   "totalItems": "Total Items",
   "totalPrice": "Total Price",
-  "placeOrder": "Place Order"
+  "placeOrder": "Place Order",
+  "authFailed": "Authentication Failed",
+  "incorrectPassword": "incorrect password",
+  "idNotFound": "ID is not found!",
+  "numberOnBarcodeCard": "Number on barcode card",
+  "passwordDefaultHint": "Default: phone number",
+  "login": "LOG IN",
+  "noAccount": "DON'T HAVE AN ACCOUNT?",
+  "contactProGym": "Contact PRO GYM"
 }
