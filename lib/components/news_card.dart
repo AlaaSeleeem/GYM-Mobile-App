@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/models/news.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/globals.dart';
 
 class NewsCard extends StatelessWidget {
   final News item;
 
   const NewsCard({super.key, required this.item});
 
-  Widget _buildContentWithImage() {
+  Widget _buildContentWithImage(BuildContext context) {
     return Stack(
       children: [
         // Background Image
@@ -35,9 +36,9 @@ class NewsCard extends StatelessWidget {
                     bottomRight: Radius.circular(10)),
                 gradient: LinearGradient(
                   colors: [
-                    Colors.black.withOpacity(0.9),
-                    Colors.black.withOpacity(0.3),
-                    Colors.grey.withOpacity(0.2),
+                    Colors.black.withValues(alpha: 0.9),
+                    Colors.black.withValues(alpha: 0.3),
+                    Colors.grey.withValues(alpha: 0.2),
                   ],
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
@@ -47,7 +48,8 @@ class NewsCard extends StatelessWidget {
         // Title Text
         Positioned(
           bottom: 16,
-          left: 16,
+          left: isArabic(context) ? null : 16,
+          right: isArabic(context) ? 16 : null,
           child: Text(
             item.title ?? "",
             overflow: TextOverflow.ellipsis,
@@ -97,7 +99,7 @@ class NewsCard extends StatelessWidget {
           border: Border.all(color: blackColor[400]!, width: 3),
           borderRadius: BorderRadius.circular(10.0)),
       child: item.picture != null
-          ? _buildContentWithImage()
+          ? _buildContentWithImage(context)
           : _buildContentWithoutImage(),
     );
   }

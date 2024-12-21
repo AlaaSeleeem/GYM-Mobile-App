@@ -18,6 +18,7 @@ import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/globals.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,7 +105,8 @@ class _HomePageState extends State<HomePage>
         subscriptions = data;
       });
     }).catchError((e) {
-      showSnackBar(context, "Failed loading subscriptions", "error");
+      showSnackBar(context,
+          AppLocalizations.of(context)!.failedLoadSubscriptions, "error");
     });
   }
 
@@ -205,17 +207,16 @@ class _HomePageState extends State<HomePage>
 
               const NoOffers(),
 
-
               // active subscription
               const SizedBox(height: 30),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'My Subscriptions',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.mySubscriptions,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.w500),
@@ -251,8 +252,9 @@ class _HomePageState extends State<HomePage>
                             ),
                             label: Text(
                               subscriptions.isEmpty
-                                  ? "Discover Plans"
-                                  : "View All Subscriptions",
+                                  ? AppLocalizations.of(context)!.discover
+                                  : AppLocalizations.of(context)!
+                                      .allSubscriptions,
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 22,
@@ -272,14 +274,14 @@ class _HomePageState extends State<HomePage>
 
               // Quick Access
               const SizedBox(height: 40),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Quick Access',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.quickAccess,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.w500),
@@ -294,19 +296,19 @@ class _HomePageState extends State<HomePage>
                   child: Row(
                     children: [
                       _buildSquareButton(
-                          label: 'Plans',
+                          label: AppLocalizations.of(context)!.plans,
                           icon: Icons.subscriptions,
                           page: const PlansPage()),
                       _buildSquareButton(
-                          label: 'News',
+                          label: AppLocalizations.of(context)!.news,
                           icon: Icons.newspaper,
                           page: const NewsPage()),
                       _buildSquareButton(
-                          label: 'Exercises',
+                          label: AppLocalizations.of(context)!.exercises,
                           icon: Icons.fitness_center,
                           page: const ExercisesPage()),
                       _buildSquareButton(
-                          label: 'About',
+                          label: AppLocalizations.of(context)!.about,
                           icon: FontAwesomeIcons.circleInfo,
                           page: const AboutPage()),
                     ],

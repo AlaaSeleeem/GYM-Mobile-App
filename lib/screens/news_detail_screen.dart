@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/news.dart';
 
 class NewsDetailPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class NewsDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("News"),
+        title: Text(AppLocalizations.of(context)!.news),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +50,7 @@ class NewsDetailPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  "Published on: ${_formatDate(item.createdAt!)}",
+                  "${AppLocalizations.of(context)!.publishedOn}: ${_formatDate(item.createdAt!)}",
                   style: TextStyle(
                     fontSize: 16,
                     color: blackColor[400],

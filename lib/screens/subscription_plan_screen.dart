@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
 import '../models/subscription_plan.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SubscriptionPlanPage extends StatelessWidget {
   final SubscriptionPlan subscriptionPlan;
@@ -13,47 +14,52 @@ class SubscriptionPlanPage extends StatelessWidget {
     final List<Map<String, dynamic>> details = [
       {
         "icon": Icons.attach_money,
-        "label": "Price",
+        "label": AppLocalizations.of(context)!.price,
         "value": subscriptionPlan.price.toStringAsFixed(2)
       },
       {
         "icon": Icons.calendar_today,
-        "label": "Duration",
+        "label": AppLocalizations.of(context)!.duration,
         "value": subscriptionPlan.isDuration
-            ? "${subscriptionPlan.days} Days"
-            : "${subscriptionPlan.classesNo} Classes"
+            ? "${subscriptionPlan.days} ${AppLocalizations.of(context)!.days}"
+            : "${subscriptionPlan.classesNo} ${AppLocalizations.of(context)!.classes}"
       },
       {
         "icon": Icons.timer_off_outlined,
-        "label": "Freezable",
-        "value": subscriptionPlan.freezable ? "Yes" : "No"
+        "label": AppLocalizations.of(context)!.freezable,
+        "value": subscriptionPlan.freezable
+            ? AppLocalizations.of(context)!.yes
+            : AppLocalizations.of(context)!.no
       },
       if (subscriptionPlan.freezable)
         {
           "icon": Icons.lock,
-          "label": "Freeze No",
-          "value": subscriptionPlan.freezeNo ?? "N/A"
+          "label": AppLocalizations.of(context)!.freezeNo,
+          "value": subscriptionPlan.freezeNo ?? AppLocalizations.of(context)!.na
         },
       {
         "icon": Icons.people,
-        "label": "Invitations",
+        "label": AppLocalizations.of(context)!.invitations,
         "value": subscriptionPlan.invitations
       },
       {
         "icon": Icons.school,
-        "label": "For Students",
-        "value": subscriptionPlan.forStudents ? "Yes" : "No"
+        "label": AppLocalizations.of(context)!.forStudents,
+        "value": subscriptionPlan.forStudents
+            ? AppLocalizations.of(context)!.yes
+            : AppLocalizations.of(context)!.no
       },
       {
         "icon": Icons.timelapse,
-        "label": "Validity",
-        "value": "${subscriptionPlan.validity} Days"
+        "label": AppLocalizations.of(context)!.validity,
+        "value":
+            "${subscriptionPlan.validity} ${AppLocalizations.of(context)!.days}"
       }
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Plan Details"),
+        title: Text(AppLocalizations.of(context)!.planDetails),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -106,7 +112,8 @@ class SubscriptionPlanPage extends StatelessWidget {
                                 color: primaryColor,
                               ),
                               const SizedBox(height: 8.0),
-                              if (detail['label'] == "Price" &&
+                              if (detail['label'] ==
+                                      AppLocalizations.of(context)!.price &&
                                   subscriptionPlan.discount != null) ...[
                                 Text(
                                   detail["value"].toString(),
@@ -163,9 +170,9 @@ class SubscriptionPlanPage extends StatelessWidget {
                     const SizedBox(
                       height: 40,
                     ),
-                    const Text(
-                      "Description",
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.descriptions,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),

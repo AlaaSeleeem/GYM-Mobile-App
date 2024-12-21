@@ -9,6 +9,9 @@ import 'package:gymm/components/store_components/products_search_bar.dart';
 import 'package:gymm/models/product.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import '../models/category.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../utils/globals.dart';
 
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
@@ -112,7 +115,8 @@ class _StorePageState extends State<StorePage> {
         }
       });
     }).catchError((e) {
-      showSnackBar(context, "Failed loading products", "error");
+      showSnackBar(context, AppLocalizations.of(context)!.failedLoadingProducts,
+          "error");
     }).whenComplete(() {
       if (mounted) {
         setState(() {
@@ -172,12 +176,12 @@ class _StorePageState extends State<StorePage> {
                         ],
                         ProductsList(productList: _products),
                         if (_products.isEmpty && !loading && !productsLoading)
-                          const Center(
+                          Center(
                             child: Text(
-                              "No products found",
+                              AppLocalizations.of(context)!.noProducts,
                               // "We will provide products soon,\nStay tuned!",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 24),
+                              style: const TextStyle(fontSize: 24),
                             ),
                           ),
                         if (loading || productsLoading)
@@ -192,7 +196,11 @@ class _StorePageState extends State<StorePage> {
                 ),
               ),
             ),
-            const Positioned(bottom: 16, right: 16, child: ActionButtons()),
+            Positioned(
+                bottom: 16,
+                right: isArabic(context) ? null : 16,
+                left: isArabic(context) ? 16 : null,
+                child: const ActionButtons()),
           ],
         ),
       ),

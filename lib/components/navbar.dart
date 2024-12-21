@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gymm/theme/colors.dart';
 
 class BottomNavbar extends StatelessWidget {
@@ -26,15 +27,19 @@ class BottomNavbar extends StatelessWidget {
             unselectedItemColor: Colors.white,
             currentIndex: index,
             type: BottomNavigationBarType.fixed,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.house), label: 'Home'),
+                  icon: const Icon(FontAwesomeIcons.house),
+                  label: AppLocalizations.of(context)!.home),
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.barcode), label: 'Scan'),
+                  icon: const Icon(FontAwesomeIcons.barcode),
+                  label: AppLocalizations.of(context)!.scan),
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.user), label: 'Profile'),
+                  icon: const Icon(FontAwesomeIcons.user),
+                  label: AppLocalizations.of(context)!.profile),
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.store), label: 'Store'),
+                  icon: const Icon(FontAwesomeIcons.store),
+                  label: AppLocalizations.of(context)!.store),
             ],
             onTap: onTab),
       ),

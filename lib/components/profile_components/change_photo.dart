@@ -10,7 +10,7 @@ import 'package:gymm/models/client.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../theme/colors.dart';
 
 class ChangePhoto extends StatefulWidget {
@@ -66,8 +66,8 @@ class ChangePhotoState extends State<ChangePhoto> {
 
       // (1 MB = 1,048,576 bytes)
       if (fileSize > 524288) {
-        showSnackBar(context,
-            "The selected photo exceeds the size limit of 512 KB", "error");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.photoSizeError, "error");
         return;
       }
       setState(() {
@@ -75,7 +75,7 @@ class ChangePhotoState extends State<ChangePhoto> {
       });
     } catch (e) {
       showSnackBar(
-          context, "An error occurred while picking the photo", "error");
+          context, AppLocalizations.of(context)!.pickPhotoError, "error");
       return;
     }
   }
@@ -87,7 +87,8 @@ class ChangePhotoState extends State<ChangePhoto> {
 
     _currentOperation?.cancel();
     if (_image is! File) {
-      showSnackBar(context, "Couldn't upload image", "error");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.uploadPhotoError, "error");
       return;
     }
 
@@ -99,14 +100,17 @@ class ChangePhotoState extends State<ChangePhoto> {
       setState(() {
         _image = null;
       });
-      showSnackBar(context, "Your photo has been requested", "info");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.photoRequested, "info");
       client!.requestedPhotoUrl =
           utf8.decode(latin1.encode(value["requested_photo"]));
       await saveClientData(client!.toJson(), downloadImage: false);
       updateWidget(client);
     }).catchError((e) {
-      print(e);
-      if (mounted) showSnackBar(context, "Failed uploading photo", "error");
+      if (mounted) {
+        showSnackBar(
+            context, AppLocalizations.of(context)!.uploadPhotoError, "error");
+      }
     }).whenComplete(() {
       if (!mounted) return;
       setState(() {
@@ -120,15 +124,14 @@ class ChangePhotoState extends State<ChangePhoto> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Confirm'),
-          content: const Text(
-              'Are you sure you want to delete the requested photo?'),
+          title: Text(AppLocalizations.of(context)!.confirm),
+          content: Text(AppLocalizations.of(context)!.deletePhoto),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false), // User cancels
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.cancel,
+                style: const TextStyle(
                     fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
@@ -137,7 +140,7 @@ class ChangePhotoState extends State<ChangePhoto> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(true), // User confirms
               child: Text(
-                'Delete',
+                AppLocalizations.of(context)!.delete,
                 style: TextStyle(
                     fontSize: 18,
                     color: Colors.red[500],
@@ -160,12 +163,16 @@ class ChangePhotoState extends State<ChangePhoto> {
 
     await _currentOperation!.value.then((_) async {
       if (!mounted) return;
-      showSnackBar(context, "Canceled requested photo", "info");
+      showSnackBar(context,
+          AppLocalizations.of(context)!.requestedPhotoCanceled, "info");
       client!.resetRequestedPhoto();
       await saveClientData(client!.toJson(), downloadImage: false);
       updateWidget(client);
     }).catchError((e) {
-      if (mounted) showSnackBar(context, "Couldn't delete photo", "error");
+      if (mounted) {
+        showSnackBar(
+            context, AppLocalizations.of(context)!.loadPhotoError, "error");
+      }
     }).whenComplete(() {
       if (!mounted) return;
       setState(() {
@@ -178,11 +185,9 @@ class ChangePhotoState extends State<ChangePhoto> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Upload a photo that clearly shows your face (must not exceed 1 MB)."
-          "\nPlease note, the current photo will remain unchanged until approved"
-          " by gym moderators.",
-          style: TextStyle(fontSize: 16),
+        Text(
+          AppLocalizations.of(context)!.uploadPhotoHint,
+          style: const TextStyle(fontSize: 16),
           textAlign: TextAlign.start,
         ),
         const SizedBox(height: 12),
@@ -196,9 +201,9 @@ class ChangePhotoState extends State<ChangePhoto> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Your requested photo is waiting approval by gym moderators",
-          style: TextStyle(fontSize: 16),
+        Text(
+          AppLocalizations.of(context)!.waitingApprove,
+          style: const TextStyle(fontSize: 16),
           textAlign: TextAlign.start,
         ),
         const SizedBox(height: 12),
@@ -207,8 +212,8 @@ class ChangePhotoState extends State<ChangePhoto> {
             children: [
               _buildNetworkImage(),
               const SizedBox(height: 12),
-              _buildActionButton(
-                  "Cancel Request", Colors.red, _cancelRequestedPhoto),
+              _buildActionButton(AppLocalizations.of(context)!.cancelRequest,
+                  Colors.red, _cancelRequestedPhoto),
             ],
           ),
         ),
@@ -223,9 +228,9 @@ class ChangePhotoState extends State<ChangePhoto> {
       },
       style: _buttonStyle(primaryColor),
       icon: const Icon(FontAwesomeIcons.circleUser, color: blackColor),
-      label: const Text(
-        "Select",
-        style: TextStyle(
+      label: Text(
+        AppLocalizations.of(context)!.select,
+        style: const TextStyle(
             color: blackColor, fontWeight: FontWeight.bold, fontSize: 16),
       ),
     );
@@ -244,13 +249,15 @@ class ChangePhotoState extends State<ChangePhoto> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildActionButton("Cancel", Colors.red, () {
+              _buildActionButton(
+                  AppLocalizations.of(context)!.cancel, Colors.red, () {
                 setState(() {
                   _image = null;
                 });
               }),
               const SizedBox(width: 14),
-              _buildActionButton("Upload", primaryColor, () async {
+              _buildActionButton(
+                  AppLocalizations.of(context)!.upload, primaryColor, () async {
                 await _uploadImage();
               }),
             ],
@@ -272,10 +279,10 @@ class ChangePhotoState extends State<ChangePhoto> {
           width: 240,
           height: 240,
           errorBuilder: (context, error, stackTrace) {
-            return const Center(
+            return Center(
               child: Text(
-                "Failed to load image",
-                style: TextStyle(color: Colors.red, fontSize: 18),
+                AppLocalizations.of(context)!.loadPhotoError,
+                style: const TextStyle(color: Colors.red, fontSize: 18),
                 textAlign: TextAlign.center,
               ),
             );
@@ -347,14 +354,14 @@ class ChangePhotoState extends State<ChangePhoto> {
         ),
         child: ExpansionTile(
             shape: Border.all(color: Colors.transparent),
-            title: const Row(
+            title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(FontAwesomeIcons.circleUser, color: primaryColor),
-                SizedBox(width: 10),
+                const Icon(FontAwesomeIcons.circleUser, color: primaryColor),
+                const SizedBox(width: 10),
                 Text(
-                  "Change Photo",
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.changePhoto,
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 19,
                       fontWeight: FontWeight.bold),
@@ -368,12 +375,13 @@ class ChangePhotoState extends State<ChangePhoto> {
                       child: client!.requestedPhotoUrl == null
                           ? _buildUploadInstruction()
                           : _buildRequestedImageSection())
-                  : const Padding(
-                      padding: EdgeInsets.all(12),
+                  : Padding(
+                      padding: const EdgeInsets.all(12),
                       child: Center(
                         child: Text(
-                          "Couldn't load data",
-                          style: TextStyle(color: Colors.red, fontSize: 16),
+                          AppLocalizations.of(context)!.loadError,
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         ),
                       ),
                     )

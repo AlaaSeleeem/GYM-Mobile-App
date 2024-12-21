@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:gymm/models/subscription_plan.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Subscription {
   final int id;
@@ -96,10 +98,10 @@ class Subscription {
     };
   }
 
-  String remaining({bool prefix = true}) {
+  String remaining({bool prefix = true, required BuildContext context}) {
     return plan.isDuration
-        ? "${prefix? "Remaining: " : ""}${plan.days! - attendanceDays} Days"
-        : "${prefix? "Remaining: " : ""}${plan.classesNo! - attendanceDays} Classes";
+        ? "${prefix ? "${AppLocalizations.of(context)!.remaining}: " : ""}${plan.days! - attendanceDays} ${AppLocalizations.of(context)!.days}"
+        : "${prefix ? "${AppLocalizations.of(context)!.remaining}: " : ""}${plan.classesNo! - attendanceDays} ${AppLocalizations.of(context)!.classes}";
   }
 
   int daysLeft() {

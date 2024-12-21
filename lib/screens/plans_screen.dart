@@ -6,6 +6,9 @@ import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/screens/subscription_plan_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../utils/globals.dart';
 
 class PlansPage extends StatefulWidget {
   const PlansPage({super.key});
@@ -118,10 +121,10 @@ class _PlansPageState extends State<PlansPage> {
                       height: 100,
                     ),
                   if (!loading && plans.isEmpty)
-                    const Center(
+                    Center(
                       child: Text(
-                        "No current Plans",
-                        style: TextStyle(fontSize: 24),
+                        AppLocalizations.of(context)!.noPlans,
+                        style: const TextStyle(fontSize: 24),
                       ),
                     )
                 ],
@@ -154,9 +157,12 @@ class _PlansPageState extends State<PlansPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: blackColor[900],
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(isArabic(context) ? 16 : 0),
+                        bottomRight:
+                            Radius.circular(isArabic(context) ? 16 : 0),
+                        topLeft: Radius.circular(isArabic(context) ? 0 : 16),
+                        bottomLeft: Radius.circular(isArabic(context) ? 0 : 16),
                       ),
                     ),
                     padding: const EdgeInsets.all(16),
@@ -183,11 +189,14 @@ class _PlansPageState extends State<PlansPage> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16),
-                        bottomRight: Radius.circular(16),
+                        topRight: Radius.circular(isArabic(context) ? 0 : 16),
+                        bottomRight:
+                            Radius.circular(isArabic(context) ? 0 : 16),
+                        topLeft: Radius.circular(isArabic(context) ? 16 : 0),
+                        bottomLeft: Radius.circular(isArabic(context) ? 16 : 0),
                       ),
                     ),
                     padding: const EdgeInsets.all(16),
@@ -216,10 +225,10 @@ class _PlansPageState extends State<PlansPage> {
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                const Text(
-                                  "L.E",
+                                Text(
+                                  AppLocalizations.of(context)!.pound,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: blackColor,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 20,
@@ -228,7 +237,7 @@ class _PlansPageState extends State<PlansPage> {
                               ])
                         : Center(
                             child: Text(
-                              "${(plan.price.toInt())}\nL.E",
+                              "${(plan.price.toInt())}\n${AppLocalizations.of(context)!.pound}",
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: blackColor,
@@ -244,7 +253,8 @@ class _PlansPageState extends State<PlansPage> {
             if (plan.discount != null)
               Positioned(
                 top: 10,
-                left: 10,
+                left: isArabic(context) ? null : 10,
+                right: isArabic(context) ? 10 : null,
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -255,7 +265,7 @@ class _PlansPageState extends State<PlansPage> {
                   child: Row(
                     children: [
                       Text(
-                        '${(plan.discount!.toInt())}% OFF',
+                        '${(plan.discount!.toInt())}% ${AppLocalizations.of(context)!.off}',
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

@@ -6,6 +6,7 @@ import 'package:gymm/components/password_field.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePasswordForm extends StatefulWidget {
   const ChangePasswordForm({super.key, this.client});
@@ -52,14 +53,16 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
 
     if (_newPassword.text.length < 8) {
       setState(() {
-        fieldErrors["new_password"] = "Password is very short";
+        fieldErrors["new_password"] =
+            AppLocalizations.of(context)!.shortPassword;
       });
       return;
     }
 
     if (_newPassword.text != _confirmPassword.text) {
       setState(() {
-        fieldErrors["confirm_password"] = "Password doesn't match";
+        fieldErrors["confirm_password"] =
+            AppLocalizations.of(context)!.notMatch;
       });
       return;
     }
@@ -78,7 +81,8 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
 
     _currentOperation?.value.then((_) {
       if (!mounted) return;
-      showSnackBar(context, "Password has been changed", "info");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.passwordChanged, "info");
     }).catchError((e) {
       if (!mounted) return;
       if (e is ClientErrorException) {
@@ -89,7 +93,7 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
         });
       } else {
         setState(() {
-          _errorMessage = "operation failed";
+          _errorMessage = AppLocalizations.of(context)!.operationFailed;
         });
       }
     }).whenComplete(() {
@@ -112,14 +116,14 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
         ),
         child: ExpansionTile(
           shape: Border.all(color: Colors.transparent),
-          title: const Row(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(Icons.lock, color: primaryColor),
-              SizedBox(width: 10),
+              const Icon(Icons.lock, color: primaryColor),
+              const SizedBox(width: 10),
               Text(
-                "Change Password",
-                style: TextStyle(
+                AppLocalizations.of(context)!.changePassword,
+                style: const TextStyle(
                     color: Colors.white,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
@@ -137,9 +141,11 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                             Container(
                                 padding: const EdgeInsets.all(12),
                                 child: PasswordField(
-                                  requiredMsg: "Enter current password",
+                                  requiredMsg: AppLocalizations.of(context)!
+                                      .currentPasswordTitle,
                                   controller: _currentPassword,
-                                  label: "Current Password",
+                                  label: AppLocalizations.of(context)!
+                                      .currentPasswordLabel,
                                   onFieldSubmit: () {
                                     FocusScope.of(context)
                                         .requestFocus(_newPasswordNode);
@@ -149,9 +155,11 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                             Container(
                                 padding: const EdgeInsets.all(12),
                                 child: PasswordField(
-                                  requiredMsg: "Enter new password",
+                                  requiredMsg: AppLocalizations.of(context)!
+                                      .newPasswordTitle,
                                   controller: _newPassword,
-                                  label: "New Password",
+                                  label: AppLocalizations.of(context)!
+                                      .newPasswordLabel,
                                   focusNode: _newPasswordNode,
                                   onFieldSubmit: () {
                                     FocusScope.of(context)
@@ -162,9 +170,11 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                             Container(
                                 padding: const EdgeInsets.all(12),
                                 child: PasswordField(
-                                  requiredMsg: "Enter password again",
+                                  requiredMsg: AppLocalizations.of(context)!
+                                      .confirmPasswordTitle,
                                   controller: _confirmPassword,
-                                  label: "Confirm Password",
+                                  label: AppLocalizations.of(context)!
+                                      .confirmPasswordLabel,
                                   focusNode: _confirmPasswordNode,
                                   onFieldSubmit: () {
                                     _submit();
@@ -216,9 +226,10 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                                               )
                                             ],
                                           ),
-                                        const Text(
-                                          "Change Password",
-                                          style: TextStyle(
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .changePassword,
+                                          style: const TextStyle(
                                               color: blackColor,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
@@ -230,12 +241,12 @@ class _ChangePasswordState extends State<ChangePasswordForm> {
                           ],
                         )),
                   )
-                : const Padding(
-                    padding: EdgeInsets.all(12),
+                : Padding(
+                    padding: const EdgeInsets.all(12),
                     child: Center(
                       child: Text(
-                        "Couldn't load data",
-                        style: TextStyle(color: Colors.red, fontSize: 16),
+                        AppLocalizations.of(context)!.loadError,
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
                       ),
                     ),
                   )

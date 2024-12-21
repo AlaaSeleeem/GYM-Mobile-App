@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExercisesPage extends StatelessWidget {
   const ExercisesPage({super.key});
@@ -7,8 +8,8 @@ class ExercisesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Exercises',
+        title: Text(
+          AppLocalizations.of(context)!.exercises,
         ),
       ),
       body: RefreshIndicator(
@@ -17,12 +18,13 @@ class ExercisesPage extends StatelessWidget {
           onNotification: (scrollEndNotification) {
             return false;
           },
-          child: const Padding(
-            padding: EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
             child: Center(
               child: Text(
-                "Coming Soon ...",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                AppLocalizations.of(context)!.comingSoon,
+                style:
+                    const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
             ),
           ),

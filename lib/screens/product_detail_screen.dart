@@ -5,6 +5,7 @@ import 'package:gymm/providers/Cart.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/globals.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -70,7 +71,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           children: [
                             if (widget.product.discount != null) ...[
                               Text(
-                                '${widget.product.sellPrice - (widget.product.discount! * widget.product.sellPrice / 100)} L.E',
+                                '${widget.product.sellPrice - (widget.product.discount! * widget.product.sellPrice / 100)} ${AppLocalizations.of(context)!.pound}',
                                 style: const TextStyle(
                                   fontSize: 26,
                                   color: primaryColor,
@@ -79,7 +80,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                '${widget.product.sellPrice} L.E',
+                                '${widget.product.sellPrice} ${AppLocalizations.of(context)!.pound}',
                                 softWrap: false,
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -89,7 +90,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                             ] else ...[
                               Text(
-                                '${widget.product.sellPrice} L.E',
+                                '${widget.product.sellPrice} ${AppLocalizations.of(context)!.pound}',
                                 style: const TextStyle(
                                   fontSize: 26,
                                   color: primaryColor,
@@ -203,16 +204,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add_shopping_cart,
+                            const Icon(Icons.add_shopping_cart,
                                 color: Colors.black, size: 26),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
-                              'Add to Cart',
-                              style: TextStyle(
+                              AppLocalizations.of(context)!.addToCart,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,

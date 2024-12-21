@@ -3,6 +3,7 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/theme/colors.dart';
 import '../screens/login_screen.dart';
 import '../utils/preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LogoutButton extends StatefulWidget {
   const LogoutButton({super.key});
@@ -30,11 +31,11 @@ class _LogoutButtonState extends State<LogoutButton> {
         context: context,
         builder: (context) => AlertDialog(
               backgroundColor: blackColor[900],
-              content: const Padding(
-                padding: EdgeInsets.all(12),
+              content: Padding(
+                padding: const EdgeInsets.all(12),
                 child: Text(
-                  "Are you sure?",
-                  style: TextStyle(fontSize: 24),
+                  AppLocalizations.of(context)!.sure,
+                  style: const TextStyle(fontSize: 24),
                 ),
               ),
               icon: const Icon(
@@ -47,9 +48,9 @@ class _LogoutButtonState extends State<LogoutButton> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    child: Text(
+                      AppLocalizations.of(context)!.cancel,
+                      style: const TextStyle(fontSize: 18, color: Colors.white),
                     )),
                 TextButton(
                     onPressed: () async {
@@ -57,7 +58,7 @@ class _LogoutButtonState extends State<LogoutButton> {
                       _logout();
                     },
                     child: Text(
-                      "Logout",
+                      AppLocalizations.of(context)!.logout,
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.red[500],
@@ -79,9 +80,9 @@ class _LogoutButtonState extends State<LogoutButton> {
                     backgroundColor: WidgetStateProperty.all(Colors.red[500]),
                     shape: WidgetStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)))),
-                child: const Text(
-                  "Log out",
-                  style: TextStyle(
+                child: Text(
+                  AppLocalizations.of(context)!.logout,
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 22,
                       height: 3.25,

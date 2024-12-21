@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gymm/api/actions.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/components/logout_button.dart';
+import 'package:gymm/components/profile_components/change_language.dart';
 import 'package:gymm/components/profile_components/change_password.dart';
 import 'package:gymm/components/profile_components/change_photo.dart';
 import 'package:gymm/components/profile_components/personal_information.dart';
@@ -12,6 +13,7 @@ import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -50,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage>
     try {
       _getClientPhoto();
     } catch (e) {
-      showSnackBar(context, "Error loading data", "error");
+      showSnackBar(context, AppLocalizations.of(context)!.loadError, "error");
     }
   }
 
@@ -80,7 +82,8 @@ class _ProfilePageState extends State<ProfilePage>
       }
     }).catchError((e) {
       if (mounted) {
-        showSnackBar(context, "Error refreshing data", "error");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.refreshError, "error");
       }
     });
   }
@@ -185,6 +188,10 @@ class _ProfilePageState extends State<ProfilePage>
                           key: childKey,
                           client: client,
                         ),
+
+                        // change photo
+                        const SizedBox(height: 20),
+                        const ChangeLanguage(),
 
                         // logout button
                         const SizedBox(height: 20),

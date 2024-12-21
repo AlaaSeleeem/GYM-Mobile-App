@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EmptyCartView extends StatelessWidget {
   const EmptyCartView({super.key});
@@ -16,14 +17,14 @@ class EmptyCartView extends StatelessWidget {
             color: primaryColor,
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Your cart is empty',
-            style: TextStyle(color: Colors.white, fontSize: 24),
+          Text(
+            AppLocalizations.of(context)!.emptyCart,
+            style: const TextStyle(color: Colors.white, fontSize: 24),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Add items to your cart to make an order!',
-            style: TextStyle(color: Colors.white54, fontSize: 16),
+          Text(
+            AppLocalizations.of(context)!.addItems,
+            style: const TextStyle(color: Colors.white54, fontSize: 16),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -38,9 +39,9 @@ class EmptyCartView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              child: const Text(
-                'Continue Shopping',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.continueShopping,
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,

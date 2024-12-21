@@ -6,7 +6,8 @@ import 'package:gymm/models/order.dart';
 import 'package:gymm/screens/order_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../utils/globals.dart';
 import '../utils/snack_bar.dart';
 
 class OrdersHistoryPage extends StatefulWidget {
@@ -68,7 +69,8 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
         }
       });
     }).catchError((e) {
-      showSnackBar(context, "Failed loading orders", "error");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.failedLoadingOrders, "error");
     }).whenComplete(() {
       if (mounted) {
         setState(() {
@@ -85,7 +87,7 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order History'),
+        title: Text(AppLocalizations.of(context)!.orderHistory),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshOrders,
@@ -122,10 +124,10 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
                       height: 100,
                     ),
                   if (!loading && orders.isEmpty)
-                    const Center(
+                    Center(
                       child: Text(
-                        "No Order History",
-                        style: TextStyle(fontSize: 24),
+                        AppLocalizations.of(context)!.noOrderHistory,
+                        style: const TextStyle(fontSize: 24),
                       ),
                     )
                 ],
@@ -153,9 +155,11 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: blackColor[300],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isArabic(context) ? 8 : 0),
+                    bottomRight: Radius.circular(isArabic(context) ? 8 : 0),
+                    topLeft: Radius.circular(isArabic(context) ? 0 : 8),
+                    bottomLeft: Radius.circular(isArabic(context) ? 0 : 8),
                   ),
                 ),
                 padding: const EdgeInsets.all(8),
@@ -206,9 +210,11 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: (order.state == "معلق") ? primaryColor : Colors.green,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isArabic(context) ? 0 : 8),
+                    bottomRight: Radius.circular(isArabic(context) ? 0 : 8),
+                    topLeft: Radius.circular(isArabic(context) ? 8 : 0),
+                    bottomLeft: Radius.circular(isArabic(context) ? 8 : 0),
                   ),
                 ),
               ),

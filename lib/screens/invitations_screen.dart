@@ -6,7 +6,8 @@ import 'package:gymm/components/invitation_tile.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/models/invitation.dart';
 import 'package:gymm/theme/colors.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gymm/utils/globals.dart';
 import '../utils/snack_bar.dart';
 
 class InvitationsPage extends StatefulWidget {
@@ -56,7 +57,8 @@ class _InvitationsPageState extends State<InvitationsPage> {
         _invitations.addAll(newInvitations);
       });
     }).catchError((e) {
-      showSnackBar(context, "Failed loading invitations", "error");
+      showSnackBar(context,
+          AppLocalizations.of(context)!.failedLoadingInvitations, "error");
     }).whenComplete(() {
       if (mounted) {
         setState(() {
@@ -78,14 +80,17 @@ class _InvitationsPageState extends State<InvitationsPage> {
 
     _currentOperation!.value.then((value) {
       if (mounted) {
-        showSnackBar(context, "Invitation created", "info");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.invitationCreated, "info");
         _loadInvitations();
       }
     }).catchError((e) {
       if (e is ClientErrorException && e.statusCode == 400) {
-        showSnackBar(context, e.responseBody["error"], "error");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.maxInvitations, "error");
       } else {
-        showSnackBar(context, "Failed creating an invitation", "error");
+        showSnackBar(context,
+            AppLocalizations.of(context)!.failedCreatingInvitation, "error");
       }
     }).whenComplete(() {
       if (mounted) {
@@ -100,10 +105,12 @@ class _InvitationsPageState extends State<InvitationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Invitations'),
+        title: Text(AppLocalizations.of(context)!.invitations),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(
+                right: isArabic(context) ? 0 : 8.0,
+                left: isArabic(context) ? 8.0 : 0),
             child: IconButton(
                 onPressed: submitting
                     ? null
@@ -145,13 +152,13 @@ class _InvitationsPageState extends State<InvitationsPage> {
                           minHeight: constraints.maxHeight + 0.01),
                       child: Column(
                         children: _invitations.isEmpty
-                            ? const [
-                                SizedBox(height: 20),
+                            ? [
+                                const SizedBox(height: 20),
                                 Center(
                                     child: Text(
-                                  "There aren't invitations for this subscription",
+                                  AppLocalizations.of(context)!.noInvitations,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 24),
+                                  style: const TextStyle(fontSize: 24),
                                 ))
                               ]
                             : _invitations

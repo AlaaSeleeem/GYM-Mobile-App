@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/components/store_components/cart_components/product_image.dart';
 import 'package:gymm/models/order_item.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/Cart.dart';
 import '../../../theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartItemCard extends StatelessWidget {
   final OrderItem item;
@@ -25,7 +27,8 @@ class CartItemCard extends StatelessWidget {
         },
         background: Container(
           color: Colors.red,
-          alignment: Alignment.centerLeft,
+          alignment:
+              isArabic(context) ? Alignment.centerRight : Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: const Icon(
             Icons.delete,
@@ -35,7 +38,8 @@ class CartItemCard extends StatelessWidget {
         ),
         secondaryBackground: Container(
           color: Colors.red,
-          alignment: Alignment.centerRight,
+          alignment:
+              isArabic(context) ? Alignment.centerLeft : Alignment.centerRight,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: const Icon(
             Icons.delete,
@@ -58,7 +62,8 @@ class CartItemCard extends StatelessWidget {
           title: Text(item.product.name,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: Colors.white, fontSize: 20)),
-          subtitle: Text('${item.unitPrice} L.E',
+          subtitle: Text(
+              '${item.unitPrice} ${AppLocalizations.of(context)!.pound}',
               style: const TextStyle(color: Colors.white54, fontSize: 16)),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,

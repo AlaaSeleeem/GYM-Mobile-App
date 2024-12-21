@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymm/models/client.dart';
 import 'package:gymm/screens/edit_personal_info_screen.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PersonalInformation extends StatefulWidget {
   const PersonalInformation({super.key, required this.client});
@@ -29,9 +30,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Personal Information',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.personalInfo,
+                style: const TextStyle(
                     color: Colors.white,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
@@ -50,44 +51,53 @@ class _PersonalInformationState extends State<PersonalInformation> {
           const SizedBox(height: 15),
           Table(
             columnWidths: const {
-              0: FlexColumnWidth(1.3),
+              0: FlexColumnWidth(2.2),
               1: FlexColumnWidth(2),
             },
             children: [
               _buildRow(
-                  icon: Icons.person_rounded, title: "ID", value: client.id!),
+                  icon: Icons.person_rounded,
+                  title: AppLocalizations.of(context)!.id,
+                  value: client.id!),
               _buildRow(
                   icon: Icons.credit_card,
-                  title: "National",
+                  title: AppLocalizations.of(context)!.nationalId,
                   value: client.nationalId),
               _buildRow(
                   icon: Icons.phone_android,
-                  title: "Phone",
+                  title: AppLocalizations.of(context)!.phone,
                   value: client.phone),
               _buildRow(
                   icon: Icons.phone_android,
-                  title: "Phone 2",
+                  title: AppLocalizations.of(context)!.phone2,
                   value: client.phone2),
               _buildRow(
-                  icon: Icons.male, title: "Gander", value: client.gender),
+                  icon: Icons.male,
+                  title: AppLocalizations.of(context)!.gander,
+                  value: client.gender),
               _buildRow(
                   icon: Icons.calendar_month,
-                  title: "Birth Date",
+                  title: AppLocalizations.of(context)!.birthdate,
                   value: client.birthDateString()),
               _buildRow(
                   icon: Icons.numbers,
-                  title: "Age",
+                  title: AppLocalizations.of(context)!.age,
                   value: client.age?.toString()),
-              _buildRow(icon: Icons.email, title: "Email", value: client.email),
               _buildRow(
-                  icon: Icons.house, title: "Address", value: client.address),
+                  icon: Icons.email,
+                  title: AppLocalizations.of(context)!.email,
+                  value: client.email),
+              _buildRow(
+                  icon: Icons.house,
+                  title: AppLocalizations.of(context)!.address,
+                  value: client.address),
               _buildRow(
                   icon: Icons.directions_run,
-                  title: "Weight",
+                  title: AppLocalizations.of(context)!.weight,
                   value: client.weight?.toString()),
               _buildRow(
                   icon: Icons.height,
-                  title: "Height",
+                  title: AppLocalizations.of(context)!.height,
                   value: client.height?.toString()),
             ],
           ),
@@ -117,7 +127,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
           child: Row(
             children: [
               Expanded(
-                child: Text(noValue ? "unset" : value,
+                child: Text(
+                    noValue ? AppLocalizations.of(context)!.unset : value,
                     softWrap: true,
                     style: TextStyle(
                         color: noValue ? Colors.red[500] : Colors.white,

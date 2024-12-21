@@ -1,10 +1,26 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:gymm/api/actions.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/models/subscription_plan.dart';
 import 'package:gymm/models/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+
+Future<Locale> getSavedLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  String? savedLocale = prefs.getString('language_code');
+
+  if (savedLocale != null) {
+    return Locale(savedLocale);
+  } else {
+    // Default to system locale if no saved language
+    Locale systemLocale = PlatformDispatcher.instance.locale;
+    return systemLocale.languageCode == 'ar'
+        ? const Locale('ar')
+        : const Locale('en');
+  }
+}
 
 Future<void> saveClientData(Map<String, dynamic> data,
     {bool downloadImage = true}) async {

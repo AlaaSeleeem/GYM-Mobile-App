@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EmptySubscription extends StatelessWidget {
   const EmptySubscription({super.key});
@@ -31,12 +32,12 @@ class EmptySubscription extends StatelessWidget {
                 ),
 
                 // Render details based on `is_duration`
-                const Column(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "No Data",
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.noData,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

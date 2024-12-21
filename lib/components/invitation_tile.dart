@@ -9,6 +9,7 @@ import 'package:gymm/utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../theme/colors.dart';
 import 'error_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InvitationTile extends StatefulWidget {
   final Invitation invitation;
@@ -44,12 +45,14 @@ class _InvitationTileState extends State<InvitationTile> {
 
     _currentOperation!.value.then((value) {
       if (!mounted) return;
-      showSnackBar(context, "Invitation deleted successfully", "info");
+      showSnackBar(
+          context, AppLocalizations.of(context)!.invitationDeleted, "info");
       if (widget.callback != null) {
         widget.callback!();
       }
     }).catchError((e) {
-      showSnackBar(context, "Failed deleting invitation", "error");
+      showSnackBar(context,
+          AppLocalizations.of(context)!.failedDeletingInvitation, "error");
     }).whenComplete(() {
       if (mounted) {
         setState(() {
@@ -66,7 +69,7 @@ class _InvitationTileState extends State<InvitationTile> {
               content: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Text(
-                  "Delete Invitation ${widget.invitation.code}?",
+                  "${AppLocalizations.of(context)!.deleteInvitation} ${widget.invitation.code}?",
                   style: const TextStyle(fontSize: 24),
                 ),
               ),
@@ -80,16 +83,16 @@ class _InvitationTileState extends State<InvitationTile> {
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    child: Text(
+                      AppLocalizations.of(context)!.cancel,
+                      style: const TextStyle(fontSize: 18, color: Colors.white),
                     )),
                 TextButton(
                     onPressed: () async {
                       Navigator.of(context).pop(true);
                     },
                     child: Text(
-                      "Delete",
+                      AppLocalizations.of(context)!.delete,
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.red[500],
@@ -120,13 +123,16 @@ class _InvitationTileState extends State<InvitationTile> {
             height: 160,
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             drawText: false,
-            errorBuilder: (context, str) => errorWidget,
+            errorBuilder: (context, str) => errorWidget(context),
           ),
         ),
         title: Text(widget.invitation.code,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.white, fontSize: 20)),
-        subtitle: Text(widget.invitation.isValid ? 'Valid' : 'Used',
+        subtitle: Text(
+            widget.invitation.isValid
+                ? AppLocalizations.of(context)!.valid
+                : AppLocalizations.of(context)!.used,
             style: TextStyle(
                 color: widget.invitation.isValid ? Colors.green : Colors.red,
                 fontSize: 16)),
@@ -140,7 +146,7 @@ class _InvitationTileState extends State<InvitationTile> {
                           text:
                               '${EndPoints.frontedBaseUrl}invitation-receipt/${widget.invitation.key}'));
                       showSnackBar(context,
-                          "Invitation link copied to clipboard", "info");
+                          AppLocalizations.of(context)!.linkCopied, "info");
                     },
                     icon: const Icon(Icons.copy, size: 30),
                   ),
