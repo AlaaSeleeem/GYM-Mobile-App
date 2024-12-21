@@ -4,6 +4,7 @@ import 'package:gymm/api/actions.dart';
 import 'package:gymm/api/exceptions.dart';
 import 'package:gymm/components/loading.dart';
 import 'package:gymm/models/client.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:async/async.dart';
@@ -388,7 +389,8 @@ class _EditPersonalInfoPageState extends State<EditPersonalInfoPage> {
                 // Custom floating action button
                 Positioned(
                   bottom: 36, // Adjust the bottom offset
-                  right: 26, // Adjust the left offset
+                  right: isArabic(context) ? null : 26,
+                  left: isArabic(context) ? 26 : null,
                   child: FloatingActionButton(
                     onPressed: submitting
                         ? null

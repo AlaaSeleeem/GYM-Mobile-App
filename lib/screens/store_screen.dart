@@ -11,6 +11,8 @@ import 'package:gymm/utils/snack_bar.dart';
 import '../models/category.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../utils/globals.dart';
+
 class StorePage extends StatefulWidget {
   const StorePage({super.key});
 
@@ -194,7 +196,11 @@ class _StorePageState extends State<StorePage> {
                 ),
               ),
             ),
-            const Positioned(bottom: 16, right: 16, child: ActionButtons()),
+            Positioned(
+                bottom: 16,
+                right: isArabic(context) ? null : 16,
+                left: isArabic(context) ? 16 : null,
+                child: const ActionButtons()),
           ],
         ),
       ),

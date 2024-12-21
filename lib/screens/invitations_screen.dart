@@ -86,7 +86,8 @@ class _InvitationsPageState extends State<InvitationsPage> {
       }
     }).catchError((e) {
       if (e is ClientErrorException && e.statusCode == 400) {
-        showSnackBar(context, e.responseBody["error"], "error");
+        showSnackBar(
+            context, AppLocalizations.of(context)!.maxInvitations, "error");
       } else {
         showSnackBar(context,
             AppLocalizations.of(context)!.failedCreatingInvitation, "error");

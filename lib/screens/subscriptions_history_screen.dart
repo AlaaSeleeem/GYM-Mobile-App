@@ -4,6 +4,7 @@ import 'package:gymm/components/loading.dart';
 import 'package:gymm/models/subscription.dart';
 import 'package:gymm/screens/subscription_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:async/async.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -162,9 +163,11 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: blackColor[900],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isArabic(context) ? 16 : 0),
+                    bottomRight: Radius.circular(isArabic(context) ? 16 : 0),
+                    topLeft: Radius.circular(isArabic(context) ? 0 : 16),
+                    bottomLeft: Radius.circular(isArabic(context) ? 0 : 16),
                   ),
                 ),
                 padding: const EdgeInsets.all(16),
@@ -199,9 +202,11 @@ class _SubscriptionsHistoryPageState extends State<SubscriptionsHistoryPage> {
                           : (subscription.isFrozen
                               ? primaryColor
                               : Colors.green),
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isArabic(context) ? 0 : 16),
+                    bottomRight: Radius.circular(isArabic(context) ? 0 : 16),
+                    topLeft: Radius.circular(isArabic(context) ? 16 : 0),
+                    bottomLeft: Radius.circular(isArabic(context) ? 16 : 0),
                   ),
                 ),
                 padding: const EdgeInsets.all(16),

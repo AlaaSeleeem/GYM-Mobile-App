@@ -7,6 +7,7 @@ import 'package:gymm/screens/order_detail_screen.dart';
 import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../utils/globals.dart';
 import '../utils/snack_bar.dart';
 
 class OrdersHistoryPage extends StatefulWidget {
@@ -154,9 +155,11 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: blackColor[300],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isArabic(context) ? 8 : 0),
+                    bottomRight: Radius.circular(isArabic(context) ? 8 : 0),
+                    topLeft: Radius.circular(isArabic(context) ? 0 : 8),
+                    bottomLeft: Radius.circular(isArabic(context) ? 0 : 8),
                   ),
                 ),
                 padding: const EdgeInsets.all(8),
@@ -207,9 +210,11 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: (order.state == "معلق") ? primaryColor : Colors.green,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(isArabic(context) ? 0 : 8),
+                    bottomRight: Radius.circular(isArabic(context) ? 0 : 8),
+                    topLeft: Radius.circular(isArabic(context) ? 8 : 0),
+                    bottomLeft: Radius.circular(isArabic(context) ? 8 : 0),
                   ),
                 ),
               ),

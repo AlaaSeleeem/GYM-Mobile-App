@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymm/components/store_components/cart_components/product_image.dart';
 import 'package:gymm/models/order_item.dart';
+import 'package:gymm/utils/globals.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/Cart.dart';
 import '../../../theme/colors.dart';
@@ -26,7 +27,8 @@ class CartItemCard extends StatelessWidget {
         },
         background: Container(
           color: Colors.red,
-          alignment: Alignment.centerLeft,
+          alignment:
+              isArabic(context) ? Alignment.centerRight : Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: const Icon(
             Icons.delete,
@@ -36,7 +38,8 @@ class CartItemCard extends StatelessWidget {
         ),
         secondaryBackground: Container(
           color: Colors.red,
-          alignment: Alignment.centerRight,
+          alignment:
+              isArabic(context) ? Alignment.centerLeft : Alignment.centerRight,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: const Icon(
             Icons.delete,

@@ -8,6 +8,8 @@ import 'package:gymm/theme/colors.dart';
 import 'package:gymm/utils/snack_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../utils/globals.dart';
+
 class PlansPage extends StatefulWidget {
   const PlansPage({super.key});
 
@@ -155,9 +157,12 @@ class _PlansPageState extends State<PlansPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: blackColor[900],
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(isArabic(context) ? 16 : 0),
+                        bottomRight:
+                            Radius.circular(isArabic(context) ? 16 : 0),
+                        topLeft: Radius.circular(isArabic(context) ? 0 : 16),
+                        bottomLeft: Radius.circular(isArabic(context) ? 0 : 16),
                       ),
                     ),
                     padding: const EdgeInsets.all(16),
@@ -184,11 +189,14 @@ class _PlansPageState extends State<PlansPage> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16),
-                        bottomRight: Radius.circular(16),
+                        topRight: Radius.circular(isArabic(context) ? 0 : 16),
+                        bottomRight:
+                            Radius.circular(isArabic(context) ? 0 : 16),
+                        topLeft: Radius.circular(isArabic(context) ? 16 : 0),
+                        bottomLeft: Radius.circular(isArabic(context) ? 16 : 0),
                       ),
                     ),
                     padding: const EdgeInsets.all(16),
@@ -245,7 +253,8 @@ class _PlansPageState extends State<PlansPage> {
             if (plan.discount != null)
               Positioned(
                 top: 10,
-                left: 10,
+                left: isArabic(context) ? null : 10,
+                right: isArabic(context) ? 10 : null,
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
