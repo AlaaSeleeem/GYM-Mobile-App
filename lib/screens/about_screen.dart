@@ -65,20 +65,19 @@ class AboutPage extends StatelessWidget {
               _buildSectionHeader(
                   "Contact Information", FontAwesomeIcons.addressCard),
               const SizedBox(height: 10),
-              _buildContactItem("Phone", FontAwesomeIcons.phone, "01020202030"),
+              _buildContactItem("Phone", FontAwesomeIcons.phone, "01116603637"),
               _buildContactItem("Facebook", FontAwesomeIcons.facebook,
-                  "https://facebook.com/ProGym"),
+                  "https://www.facebook.com/share/12Cz2wymouW/?mibextid=wwXIfr"),
               _buildContactItem("Instagram", FontAwesomeIcons.instagram,
-                  "https://instagram.com/ProGym"),
-              _buildContactItem("TikTok", FontAwesomeIcons.tiktok,
-                  "https://tiktok.com/@ProGym"),
+                  "https://www.instagram.com/pro.gym9?igsh=MWpwanRqMGU1eGF4ag=="),
+
               _buildContactItem("Address", FontAwesomeIcons.locationDot,
                   "123 Paris Street, Shebin, Menofia"),
               const SizedBox(height: 20),
               // Location Button
               ElevatedButton.icon(
                 onPressed: () {
-                  _launchURL("https://maps.google.com/?q=123+Gym+Street");
+                  _launchURL("https://maps.app.goo.gl/5x4VcSVJhXAt9rGE8");
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
